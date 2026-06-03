@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title th:text="${title}">CFB Geek - AP Rankings</title>
+
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFB Geek college football rankings</title>
+<meta name="description" content="College Football Data Rankings">
+<meta name="author" content="John Gilliam">
+
+<link href="/css/navbar.css" rel="stylesheet">
+<style type="text/css">
+
+html { 
+    height: 100%;
+}
+body { 
+    min-height: 100%;
+    margin: 0px;
+}
+img {
+    vertical-align: middle;
+    padding-right: 20px;
+    height: 20px;
+    width: 20px;
+}
+
+/* DivTable.com */
+.divMain {
+	display: block;
+	margin: auto;
+    width: 80%;
+    /*   fixed menu chnage on next line */
+	margin-top: 30px;
+}
+.divTable {
+	display: table;
+	width: 75%;	
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	/* width: 50%; */
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+table td {
+	font-size: 12px;
+    /* border: 1px solid #ddd; */
+    border-bottom: 1px solid #ddd;
+    padding: 2px; 
+    padding-left: 4px;
+}
+table td a {
+	color: #06c;
+	text-decoration: none;
+}
+table th {
+	font-size: 14px;
+	font-weight: bold;
+    text-align: left;
+    background-color: #00274c;
+    font-style: normal;
+    color: white;
+}
+table tr:hover {
+	background-color: lightgray;
+}
+h1 {
+	font-size: 20px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+h3 {
+	font-size: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+label {
+    font-size: 14px;
+   	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    padding-right: 5px;
+}
+
+#statTable tr:hover {
+	background-color: lightgray;
+}
+
+</style>
+</head>
+
+<body onload="setRankings('ap'); setRankings('sp'); setYearOptions();">
+	
+	<!-- 
+	<p th:text="'year= ' + ${year} "/>
+	<p th:text="'stats= ' + ${stats} "/>	
+	<p th:text="'sortOrder= ' + ${sortOrder} "/>
+	-->
+
+<div class="navbar">
+	<a href="/">CFB GEEK</a> 
+	<a href="/teams">Teams</a>
+	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
+	<a href="#" onclick="gotoYearStats(year)">Stats</a>
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
+</div>
+<br />
+
+<div class="divMain">
+	<div class="divTable">
+		<div class="divTableBody">
+			<div class="divTableRow">
+				<div class="divTableCell">
+					<h1 th:text="${title}"></h1>
+				</div>
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell" id="yearDiv">
+					<label for="yearSelector">Year:</label>
+					<select id="yearSelector" onchange="changeYear(this.value)">
+					</select>
+				</div>
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell" id="apDiv">
+				</div>
+				<div class="divTableCell" id="spDiv">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br />
+
+<script th:inline="javascript">
+
+var year = /*[[${year}]]*/ null;
+var title = /*[[${title}]]*/ null;
+var apRankings = /*[[${apRankings}]]*/ null;
+var spRankings = /*[[${spRankings}]]*/ null;
+var sortOrder = /*[[${sortOrder}]]*/ null;
+
+function setRankings(rankings) {
+	var json = "";
+	var columnsToExclude = ["TeamId"];
+	var html = "";
+	var rankingsDiv = "";
+	
+	if(year == undefined) {
+		year = getMaxYear();
+	}
+	
+	if(rankings == 'ap') {
+		json = JSON.parse(apRankings); 
+		rankingsDiv = "apDiv";
+		html = "<h3>AP Poll</h3>";
+		html += "<table id='apTable'>";
+	} else {
+		json = JSON.parse(spRankings); 
+		rankingsDiv = "spDiv";
+		html = "<h3>SP+ Rankings</h3>";
+		html += "<table id='spTable'>";
+	}
+	
+	html += getTableHeader(json[0], columnsToExclude); 
+	
+	for(var i=0; i<json.length; i++) {
+		var row = json[i];
+		var teamLink = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${row.TeamId}.png' alt='${row.Team} logo'></img><a href='/teams/team/${row.TeamId}/year/${year}'>${row.Team}</a>`;
+		var columnLinks = {
+			Team : teamLink,
+		}		
+
+		html += getTableRow(row, columnsToExclude, columnLinks);
+	}
+	
+	html += "</table>";
+	document.getElementById(rankingsDiv).innerHTML = html;
+}
+
+function setYearOptions() {
+	var maxYear = getMaxYear();
+	var minYear = getMinYear();
+	var yearOptions = "";
+	
+	for(maxYear; maxYear>=minYear; maxYear--) {
+		var selected = (maxYear == year ? "selected" : "");
+		yearOptions += `<option value="${maxYear}" ${selected}>${maxYear}</option>`;
+	}
+	document.getElementById("yearSelector").innerHTML += yearOptions;
+}
+
+//http://localhost:8080/stats/year/2015/apranking
+function changeYear(selectedYear) {
+	newUrl = "/stats/year/" + selectedYear + "/rankings";
+	window.location = newUrl;
+}
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+<script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+<script type="text/javascript" th:src="@{/js/table.js}"></script>
+<script type="text/javascript" th:src="@{/js/yearChoices.js}"></script>
+</body>
+</html>

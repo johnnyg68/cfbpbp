@@ -1,0 +1,33 @@
+-- THIS DOES NOT WORK!!!
+
+--SELECT 
+--    @row:=@row + 1 AS '#',
+--    t.name AS 'Name',
+--    t.games AS 'Games',
+--    t.Atts as Atts,
+--    t.FGs as 'FGs',
+--    t.TDs as TDs,
+--    t.ScorePct as 'Score %'
+--FROM (
+--SELECT 
+--    team1.name as Name,
+--    COUNT(DISTINCT game.gameid) as Games,
+--    SUM(drive2.redzoneattempt) as Atts,
+--    SUM(drive2.redzonefg) as FGs,
+--    SUM(drive2.redzonetd) as TDs,
+--    ROUND((SUM(drive2.redzonetd) + SUM(drive2.redzonefg)) / SUM(drive2.redzoneattempt) * 100, 2) as ScorePct
+--FROM
+--	drive as drive1
+--	inner join drive as drive2 on drive1.driveid = drive2.driveid
+--	join game as game on game.gameid = drive1.gameid
+--	inner join team as team1 on team1.teamid = drive1.offenseiveteamid
+--	inner join team as team2 on team2.teamid = drive2.offenseiveteamid
+--	join conference as conf on conf.conferenceid = team1.conferenceid
+--WHERE
+--    game.year = '2017' AND conf.division = 'FBS' -- and drive1.gameid <> drive2.gameid
+--GROUP BY team1.teamid
+--ORDER BY ROUND((SUM(drive2.redzonetd) + SUM(drive2.redzonefg)) / SUM(drive2.redzoneattempt) * 100, 2) ASC
+--) as t
+--    CROSS JOIN
+--    (SELECT @row:=0) AS r
+--limit 0, 200

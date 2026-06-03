@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>College Football Data - Schedule</title>
+
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFB Geek college football schedule</title>
+<meta name="description" content="College Football Data Schedule">
+<meta name="author" content="John Gilliam">
+
+<link href="/css/navbar.css" rel="stylesheet">
+<style type="text/css">
+
+html { 
+    height: 100%;
+}
+body { 
+    min-height: 100%;
+    margin: 0px;
+}
+
+.divMain {
+	display: block;
+	margin: auto;
+    width: 80%;
+    /*   fixed menu chnage on next line */
+	margin-top: 40px;
+}
+.divTable {
+	display: table;
+	width: 50%;	
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	width: 50%;
+	vertical-align: middle;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
+img {
+	vertical-align: middle;
+	padding-right: 20px;
+	height: 20px;
+	width: 20px;
+ }
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-collapse: collapse;
+    width: 100%;
+    vertical-align: middle;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+table td {
+	font-size: 12px;
+    /* border: 1px solid #ddd; */
+    border-bottom: 1px solid #ddd;
+    padding: 2px; 
+    padding-left: 4px;
+    vertical-align: middle;
+}
+table td a {
+	color: #06c;
+	text-decoration: none;
+	vertical-align: middle;
+}
+table th {
+	font-size: 14px;
+	font-weight: bold;
+    text-align: left;
+    background-color: #00274c;
+    font-style: normal;
+    color: white;
+}
+h1 {
+	font-size: 20px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+h3 {
+	font-size: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+#reportTable tr:hover {
+	background-color: lightgray;
+	vertical-align: middle;
+}
+
+</style>
+</head>
+<body onload="setSelectors(); loadPage()">
+
+<div class="navbar">
+	<a href="/">CFB GEEK</a> 
+	<a href="/teams">Teams</a>
+	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
+	<a href="#" onclick="gotoYearStats(year)">Stats</a>
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
+</div>
+
+<div class="divMain">
+	<div class="divTable">
+		<div class="divTableBody">	
+			<div class="divTableRow">
+				<div class="divTableCell">
+				<h1><span th:text="|Schedule - ${year} Week ${week}|"></span></h1>
+				</div>
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell">
+					<select id="yearSelector" onchange="yearChange(this.value)"></select> &nbsp;&nbsp;&nbsp;&nbsp;
+					<select id="weekSelector" onchange="weekChange(this.value)"></select> &nbsp;&nbsp;&nbsp;&nbsp;
+					<select id="confRankSelector" onchange="confRankChange(this.value)"></select>
+					<p>
+				</div>
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell">
+					<table id="reportTable">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br><br>
+
+<script th:inline="javascript">
+var conferences = /*[[${conferences}]]*/ null;
+var schedule = /*[[${schedule}]]*/ null;
+var scheduleYearWeekMap = /*[[${scheduleYearWeekMap}]]*/ null;
+
+var year = /*[[${year}]]*/ null;
+var week = /*[[${week}]]*/ null;
+var yearWeekMap;
+
+function loadPage() {
+	var json = JSON.parse(schedule);
+	
+	//handle case where there are no games for the week in the URL
+	//this resets the week to 1, but another idea would be to redirect to MAX week.
+// 	if(Array.isArray(json) && !json.length) {
+// 		weekChange(1);
+// 	}
+	jsonToTable(json);
+}
+
+function jsonToTable(json) {
+	var html = "";
+	var tableColumns = ["Date", "Visitor", "Visitor Score", "Home", "Home Score"];
+	
+	//add table header
+	html += "<tr>";
+	for(col in json[0]) {
+		if(tableColumns.includes(col)) {
+			html += "<th>" + col + "</th>";
+		}
+	}
+	html += "</tr>";
+	
+	for(i=0; i<json.length; i++) {
+		var row = json[i];
+		var gameLink = `<a href='/games/game/${row.GameId}/boxscore'>${row.Date}</a>`;
+		// if no scores show the gamepreview page
+		if(row["Visitor Score"] == "TBD" && row["Home Score"] == "TBD") {
+			gameLink = `<a href='/games/game/${row.GameId}/gamepreview'>${row.Date}</a>`;
+		}
+		var img = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${row.VisitorTeamId}.png'></img>`;
+		var visitorLink = `${img}<a href='/teams/team/${row.VisitorTeamId}/year/${year}'>${row.Visitor}</a>`;
+		img = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${row.HomeTeamId}.png'></img>`;
+		var homeLink = `${img}<a href='/teams/team/${row.HomeTeamId}/year/${year}'>${row.Home}</a>`;
+		
+		html += "<tr>";
+		for(col in row) {
+			if(col == "Date") {
+				html += "<td>" + gameLink + "</td>";				
+			} 
+			else if(col == "Visitor") {
+				html += "<td>" + visitorLink + "</td>";
+			} 
+			else if(col == "Home") {
+				html += "<td>" + homeLink + "</td>";
+			}			
+			else {
+				if(tableColumns.includes(col)) {
+					html += "<td>" + row[col] + "</td>";
+				}
+			}
+		}
+		html += "</tr>";
+	}	
+
+	document.getElementById('reportTable').innerHTML = html;
+}
+
+function setSelectors() {
+	var json = JSON.parse(scheduleYearWeekMap);
+	yearWeekMap = jsonToMap(json);
+
+	var yearOptions = "";
+	var weekOptions = "";
+	var confRankOptons = "";
+	
+	for(var key of yearWeekMap.keys()) {	
+		var selected = (key == year ? "selected" : "");
+		yearOptions += `<option value="${key}" ${selected}>${key}</option>`;		
+	}
+	
+	for(value of yearWeekMap.get(year)) {
+		var selected = (value == week ? "selected" : "");
+		weekOptions += `<option value="${value}" ${selected}>Week ${value}</option>`;	
+	}
+
+	var confJson = JSON.parse(conferences);
+	confRankOptions = "<option value='All'>All</option>";
+	confRankOptions += "<option value='Top 25'>Top 25</option>";
+	for(var i=0; i<confJson.length; i++) {
+		var conf = confJson[i].name;
+		confRankOptions += `<option value="${conf}">${conf}</option>`;
+	}
+		
+	document.getElementById("yearSelector").innerHTML = yearOptions;
+	document.getElementById("weekSelector").innerHTML = weekOptions;	
+	document.getElementById("confRankSelector").innerHTML = confRankOptions;	
+}
+
+function yearChange(value) {
+	window.location = `/games/year/${value}/week/${week}`;
+}
+
+function weekChange(value) {
+	window.location = `/games/year/${year}/week/${value}`;
+}
+
+function confRankChange(value) {
+	var games = JSON.parse(schedule);
+	var filteredGames;
+	
+	if(value == "All") {
+		loadPage();
+		return;
+	}
+		
+	if(value == "Top 25") {
+		filteredGames = games.filter(function (el) {
+			return el.Home.includes("#") || el.Visitor.includes("#")
+		});
+		jsonToTable(filteredGames);
+		return;
+	}
+	
+	// Conference selected
+	filteredGames = games.filter(function (el) {
+		return el.HomeConf == value || el.VisitorConf == value;
+	});
+	
+	jsonToTable(filteredGames);
+}
+
+function jsonToMap(json) {
+	var map = new Map();
+	var weeks = [];
+	
+	for(var i=0; i<json.length; i++) {
+		var year = json[i].Year;		
+		weeks = map.get(year);		
+		if(weeks == undefined) {
+			weeks = [];
+		}
+		weeks.push(json[i].Week);
+		map.set(year, weeks);
+	}
+	return map; 
+}
+
+</script>
+
+<script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+</body>
+</html>

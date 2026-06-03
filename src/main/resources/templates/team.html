@@ -1,0 +1,504 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title>CFB Geek - Team Season</title>
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFB Geek college football team data</title>
+<meta name="description" content="College Football Data Team History">
+<meta name="author" content="John Gilliam">
+
+<link href="/css/navbar.css" rel="stylesheet">
+<style type="text/css">
+
+html { 
+    height: 100%;
+}
+body { 
+    min-height: 100%;
+    margin: 0px;
+}
+
+#teamDetails {
+	margin: auto;
+	text-align: center;
+}
+
+#playerDiv {
+	display: none;
+}
+#scheduleResultsDiv {
+/* 	background-color: #f2f2f2; */
+	border-style: none;
+} 
+#teamDiv {
+	display: table;
+}
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+    /* background-color: #333; */
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    /* transition: 0.3s; */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+/* Change background color of a href links on hover */
+/* this doesn't work because I am dynamically setting bgcolor based on teamcolor */
+.tab button:hover {
+    background-color: green;
+}
+
+/* Create an active/current tablink class */
+/* .tab button.active { */
+/*     background-color: #ccc; */
+/* } */
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-width: 1px;
+    /* border-style: solid; */
+    /* background-color: #f2f2f2; */
+}
+.divMain {
+	display: block;
+	margin: auto;
+    width: 80%;
+    /*   fixed menu chnage on next line */
+	margin-top: 30px;
+}
+.divTable {
+	display: table;
+	width: 100%	
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	width: 50%;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    border: 1px solid lightgrey;
+}
+table td {
+	font-size: 12px;
+    /* border: 1px solid #ddd; */
+    border-bottom: 1px solid #ddd;
+    padding: 2px; 
+    padding-left: 4px;
+}
+table td a {
+	color: #06c;
+	text-decoration: none;
+}
+table th {
+	font-size: 14px;
+	font-weight: bold;
+    text-align: left;
+    background-color: #00274c;
+    font-style: normal;
+    color: white;
+}
+table tr:hover {
+	background-color: lightgray;
+}
+
+h1 {
+	font-size: 20px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+h3 {
+	font-size: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+</style>
+</head>
+<body onload="setYearLinks(); setTeamDetails(); setScheduleResultsTable(); setStatTables(); setTableHeaderColor();">
+
+	<!-- 
+	<p th:text="'year= ' + ${year} "/>
+	<p th:text="'teamId= ' + ${teamId} "/>
+	<p th:text="'teamYearRecord= ' + ${teamYearRecord} "/>
+	<p th:text="'scheduleResults= ' + ${scheduleResults} "/>
+	
+	<p th:text="'teamScoringOffense= ' + ${teamScoringOffense} "/>
+	<p th:text="'teamPassingOffense= ' + ${teamPassingOffense} "/>
+	<p th:text="'teamRusingOffense= ' + ${teamRushingOffense} "/>
+	
+	<p th:text="'playerPassing= ' + ${playerPassing} "/>
+	<p th:text="'playerRushing= ' + ${playerRushing} "/>
+	<p th:text="'playerRushing= ' + ${playerReceiving} "/>
+	<p th:text="'playerDefense= ' + ${playerDefense} "/>
+	<p th:text="'playerInts= ' + ${playerInts} "/>
+	<p th:text="'playerKickReturns= ' + ${playerKickReturns} "/>
+	<p th:text="'playerPuntReturns= ' + ${playerPuntReturns} "/>
+	<p th:text="'playerPunting= ' + ${playerPunting} "/>
+	<p th:text="'playerKicking= ' + ${playerKicking} "/>
+	-->
+
+	<div class="navbar">
+		<a href="/">CFB GEEK</a> 
+		<a href="/teams">Teams</a>
+		<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
+		<a href="#" onclick="gotoYearStats(year)">Stats</a>
+		<div class="dropdown">
+			<button class="dropbtn">Year<i class="fa fa-caret-down"></i>
+			</button>
+			<div class="dropdown-content" id="teamYears">
+				// links are set by function setYearsLinks()
+			</div>
+		</div>
+		<a href="#" onclick="gotoYearRankings(year)">Rankings</a>
+		<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
+	</div>
+
+	<br /><br />
+
+	<div class="divMain">
+		<div class="divTable">
+			<div class="divTableBody">
+				<div class="divTableRow">
+					<div class="divTableCell" id="teamDetails"></div>
+					<div class="divTableCell" id="scheduleResultsDiv"></div>
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div class="tab" id="tabs">
+			<button onclick="tabClick(this)" id="teamTab">Team</button>
+			<button onclick="tabClick(this)" id="playerTab">Player</button>
+		</div>
+
+		<div class="tabcontent" id="teamDiv">
+			<div class="divTableBody">
+				<div class="divTableRow">
+					<div class="divTableCell" id="teamScoringDiv">
+						<p>team scoring offense</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="teamYardsDiv">
+						<p>team total offense</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="teamDownSuccessRateDiv">
+						<p>team total down success rate</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="teamPassingDiv">
+						<p>team passing</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="teamRushingDiv">
+						<p>team rushing</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="team3rdDownsDiv">
+						<p>team 3rd down offense</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="teamTurnoverMarginDiv">
+						<p>team turnover margin</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="teamSos">
+						<p>Team Strength of Schedule (SOS)</p>
+					</div>
+				</div>
+			</div>
+			<br />
+		</div>
+
+		<div class="tabcontent" id="playerDiv">
+			<div class="divTableBody">
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerPassingDiv">
+						<p>player passing</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerRushingDiv">
+						<p>player rushing</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerReceivingDiv">
+						<p>player receiving</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerDefenseDiv">
+						<p>player defense</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerIntsDiv">
+						<p>player ints</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerKickReturnsDiv">
+						<p>player kickreturns</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerPuntReturnsDiv">
+						<p>player puntreturns</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerPuntingDiv">
+						<p>player punting</p>
+					</div>
+				</div>
+				<div class="divTableRow">
+					<div class="divTableCell" id="playerKickingDiv">
+						<p>player kicking</p>
+					</div>
+				</div>
+			</div>
+			<br />
+		</div>
+	</div>
+	<!--  end divMain -->	
+<br/><br/>
+
+<script th:inline="javascript">
+var teamYearRecord = /*[[${teamYearRecord}]]*/ null;
+var scheduleResults = /*[[${scheduleResults}]]*/ null;
+var teamOpponentRecord = /*[[${teamOpponentRecord}]]*/ null;
+var year = /*[[${year}]]*/ null;
+var teamId = /*[[${teamId}]]*/ null;
+var teamName = "";
+var teamColor = "";
+
+function setTeamDetails() {
+	var json = JSON.parse(teamYearRecord);
+	teamName = json[0].Name;
+	var mascot = json[0].Mascot;
+	var record = json[0].Record;
+	//var rank = json[0].Rank == null ? "" : "#" + json[0].Rank;
+	var rank = json[0].ranking == null ? "" : "#" + json[0].ranking;
+	teamColor = json[0].Color != "" ? "#" + json[0].Color : "";
+	
+	var html = "";
+	
+	html += "<h1>" + year + " " + rank + " " + teamName + " " + mascot + " (" + record + ") </h1>" ;
+	html += "<h3>through: " + json[0].Date + "</h3>"; 
+	html += `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' alt='${teamName} logo' height='125' width='125'>`;
+	
+	document.getElementById('teamDetails').innerHTML = html;
+	document.title = teamName + " " + year;
+}
+
+function setScheduleResultsTable() {
+	var json = JSON.parse(scheduleResults);
+	var tableColumns = ["Date", "Opponent", "Result"];
+	var html = "";
+	
+	//set table header
+	var columnsToExclude = ["GameId", "sqldate", "HomeTeamId", "AwayTeamId"];
+	html += "<table>";
+	html += getTableHeader(json[0], columnsToExclude);
+	
+	//add row data
+	for(i=0; i<json.length; i++) {
+		var row = json[i];
+		var opponentId = teamId == row.HomeTeamId ? row.AwayTeamId : row.HomeTeamId;
+		var opponentLink = `<a href='/teams/team/${opponentId}/year/${year}'>${row.Opponent}</a>`;
+		var linkPage = (row.Result == "TBD") ? "gamepreview" : "boxscore";
+		var gameLink = `<a href='/games/game/${row.GameId}/${linkPage}'>${row.Date}</a>`;
+		
+		var columnLinks = {
+			Date : gameLink,	
+			Opponent : opponentLink,
+		}
+		
+		html += getTableRow(row, columnsToExclude, columnLinks);
+	}	
+	html += "</table>";
+	
+	document.getElementById('scheduleResultsDiv').innerHTML = html;
+}
+
+function setStatTables() {
+	
+	//TEAM	
+		
+	var stat =  /*[[${teamScoring}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Scoring", "teamScoringDiv");
+	
+	stat =  /*[[${teamYards}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Total Yards", "teamYardsDiv");
+	
+	stat =  /*[[${teamDownSuccessRate}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Team Down Success Rate", "teamDownSuccessRateDiv");
+	
+	stat =  /*[[${teamPassing}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Passing", "teamPassingDiv");
+	
+	stat =  /*[[${teamRushing}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Rushing", "teamRushingDiv");
+
+	stat =  /*[[${team3rdDowns}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "3rd Down Conversion", "team3rdDownsDiv");
+	
+	stat =  /*[[${teamTurnoverMargin}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Turnover Margin", "teamTurnoverMarginDiv");
+	
+	stat =  /*[[${teamSos}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Team Strength of Schedule", "teamSos"); 
+	
+	// PLAYERS
+	
+	stat =  /*[[${playerPassing}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Passing", "playerPassingDiv");
+	
+	stat = /*[[${playerRushing}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Rushing", "playerRushingDiv");
+	
+	stat = /*[[${playerReceiving}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Receiving", "playerReceivingDiv");
+	
+	stat = /*[[${playerDefense}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Defense", "playerDefenseDiv");
+	
+	stat = /*[[${playerInts}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Interceptions", "playerIntsDiv");
+	
+	stat = /*[[${playerKickReturns}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Kick Returns", "playerKickReturnsDiv");
+	
+	stat = /*[[${playerPuntReturns}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Punt Returns", "playerPuntReturnsDiv");
+	
+	stat = /*[[${playerPunting}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Punting", "playerPuntingDiv");
+	
+	stat = /*[[${playerKicking}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "Kicking", "playerKickingDiv");
+}
+
+function isValidData(data) {
+	var result = 0;
+	if(data === null) {return result;}	
+	if (data === undefined || data.length == 0) {return result;}	
+	if(data == "[]") {return result;}
+	
+	return 1;
+}
+
+function setTableHeaderColor() {
+	if(teamColor == "") {
+		return;
+	}
+	
+	var tableHeaders = document.getElementsByTagName("th");
+	for(var i=0; i<tableHeaders.length; i++) {
+		tableHeader = tableHeaders[i];
+		tableHeader.style.backgroundColor = teamColor;
+	}
+
+	//tabs 
+	document.getElementById("playerTab").style.backgroundColor = "#999999";
+	document.getElementById("teamTab").style.backgroundColor = teamColor;
+}
+
+function setYearLinks() {
+	var teamYearsDiv = document.getElementById("teamYears");
+	var currentYear = "/year/" + year;
+	var html = "";
+	var MAX_YEAR = getMaxYear();
+	
+	html += `<a href='/teams/team/${teamId}/history'>History</a>`;
+	
+	for(var i=MAX_YEAR; i>=2001; i--) {
+		var newYear = "/year/" + i;
+		var currentUrl = window.location.href;
+		var link = currentUrl.replace(currentYear, newYear);
+		html += `<a href='${link}'>${i}</a>`;
+	}
+	teamYearsDiv.innerHTML = html;
+}
+
+function tabClick(tab) {
+	var playerDiv = document.getElementById("playerDiv");
+	var teamDiv = document.getElementById("teamDiv");
+	
+	if(tab.id == "teamTab") {
+    	playerDiv.style.display = "none";
+    	teamDiv.style.display = "table";
+    	document.getElementById("teamTab").style.backgroundColor = teamColor;
+    	document.getElementById("playerTab").style.backgroundColor = "#999999";
+	} else {
+		playerDiv.style.display = "table";
+		teamDiv.style.display = "none";		
+    	document.getElementById("teamTab").style.backgroundColor = "#999999";
+    	document.getElementById("playerTab").style.backgroundColor = teamColor;
+	}
+	
+}
+
+</script>
+
+<script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+<script type="text/javascript" th:src="@{/js/table.js}"></script>
+<script type="text/javascript" th:src="@{/js/yearChoices.js}"></script>
+</body>
+</html>

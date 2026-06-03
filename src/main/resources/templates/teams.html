@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>CFB Geek - Teams by Conference</title>
+
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFB Geek - college football teams by conferences</title>
+<meta name="description" content="College Football Data Teams by Conference">
+<meta name="author" content="John Gilliam">
+
+<link href="/css/navbar.css" rel="stylesheet">
+<style type="text/css">
+
+html { 
+    height: 100%;
+}
+body { 
+    min-height: 100%;
+    margin: 0px;
+}
+h1 {
+	font-size: 20px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-collapse: collapse;
+    width: 80%;
+}
+table td {
+	font-size: 12px;
+    border: 1px solid #ddd;
+    padding: 2px; 
+}
+table th {
+	font-size: 14px;
+	font-weight: bold;
+    text-align: left;
+    background-color: #00274c;
+    font-style: normal;
+    color: white;
+}
+table td a {
+	color: #06c;
+	text-decoration: none;
+}
+table tr:hover {
+	background-color: lightgray;
+}
+
+/* table tr:nth-child(odd) td {
+   background:#ccc;
+}
+table tr:nth-child(even) td {
+   background:#fff;
+} */
+
+img {
+	vertical-align: middle;
+	padding-right: 20px;
+	height: 20px;
+	width: 20px;
+ }
+
+.divMain {
+	display: block;
+	margin: auto;
+    width: 80%;
+    /*   fixed menu chnage on next line */
+	margin-top: 30px;
+}
+
+/* DivTable.com */
+.divTable {
+	display: table;
+	width: 80%;	
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	width: 25%;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
+</style>
+</head>
+<body onload="jsonToTable()">
+
+	<!-- 
+	<p th:text="'DataList= ' + ${dataList} "/>
+	<br/>
+	<p th:text="'DataJson= ' + ${dataJson} "/>
+	-->
+
+<div class="navbar">
+	<a href="/">CFB GEEK</a> 
+	<a href="/teams">Teams</a>
+	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
+	<a href="#" onclick="gotoYearStats(year)">Stats</a>
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
+</div>
+
+<br />
+
+<div class="divMain">
+	<div id="Conferences">
+	</div>
+</div>
+<br /><br />
+
+<script th:inline="javascript">
+var year= "";
+
+function jsonToTable() {
+	year = getMaxYear();
+	const NUM_COLUMNS = 4;
+	
+	var json = /*[[${dataJson}]]*/ null;
+	var jsonParsed = JSON.parse(json);
+	var jsonMap = jsonToMap(jsonParsed);	
+	var html = "";
+	
+	html += `<div class="divTable">`;
+	html +=	`<div class="divTableBody">`;
+	html += `<div class="divTableRow">`;
+	html += `<div class="divTableCell">`;
+	html += "<h1>Teams by Conference</h1>";
+	html += "</div>";
+	html += "</div>";
+
+	var conferenceIndex = 0;
+	for(var [conference, teams] of jsonMap.entries()) {		
+		if(conferenceIndex == 0 || conferenceIndex % NUM_COLUMNS == 0 ) {
+			html += `	<div class="divTableRow">`;
+		}
+		
+		html += `<div class="divTableCell">`;
+		html += `<table>`;
+		html +=	`<tr><th>${conference}</th></tr>`; 	
+		
+		// write teams to table body.
+		for(team in teams) {
+			var teamObj = teams[team];
+			var teamUrl = `/teams/team/${teamObj.TeamId}/history`;
+			var img = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${teamObj.TeamId}.png' alt='${teamObj.Team} logo'></img>`;
+			html += `	<tr><td><a href="${teamUrl}">${img}${teamObj.Team}</a></td></tr>`;
+		}
+		
+		html +=	`</table>`; 
+		html += `</div>`;
+		
+		conferenceIndex++;
+		
+		if(conferenceIndex % NUM_COLUMNS == 0 ) {
+			html += `</div><br> <!-- end divTableRow -->`;
+		}
+	}
+	
+	html += `
+		</div> <!-- end divTableBody -->
+		</div> <!-- end divTable -->
+	`;	
+	
+    document.getElementById("Conferences").insertAdjacentHTML("beforeend", html);
+}
+
+//create Map<Conference,List<Teams>> 
+function jsonToMap(json) {
+	var map = new Map();
+	var teams = [];
+	
+	for(var i=0; i<json.length; i++) {
+		var conference = json[i].Conference;		
+		teams = map.get(conference);		
+		if(teams == undefined) {
+			teams = [];
+		}
+		teams.push(json[i]);
+		map.set(conference, teams);
+	}
+	return map; 
+}
+
+</script>
+<script type="text/javascript" th:src="@{/js/yearChoices.js}"></script>
+<script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+<script type="text/javascript" th:src="@{/js/table.js}"></script>
+</body>
+</html>

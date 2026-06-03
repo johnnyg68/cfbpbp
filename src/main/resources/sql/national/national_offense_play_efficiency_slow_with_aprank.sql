@@ -1,0 +1,62 @@
+-- Offensive PLAY Success Rate for all teams in all games for a given year
+--  50% of needed yards on first down, 70% of needed yards on second down, or 100% of needed yards on third or fourth down.
+-- includes AP ranking and W-L Record.
+
+select
+	@row:=@row + 1 AS '#',
+    x.Team as Team,
+    x.TeamId as TeamId,
+    IFNULL(x.ap_ranking, "NR") as "AP ranking",
+    x.Record,
+    x.Plays,
+    x.SuccessfulPlays as 'Successful Plays',
+    x.Pct
+from (
+select 
+	t.name as Team, 
+    t.teamid as TeamId, 
+    t.ap_ranking as ap_ranking,
+    (select 
+		concat(
+			count(CAST(case when game.winnerteamid = team.teamid then 1 end as CHAR)), 
+			CAST(' - ' as CHAR), 
+			count(CAST(case when game.winnerteamid <> team.teamid then 1 end as CHAR))
+        ) 
+	from team 
+		join game on team.teamid = game.hometeamid or team.teamid = game.awayteamid  
+	where 
+		team.teamid = t.teamid and 
+		game.year = :year
+	group by 
+		game.year) as 'Record', 
+	count(*) as 'Plays', 
+    sum(t.success) as 'SuccessfulPlays', 
+    round(sum(t.success) / count(*) * 100, 2) as 'Pct' 
+ from   
+(select 
+	team.name, 
+    team.teamid,    
+    ap_poll.ranking as ap_ranking,
+	case when down = 1 then 
+		if(play.playstatyardage >= play.distance * .5, 1, 0) 
+	when down = 2 then  
+		if(play.playstatyardage >= play.distance * .7, 1, 0) 
+	when down = 3 or down = 4 then 
+		if(play.playstatyardage >= play.distance, 1, 0) 
+    end as success 
+from 
+	play 
+	join game on game.gameid = play.gameid 
+    join team on team.teamid = play.offenseteamid 
+    join conference on conference.conferenceid = team.conferenceid 
+    left join ap_poll on ap_poll.teamid = team.teamid and ap_poll.year = game.year
+where
+	conference.division = 'FBS' and
+	game.year = :year and
+    play.playtypeid not in ('53', '21') and
+    play.down > 0
+) as t
+group by t.teamid, t.ap_ranking
+order by pct desc) as x
+CROSS JOIN
+    (SELECT @row:=0) AS r

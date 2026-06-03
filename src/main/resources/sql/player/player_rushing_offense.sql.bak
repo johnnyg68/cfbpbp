@@ -1,0 +1,49 @@
+-- Player Rushing Offense
+
+SELECT 
+    @row:=@row + 1 AS '#',
+    t.name as 'Name',
+    t.playerid as 'PlayerId',
+    t.team as 'Team',
+    t.teamid as 'TeamId',
+    t.games as 'Games',
+    t.atts as Atts,
+    t.yards as Yards,
+    t.yards_att AS 'Yards/Att',
+    t.tds as TDs,
+    t.att_g as 'Atts/G',
+    t.yards_g as 'Yards/G'
+from (
+select 
+	player.playername as name,
+	player.playerid as playerid,
+    team.name as team,
+    team.teamid as teamid,
+    count(distinct pgs.gameid) as games,
+    sum(pgs.rushatts) as atts,
+    sum(pgs.rushyards) as yards,
+    round(sum(pgs.rushyards) / sum(pgs.rushatts), 2) as yards_att,
+    sum(pgs.rushtds) as tds,
+    round(sum(pgs.rushatts) / count(distinct pgs.gameid), 2) as att_g,
+    round(sum(pgs.rushyards) / count(distinct pgs.gameid), 2) as yards_g
+from 
+	playergamestat as pgs
+	join player on player.playerid = pgs.playerid and player.teamid = pgs.teamid
+    join team on team.teamid = pgs.teamid
+	join game on game.gameid = pgs.gameid
+	join conference on conference.conferenceid = team.conferenceid
+where 
+	game.year = ? and 
+	conference.division = 'FBS' 	
+group by 
+	-- player.playername, 
+	player.playerid,
+    team.teamid
+-- having
+--	count(distinct pgs.gameid) >= (count(distinct game.hometeamid) + count(distinct game.awayteamid)) * .75
+order by
+	sum(pgs.rushyards) / count(distinct pgs.gameid) desc
+    ) as t
+            CROSS JOIN
+    (SELECT @row:=0) AS r
+limit 0,100

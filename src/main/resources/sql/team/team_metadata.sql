@@ -1,0 +1,1 @@
+select * from team where team.teamid = :teamid;

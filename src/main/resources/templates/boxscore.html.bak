@@ -1,0 +1,681 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>College Football Data - Boxscore</title>
+
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>CFB Geek Boxscore</title>
+<meta name="description" content="College Football Geek Boxscores">
+<meta name="author" content="John Gilliam">
+
+<link href="/css/navbar.css" rel="stylesheet">
+
+<style type="text/css">
+
+html { 
+    height: 100%;
+}
+body { 
+    min-height: 100%;
+    margin: 0px;
+  	background-color: white;
+}
+#bannerTable {
+	margin: 0 auto;
+	border-width: 0px;
+}
+#boxscoreTable {
+	width: 100%;
+}
+#boxscoreDiv {
+/* 	background-color: #f2f2f2; */
+	border-style: outset;
+	border-width: 1px;
+}	
+#playersDiv {
+	display: table;
+}
+#playsDiv {
+	display: none;
+}
+.tab {
+    overflow: hidden;
+    /* border: 1px solid #ccc; */
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+    /* background-color: #333; */
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    /* border-top: none; */
+    border-width: 1px;
+    border-style: solid;
+    /* background-color: #f2f2f2; */
+}
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+table.fixedWidth {
+	table-layout: fixed;
+}
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid lightgrey;
+}
+table td {
+	font-size: 12px;
+    /* border: 1px solid #ddd; */
+    border-bottom: 1px solid #ddd;
+    padding: 2px; 
+    padding-left: 4px;
+}
+table td a {
+	color: #06c;
+	text-decoration: none;
+}
+table th {
+	font-size: 14px;
+	font-weight: bold;
+    text-align: left;
+    background-color: #00274c;
+    font-style: normal;
+    color: white;
+    padding-left: 4px;
+}
+table tr:hover {
+	background-color: lightgray;
+}
+h1 {
+	font-size: 24px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+h3 {
+	font-size: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+img {
+	vertical-align: middle;
+	padding-right: 5px;
+}
+
+/* Create an active/current tablink class */
+/* .tab button.active { */
+/*     background-color: #ccc; */
+/* } */
+
+#bannerDiv {
+	/* text-align: center; */
+	display: inline;
+	margin: auto;
+	background-color: #f2f2f2;
+}
+#bannerDiv a {
+	font-weight: bold;
+	font-size: 20px;
+}
+#bannerDiv p {
+	font-weight: normal;
+	font-size: 14px;
+	border: 0px;
+}
+#bannerDiv img {
+	vertical-align: middle;
+	padding: 10px;
+}
+#bannerTable td, th {
+	border: 0px;
+}
+#bannerTable tr:hover {
+	background-color: white;
+}
+h3 {
+	font-size: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+#drivesAndPlaysTable {
+	table-layout: fixed;
+	width: 100%;
+}
+#driveTeamSelectorTable tr:hover {
+	background-color: white;
+}
+#driveTeamSelectorTable {
+	border: none;
+}
+.child {
+	display: none;
+}
+.parent {
+	display: table-row;
+}
+#boxscoreDiv {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	width: 20%;
+/* 	background-color: #f2f2f2; */
+	border-style: none;
+	border-width: 1px;
+}
+#scoringPlaysDiv {
+/* 	background-color: #f2f2f2; */
+	border-style: none;
+	border-width: 1px;
+}
+/* DivTable.com */
+.divMain {
+	display: block;
+	margin: auto;
+    width: 80%;
+    /*   fixed menu chnage on next line */
+    margin-top: 30px;
+}
+.divTable {
+	display: table;
+	width: 100%;	
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	width: 50%;  
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
+</style>
+</head>
+<body onload="
+	setBannerAndTitle(); 
+	setBoxscoreTable(); 
+	setScoringPlaysTable(); 
+	setAllPlayerStats(); 
+	setAllPlaysTable(); 
+	setPlaySummary();
+	setDrivesAndPlaysTable('All'); 
+	setDrivesAndPlaysTeamSelectors();
+	setOdds();">
+
+<div class="navbar">
+	<a href="/">CFB GEEK</a> 
+	<a href="/teams">Teams</a>
+	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
+	<a href="#" onclick="gotoYearStats(year)">Stats</a>
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
+</div>
+
+<br/><br/>
+
+<div class = "divMain">
+	<div class="divTable">
+		<div class="divTableBody">	
+			<div class="divTableRow">
+				<div class="divTableCell" id="bannerDiv" style="background-color:white">
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+	<div class="divTable">
+		<div class="divTableBody">	
+			<div class="divTableRow">
+				<div class="divTableCell" id="boxscoreDiv">
+				</div>
+				<div class="divTableCell" id="scoringPlaysDiv">
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+	<br />
+	
+	<div class="tab" id="tabs">
+	  <button onclick="tabClick(this)" id="playersTab">Players</button>
+	  <button onclick="tabClick(this)" id="playsTab">Plays</button>
+	  <button onclick="tabClick(this)" id="drivesTab">Drives</button>
+	  <button onclick="tabClick(this)" id="oddsTab">Odds</button>
+	</div>
+	
+	<div class="tabcontent" id="playersDiv">
+		<div class="divTableBody">	
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorPassingDiv">
+					<p>Visitor Passing</p>
+				</div>
+				<div class="divTableCell" id="homePassingDiv">
+					<p>Home Passing</p>
+				</div> 
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorRushingDiv">
+					<p>Visitor Rushing</p>
+				</div>
+				<div class="divTableCell" id="homeRushingDiv">
+					<p>Home Rushing</p>
+				</div> 
+			</div> 
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorReceivingDiv">
+					<p>Visitor Receiving</p>
+				</div>
+				<div class="divTableCell" id="homeReceivingDiv">
+					<p>Home Receiving</p>
+				</div> 
+			</div> 
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorDefenseDiv">
+					<p>Visitor Defense</p>
+				</div>
+				<div class="divTableCell" id="homeDefenseDiv">
+					<p>Home Defense</p>
+				</div> 
+			</div> 
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorIntsDiv">
+					<p>Visitor Ints</p>
+				</div>
+				<div class="divTableCell" id="homeIntsDiv">
+					<p>Home Ints</p>
+				</div> 
+			</div> 
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorKickReturnsDiv">
+					<p>Visitor Kick Returns</p>
+				</div>
+				<div class="divTableCell" id="homeKickReturnsDiv">
+					<p>Home Kick Returns</p>
+				</div> 
+			</div> 
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorPuntReturnsDiv">
+					<p>Visitor Punt Returns</p>
+				</div>
+				<div class="divTableCell" id="homePuntReturnsDiv">
+					<p>Home Punt Returns</p>
+				</div> 
+			</div> 
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorKickingDiv">
+					<p>Visitor Kicking</p>
+				</div>
+				<div class="divTableCell" id="homeKickingDiv">
+					<p>Home Kicking</p>
+				</div> 
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell" id="visitorPuntingDiv">
+					<p>Visitor Punting</p>
+				</div>
+				<div class="divTableCell" id="homePuntingDiv">
+					<p>Home Punting</p>
+				</div> 
+			</div> 
+		</div><br>
+	</div> 
+	
+	<div class="tabcontent" id="playSummaryDiv">
+		<br />
+		<div class="divTableBody">	
+			<div class="divTableRow">
+				<div class="divTableCell" id="playSummary">	
+				</div>
+			</div>
+		</div><br />
+		<div class="divTableBody">	
+			<div class="divTableRow">
+				<div class="divTableCell" id="allPlaysDiv">	
+				</div>
+			</div>
+		</div><br />
+	</div>		
+	
+	<div class="tabcontent" id="drivesDiv">
+		<table id="driveTeamSelectorTable">
+			<tbody>
+			<tr>
+			<td width="5%">
+			<h3>Team: </h3>
+			</td>
+			<td>
+			<select id="driveTeamSelector" onchange="setDrivesAndPlaysTable(this.value)">
+				<option value="All">All</option>
+			</select>
+			</td>
+			</tr>
+			</tbody>
+		</table>
+		<div class="divTableBody">	
+			<div class="divTableRow">
+				<div class="divTableCell" id="allDrivesDiv">
+				</div>
+			</div>	
+		</div><br>
+	</div>
+		<div class="tabcontent" id="oddsDiv">
+		<br />
+		<div class="divTableBody">	
+			<div class="divTableRow">
+				<div class="divTableCell" id="allOddsDiv">
+				No Data Available	
+				</div>
+			</div>
+		</div><br />
+	</div>		
+	
+
+</div>	<!-- end divMain -->
+<br/><br/>
+	
+
+<script th:inline="javascript">
+
+var homeTeamName;
+var homeTeamAbbr;
+var visitorTeamName;
+var visitorTeamAbbr;
+var year = /*[[${year}]]*/ null;
+
+function setBoxscoreTable() {
+	var json = /*[[${dataJson}]]*/ null;
+	var jsonParsed = JSON.parse(json);	
+	var home;
+	var visitor;
+	
+	if(jsonParsed[0].Team == homeTeamName) {
+		home = jsonParsed[0];
+		visitor = jsonParsed[1];
+	} else {
+		home = jsonParsed[1];
+		visitor = jsonParsed[0];
+	}
+	
+ 	var html = "<table><tr><th></th>";
+	html += "<th>" + visitor.Team + "</th><th>" + home.Team + "</th></tr>";
+	
+	//add row data
+    for (var key in home) {
+    	if(key == "Team") {continue;}    	
+    	html += "<tr><td>" + key + "</td><td>" + visitor[key] + "</td><td>" + home[key] + "</td></tr>";
+    }
+	html += "</table>";
+	document.getElementById('boxscoreDiv').innerHTML = html; 
+}
+
+function setScoringPlaysTable() {
+	var scoringPlays = /*[[${scoringPlays}]]*/ null;
+	var json = JSON.parse(scoringPlays);
+	var html = "<table>";
+	
+	html += getTableHeaderScoringPlays(json[0], homeTeamAbbr, visitorTeamAbbr); 
+	for(var i=0; i<json.length; i++) {
+		html += getTableRow(json[i]);
+	}
+	html += "</table>";
+	document.getElementById("scoringPlaysDiv").innerHTML = html;
+}
+
+function setPlaySummary() {
+	var playSummary = /*[[${playSummary}]]*/ null;
+	var json = JSON.parse(playSummary);
+	var html = "<table>";
+	
+	html += getTableHeader(json[0]);
+	for(var i=0; i<json.length; i++) {
+		html += getTableRow(json[i]);
+	}
+	html += "</table>";
+	document.getElementById("playSummary").innerHTML = html;
+}
+
+function setAllPlaysTable() {
+	var allPlays = /*[[${allPlays}]]*/ null;
+	var json = JSON.parse(allPlays);
+	var html = "<table>";
+	
+	html += getTableHeader(json[0]);
+	for(var i=0; i<json.length; i++) {
+		html += getTableRow(json[i]);
+	}
+	html += "</table>";
+	document.getElementById("allPlaysDiv").innerHTML = html;
+}
+
+function setDrivesAndPlaysTable(selectedTeam) {
+
+	var drivesAndPlays = /*[[${drivesAndPlays}]]*/ null;
+	var json = JSON.parse(drivesAndPlays);
+	var drivePlayMap = new Map();
+	var html = "<table id='drivesAndPlaysTable'>";
+	var plus = '<a href="#"><img src="/images/plus.png" height="10" width="10"/></a>';
+	var minus = '<a href="#"><img src="/images/minus.png" height="10" width="10"/></a>';
+	var team;
+	
+	for(var i=0; i<json.length; i++) {
+		var driveId = json[i].driveid; 
+
+		var drive = json[i].Team + " " + json[i].totalplays + " plays " + json[i].totalyards + " yards " + json[i].duration + " " + json[i].DriveResult;
+		var play = json[i].Clock + " " + json[i].Offense +  " " + json[i].Down + " & " + json[i].Distance + " at " + json[i]['Yard Line'] + " Yards Gained=" + json[i].Yards + " " + json[i].Result;
+		
+		if(drivePlayMap.get(driveId) == undefined) {
+			team = json[i].Offense;
+			if(team == selectedTeam || selectedTeam == 'All') {
+				html += `<tr class='parent ${team}'><td>${plus}<strong>${drive}</strong></td></tr>`;
+				html += `<tr class='child ${team}'><td>&nbsp;&nbsp;&nbsp;&nbsp;${play}</td></tr>`;
+			}
+		} else {
+			if(team == selectedTeam || selectedTeam == 'All') {
+				html += `<tr class='child ${team}'><td>&nbsp;&nbsp;&nbsp;&nbsp;${play}</td></tr>`;
+			}
+		}		
+		drivePlayMap.set(driveId, 1);
+	}
+	
+	html += "</table>";
+	document.getElementById("allDrivesDiv").innerHTML = html;
+	
+	//event handler for expand/collapse rows
+	$("#drivesAndPlaysTable").on("click", "img", function(e) {
+		e.preventDefault();
+	    $(this).closest("tr").nextUntil(".parent").toggleClass("child");
+
+	    var src = $(this).attr('src');
+	    var newsrc = (src == '/images/plus.png') ? '/images/minus.png' : '/images/plus.png';
+	    $(this).attr('src', newsrc );
+	});
+}
+
+function setDrivesAndPlaysTeamSelectors() {
+	if($("#driveTeamSelector opton").length == 3) {
+		return;
+	}
+
+	var optionsAsString = `<option value='${visitorTeamAbbr}'>${visitorTeamName}</option>`;
+	$("#driveTeamSelector").append( optionsAsString );
+	optionsAsString = `<option value='${homeTeamAbbr}'>${homeTeamName}</option>`;
+	$("#driveTeamSelector").append( optionsAsString );
+}
+
+function setBannerAndTitle() {
+	
+	var gameHeader = /*[[${gameHeader}]]*/ null;
+	var gameHeaderParsed = JSON.parse(gameHeader);
+	var game = gameHeaderParsed[0];
+	var site = (game.Site == 'NEUTRAL') ? 'vs' : 'at';
+	
+	//set global for use by setBoxscoreTable()
+	homeTeamName = game.HomeTeamName;
+	homeTeamAbbr = game.HomeTeamAbbreviation
+	visitorTeamName = game.VisitorTeamName;
+	visitorTeamAbbr = game.VisitorTeamAbbreviation;
+	year = game.Year;
+
+	var visitorUrl = "/teams/team/" + game.VisitorTeamId + "/year/" + game.Year;
+	var homeUrl = "/teams/team/" + game.HomeTeamId + "/year/" + game.Year;	
+	var visitorLogo = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${game.VisitorTeamId}.png' alt='${visitorTeamName}' height='50' width='50'>`;
+	var homeLogo = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${game.HomeTeamId}.png' alt='${homeTeamName}' height='50' width='50'>`;
+
+	var html = "";
+	html += "<table id='bannerTable'>"
+	html += `<tr><td align='right'><a href='${visitorUrl}'>${game.Visitor}</a>${visitorLogo}</td>`;
+	html += `<td align='right'><h1>${game.VisitorScore}</h1></td>`;
+	html +=	`<td align='center'><p>${site}</p></td>`;
+	html += `<td align='left'><h1>${game.HomeScore}</h1></td>`;
+	html += `<td align='left'>${homeLogo}<a href='${homeUrl}'>${game.Home}</a></td></tr>`;
+	html +=	`<tr><td></td><td></td><td align='center'><p>${game.Date}</p><p>${game.Bowl}</p></td><td></td><td></td></tr>`;
+	html += "</table>"; 
+	
+	document.title = game.Title;
+	document.getElementById('bannerDiv').innerHTML = html;		
+}
+
+function setAllPlayerStats() {
+	var stat =  /*[[${playerPassing}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Passing", "visitorPassingDiv");
+	setPlayerStatTable(stat, homeTeamName , "Passing", "homePassingDiv");
+	
+	stat = /*[[${playerRushing}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Rushing", "visitorRushingDiv");
+	setPlayerStatTable(stat, homeTeamName , "Rushing", "homeRushingDiv");
+	
+	stat = /*[[${playerReceiving}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Receiving", "visitorReceivingDiv");
+	setPlayerStatTable(stat, homeTeamName , "Receiving", "homeReceivingDiv");
+	
+	stat = /*[[${playerDefense}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Defense", "visitorDefenseDiv");
+	setPlayerStatTable(stat, homeTeamName , "Defense", "homeDefenseDiv");
+	
+	stat = /*[[${playerInts}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Interceptions", "visitorIntsDiv");
+	setPlayerStatTable(stat, homeTeamName , "Interceptions", "homeIntsDiv");
+		
+	stat = /*[[${playerKickReturns}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Kick Returns", "visitorKickReturnsDiv");
+	setPlayerStatTable(stat, homeTeamName , "Kick Returns", "homeKickReturnsDiv");
+	
+	stat = /*[[${playerPuntReturns}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Punt Returns", "visitorPuntReturnsDiv");
+	setPlayerStatTable(stat, homeTeamName , "Punt Returns", "homePuntReturnsDiv");
+	
+	stat = /*[[${playerKicking}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Kicking", "visitorKickingDiv");
+	setPlayerStatTable(stat, homeTeamName , "Kicking", "homeKickingDiv");
+	
+	stat = /*[[${playerPunting}]]*/ null;
+	setPlayerStatTable(stat, visitorTeamName , "Punting", "visitorPuntingDiv");
+	setPlayerStatTable(stat, homeTeamName , "Punting", "homePuntingDiv");	
+}
+
+function setPlayerStatTable(stats, teamName, heading, divName) {
+	var noData = "<h3>" + teamName + " " + heading + "</h3>";
+	noData += "<p>No data available</p>";
+	
+	//handle bad stats data
+	if(isValidData(stats) == 0) {
+		document.getElementById(divName).innerHTML = noData;
+		return;
+	}
+
+	var json = JSON.parse(stats);
+	
+	var html = "<h3>" + teamName + " " + heading + "</h3>";
+	html += "<table class='fixedWidth'>";	
+	var columnsToExclude = ["PlayerId", "Team"];
+	html += getTableHeader(json[0], columnsToExclude);
+	
+	for(var i=0; i<json.length; i++) {
+		var row = json[i];
+		if(row.Team == teamName) {		
+			var temp = `/players/player/${row.PlayerId}`;
+			var link = `<a href="${temp}">${row.Name}</a>`;
+			var linkColumns = {
+				Name : link
+			}
+			html += getTableRow(row, columnsToExclude, linkColumns);
+		}
+	}
+	html += "</table>";
+	document.getElementById(divName).innerHTML = html;	
+}
+
+function setOdds() {
+	var odds = /*[[${odds}]]*/ null;
+	var json = JSON.parse(odds);
+	var html = "<table>";
+	
+	if(json[0] == undefined) {
+		return;
+	}
+	
+	html += getTableHeader(json[0]);
+	for(var i=0; i<json.length; i++) {
+		html += getTableRow(json[i]);
+	}
+	html += "</table>";
+	document.getElementById("allOddsDiv").innerHTML = html;
+}
+
+function tabClick(tab) {
+	var tabs = document.getElementById("tabs").children;
+	var tabContents = document.getElementsByClassName("tabcontent");
+	
+	for(i=0; i<tabs.length; i++) {
+		if(tab.id == tabs[i].id) {
+			tabs[i].style.backgroundColor = "#00274c";
+			tabContents[i].style.display = "table";
+		} else {
+			tabs[i].style.backgroundColor = "#999999";
+			tabContents[i].style.display = "none";
+		}
+	}
+}
+
+// set the default tab of the playersTab, Plays, Drives tabs
+document.getElementById("playersTab").click();
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+<script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+<script type="text/javascript" th:src="@{/js/table.js}"></script>
+</body>
+</html>

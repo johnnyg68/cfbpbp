@@ -1,0 +1,548 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title>College Football Data - Player</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>CFB Geek Player</title>
+<meta name="description" content="College Football Data Players">
+<meta name="author" content="John Gilliam">
+<link href="/css/navbar.css" rel="stylesheet">
+
+<style type="text/css">
+
+html { 
+    height: 100%;
+}
+body { 
+    min-height: 100%;
+    margin: 0px;
+}
+
+.divMain {
+	display: block;
+	margin: auto;
+    width: 80%;
+    /*   fixed menu chnage on next line */
+	margin-top: 40px;
+}
+.divTable {
+	display: table;
+	width: 100%;	
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	width: 50%;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+#bannerDiv {
+  display: flex;
+  align-items: center;
+}
+.tab {
+    overflow: hidden;
+    /* border: 1px solid #ccc; */
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+    /* background-color: #333; */
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-width: 1px;
+/*     border-top: none; */
+    border-style: solid;
+/*     background-color: #f2f2f2; */
+}
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+table td {
+	font-size: 12px;
+    border: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+    padding: 2px; 
+}
+table td a {
+	color: #06c;
+	text-decoration: none;
+}
+table th {
+	font-size: 14px;
+	font-weight: bold;
+    text-align: left;
+    background-color: #00274c;
+    font-style: normal;
+    color: white;
+}
+table tr:hover {
+	background-color: lightgray;
+}
+table.fixedWidth {
+	table-layout: fixed;
+}
+h1 {
+	font-size: 20px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin-left: 10px;
+}
+h3 {
+	font-size: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+</style>
+</head>
+
+<body onload="setStats();">
+
+	<!--  
+	<p th:text="'playerId= ' + ${playerId} "/>
+	<p th:text="'passing= ' + ${passing} "/>
+	-->
+
+<div class="navbar">
+	<a href="/">CFB GEEK</a> 
+	<a href="/teams">Teams</a>
+	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
+	<a href="#" onclick="gotoYearStats(year)">Stats</a>
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
+</div>
+
+<div class="divMain">
+
+	<br />
+	<div id="bannerDiv"></div>	
+	
+	<div id="passing">
+		<h3>Passing</h3>
+		<div class="tab" id="passingTabs">
+			<button onclick="tabClick('passingYears', this)" id="passingYearsTab">Year Totals</button>
+			<button onclick="tabClick('passingGames', this)" id="passingGamesTab">Games</button>
+		</div>
+		<div class="tabcontent" id="passingYears" style="display:table">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="passingYearsData">	
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="tabcontent" id="passingGames">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="passingGamesData">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="rushing">
+		<h3>Rushing</h3>
+		<div class="tab" id="rushingTabs">
+			<button onclick="tabClick('rushingYears', this)" id="rushingYearsTab">Year Totals</button>
+			<button onclick="tabClick('rushingGames', this)" id="rushingGamesTab">Games</button>
+		</div>
+		<div class="tabcontent" id="rushingYears" style="display:table">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="rushingYearsData">	
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="tabcontent" id="rushingGames">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="rushingGamesData">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="receiving">
+		<h3>Receiving</h3>
+		<div class="tab" id="receivingTabs">
+			<button onclick="tabClick('receivingYears', this)" id="receivingYearsTab">Year Totals</button>
+			<button onclick="tabClick('receivingGames', this)" id="receivingGamesTab">Games</button>
+		</div>
+		<div class="tabcontent" id="receivingYears" style="display:table">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="receivingYearsData">	
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="tabcontent" id="receivingGames">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="receivingGamesData">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="defense">
+		<h3>Defense</h3>
+		<div class="tab" id="defenseTabs">
+			<button onclick="tabClick('defenseYears', this)" id="defenseYearsTab">Year Totals</button> 
+			<button onclick="tabClick('defenseGames', this)" id="defenseGamesTab">Games</button> 
+		</div>
+		<div class="tabcontent" id="defenseYears" style="display:table">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="defenseYearsData">	
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="tabcontent" id="defenseGames">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="defenseGamesData">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="kickReturns">
+		<h3>Kick Returns</h3>
+		<div class="tab" id="kickReturnsTabs">
+			<button onclick="tabClick('kickReturnsYears', this)" id="kickReturnsYearsTab">Year Totals</button>
+			<button onclick="tabClick('kickReturnsGames', this)" id="kickReturnsGamesTab">Games</button>
+		</div>
+		<div class="tabcontent" id="kickReturnsYears" style="display:table">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="kickReturnsYearsData">	
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="tabcontent" id="kickReturnsGames">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="kickReturnsGamesData">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="puntReturns">
+		<h3>Punt Returns</h3>
+		<div class="tab" id="puntReturnsTabs">
+			<button onclick="tabClick('puntReturnsYears', this)" id="puntReturnsYearsTab">Year Totals</button>
+			<button onclick="tabClick('puntReturnsGames', this)" id="puntReturnsGamesTab">Games</button>
+		</div>
+		<div class="tabcontent" id="puntReturnsYears" style="display:table">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="puntReturnsYearsData">	
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="tabcontent" id="puntReturnsGames">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="puntReturnsGamesData">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="punting">
+		<h3>Punting</h3>
+		<div class="tab" id="puntingTabs">
+			<button onclick="tabClick('puntingYears', this)" id="puntingYearsTab">Year Totals</button>
+			<button onclick="tabClick('puntingGames', this)" id="puntingGamesTab">Games</button>
+		</div>
+		<div class="tabcontent" id="puntingYears" style="display:table">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="puntingYearsData">	
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="tabcontent" id="puntingGames">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="puntingGamesData">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="kicking">
+		<h3>Kicking</h3>
+		<div class="tab" id="kickingTabs">
+			<button onclick="tabClick('kickingYears', this)" id="kickingYearsTab">Year Totals</button>
+			<button onclick="tabClick('kickingGames', this)" id="kickingGamesTab">Year Totals</button>
+		</div>
+		<div class="tabcontent" id="kickingYears" style="display:table">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="kickingYearsData">	
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="tabcontent" id="kickingGames">
+			<div class="divTableBody">	
+				<div class="divTableRow">
+					<div class="divTableCell" id="kickingGamesData">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>	<!-- end divMain -->
+<br/><br/>
+
+<script th:inline="javascript">
+var year;
+var playerName = "";
+var teamId = "";
+
+var playerId = /*[[${playerId}]]*/ null;
+var passing = /*[[${passing}]]*/ null;
+var rushing = /*[[${rushing}]]*/ null;
+var receiving = /*[[${receiving}]]*/ null;
+var defense = /*[[${defense}]]*/ null;
+var kickReturns = /*[[${kickReturns}]]*/ null;
+var puntReturns = /*[[${puntReturns}]]*/ null;
+var punting = /*[[${punting}]]*/ null;
+var kicking = /*[[${kicking}]]*/ null;
+
+var passingGames = /*[[${passingGames}]]*/ null;
+var rushingGames = /*[[${rushingGames}]]*/ null;
+var receivingGames = /*[[${receivingGames}]]*/ null;
+var defenseGames = /*[[${defenseGames}]]*/ null;
+var kickReturnsGames = /*[[${kickReturnsGames}]]*/ null;
+var puntReturnsGames = /*[[${puntReturnsGames}]]*/ null;
+var puntingGames = /*[[${puntingGames}]]*/ null;
+var kickingGames = /*[[${kickingGames}]]*/ null;
+
+//Career Totals
+var passingTotal = /*[[${passingTotal}]]*/ null;
+var rushingTotal = /*[[${rushingTotal}]]*/ null;
+var receivingTotal = /*[[${receivingTotal}]]*/ null;
+var defenseTotal = /*[[${defenseTotal}]]*/ null;
+var kickReturnsTotal = /*[[${kickReturnsTotal}]]*/ null;
+var puntReturnsTotal = /*[[${puntReturnsTotal}]]*/ null;
+var puntingTotal = /*[[${puntingTotal}]]*/ null;
+var kickingTotal = /*[[${kickingTotal}]]*/ null;
+
+function setStats() {
+ 	setYearsTable(passing, "passing", "passingYearsData", passingTotal);
+	setYearsTable(rushing, "rushing", "rushingYearsData", rushingTotal);
+	setYearsTable(receiving, "receiving", "receivingYearsData", receivingTotal);
+  	setYearsTable(defense, "defense", "defenseYearsData", defenseTotal);
+  	setYearsTable(kickReturns, "kickReturns", "kickReturnsYearsData", kickReturnsTotal);
+	setYearsTable(puntReturns, "puntReturns", "puntReturnsYearsData", puntReturnsTotal);
+	setYearsTable(punting, "punting", "puntingYearsData", puntingTotal);
+	setYearsTable(kicking, "kicking", "kickingYearsData", kickingTotal);   
+	
+	setGamesTable(passingGames, "passing", "passingGamesData");
+	setGamesTable(rushingGames, "rushing", "rushingGamesData");
+	setGamesTable(receivingGames, "receiving", "receivingGamesData");
+	setGamesTable(defenseGames, "defense", "defenseGamesData");
+	setGamesTable(kickReturnsGames, "kickReturns", "kickReturnsGamesData");
+	setGamesTable(puntReturnsGames, "puntReturns", "puntReturnsGamesData");
+	setGamesTable(puntingGames, "punting", "puntingGamesData");
+	setGamesTable(kickingGames, "kicking", "kickingGamesData");
+	
+ 	var html = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' height='50' width='50'><h1>${playerName}</h1>`;
+	document.getElementById("bannerDiv").innerHTML = html;
+	document.title = "Player - " + playerName; 
+}
+
+function setYearsTable(stats, divParent, divName, totalRow) {
+	//skip null data
+	if(isValidData(stats) == 0) {
+		document.getElementById(divParent).style.display = "none";
+		return;
+	}
+
+	var json = JSON.parse(stats);
+	
+	if(playerName == "") {
+		playerName = json[0].Name;
+	}
+		
+	var html = "<br/>";
+	html += "<table class='fixedWidth'>";	
+	var columnsToExclude = ["TeamId", "Name"];
+	html += getTableHeader(json[0], columnsToExclude);
+	
+	for(var i=0; i<json.length; i++) {
+		var row = json[i];		
+
+		var temp = `/teams/team/${row.TeamId}/year/${row.Year}`;
+		var link = `<a href="${temp}">${row.Team}</a>`;
+		var linkColumns = {
+			Team : link
+		}
+		
+		if(year === undefined) {
+			year = row.Year;
+			teamId = row.TeamId;
+		}
+		
+		if(row.Year > year) {
+			year = row.Year;
+			teamId = row.TeamId;
+		}	
+		html += getTableRow(row, columnsToExclude, linkColumns);
+	}
+// append total row to table
+// TODO  this doesn't work for players who played for multiple teams.  See Joe Milton Mich/Tennessee
+// 	var row = JSON.parse(totalRow);
+// 	html += getTableRow(row[0], columnsToExclude, '');
+	
+	html += "</table><br/>";
+	document.getElementById(divName).innerHTML = html;	
+}
+
+function setGamesTable(stats, divParent, divName) {
+	
+	if(isValidData(stats) == 0) {
+		document.getElementById(divParent).style.display = "none";
+		return;
+	}
+	
+	var json = JSON.parse(stats);
+	
+	if(playerName == "") {
+		playerName = json[0].Name;
+	}
+		
+	var html = "<br/>";
+	html += "<table class='fixedWidth'>";	
+	var columnsToExclude = ["TeamId", "Name", "Year", "GameId", "OppId", "Site", "OppRank"];
+	html += getTableHeader(json[0], columnsToExclude);
+	
+	for(var i=0; i<json.length; i++) {
+		var row = json[i];		
+
+		var teamLink = `<a href="/teams/team/${row.TeamId}/year/${row.Year}">${row.Team}</a>`;
+		var site = "";
+		var rank = "";
+		
+		if(row.Site != '') {
+			site = row.Site + " ";
+		}
+		
+		if(row.Rank != '') {
+			rank = row.OppRank + " ";
+		}
+
+		var oppTeamLink = `<a href="/teams/team/${row.OppId}/year/${row.Year}">${site}${rank}${row.Opponent}</a>`;
+		var dateLink = `<a href="/games/game/${row.GameId}/boxscore">${row.Date}</a>`;
+		
+		var linkColumns = {
+			Date : dateLink,
+			Team : teamLink,
+			Opponent : oppTeamLink
+			//Result : resultLink
+		}
+		
+		html += getTableRow(row, columnsToExclude, linkColumns);
+	}
+	html += "</table><br/>";
+	document.getElementById(divName).innerHTML = html;	
+}
+
+function tabClick(tabContentsId, tab) {
+	
+	var tabContents = document.getElementById(tabContentsId);
+	var tabs = tab.parentNode.children;
+
+	for(aTab of tabs) {
+		if(tab.id == aTab.id) {
+			aTab.style.backgroundColor = "#00274c";
+			tabContents.style.display = "table";
+		} else {
+			aTab.style.backgroundColor = "#999999";
+			//TODO - this is an ugly hack.  It should be possible to get the tab contents without string manipulation
+			tabContentsId = aTab.id.substr(0, aTab.id.length - 3);
+			document.getElementById(tabContentsId).style.display = "none";
+		}
+	} 
+}
+
+//TODO - make this more efficient
+// set default tabs and make them visible
+document.getElementById("passingYearsTab").click();
+document.getElementById("rushingYearsTab").click();
+document.getElementById("receivingYearsTab").click();
+document.getElementById("defenseYearsTab").click();
+document.getElementById("kickReturnsYearsTab").click();
+document.getElementById("puntReturnsYearsTab").click();
+document.getElementById("puntingYearsTab").click();
+document.getElementById("kickingYearsTab").click();
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+<script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+<script type="text/javascript" th:src="@{/js/table.js}"></script>
+</body>
+</html>

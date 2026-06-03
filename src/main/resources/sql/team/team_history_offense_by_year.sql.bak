@@ -1,0 +1,22 @@
+-- Offense averages grouped by year
+SELECT 
+	team.teamid as 'TeamId',
+    game.year as 'Year',
+    ROUND(SUM(tgs.rushyards) / SUM(tgs.rushatts), 2) as 'Rush Yards/Att',
+    ROUND(SUM(tgs.rushyards) / COUNT(distinct game.gameid), 2) as 'Rush Yards/G',
+    ROUND(SUM(tgs.passyards) / SUM(tgs.passatts), 2) as 'Pass Yards/Att',
+    ROUND(SUM(tgs.passyards) / COUNT(distinct game.gameid), 2) as 'Pass Yards/G',
+	ROUND((SUM(tgs.rushyards) + SUM(tgs.passyards)) / (SUM(tgs.rushatts) + SUM(tgs.passatts)), 2) as 'Yards/Play',
+	ROUND((SUM(tgs.rushyards) + SUM(tgs.passyards)) / COUNT(DISTINCT game.gameid), 2) as 'Yards/G',
+    ROUND(SUM(tgs.points) / count(distinct game.gameid), 2) as 'Points/G'
+FROM
+   teamgamestat as tgs
+JOIN team ON team.teamid = tgs.teamid
+JOIN game ON game.gameid = tgs.gameid
+JOIN conference ON conference.conferenceid = team.conferenceid
+WHERE
+  conference.division = 'FBS' and
+  tgs.teamid = :teamid and
+  tgs.rushatts > 0
+GROUP BY team.teamid, game.year
+ORDER BY ROUND(SUM(tgs.points) / count(distinct tgs.gameid), 2) desc

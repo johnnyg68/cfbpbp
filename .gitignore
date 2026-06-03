@@ -1,0 +1,72 @@
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Maven
+target/
+
+# Logs
+*.log
+logs/
+
+# Spring Boot
+spring.log
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+.apt_generated/
+
+# VS Code
+.vscode/
+
+# NetBeans
+nbproject/
+nbactions.xml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Local Spring configs
+application-local.properties
+application-local.yml
+
+# Java
+*.class
+
+# Temporary files
+*.tmp
+*.swp

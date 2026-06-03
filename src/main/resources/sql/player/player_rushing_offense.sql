@@ -1,0 +1,45 @@
+-- Top Player Rushing Offense nationally for a given year.
+
+SELECT 
+	row_number() over (order by t.yards_g desc) as '#',
+    t.name as 'Name',
+    t.playerid as 'PlayerId',
+    t.team as 'Team',
+    t.teamid as 'TeamId',
+    t.games as 'Games',
+    t.atts as Atts,
+    t.yards as Yards,
+    t.yards_att AS 'Yards/Att',
+    t.tds as TDs,
+    t.att_g as 'Atts/G',
+    t.yards_g as 'Yards/G'
+FROM (
+SELECT 
+	player.playername as name,
+	player.playerid as playerid,
+    team.name as team,
+    team.teamid as teamid,
+    count(distinct pgs.gameid) as games,
+    sum(pgs.rushatts) as atts,
+    sum(pgs.rushyards) as yards,
+    round(sum(pgs.rushyards) / sum(pgs.rushatts), 2) as yards_att,
+    sum(pgs.rushtds) as tds,
+    round(sum(pgs.rushatts) / count(distinct pgs.gameid), 2) as att_g,
+    round(sum(pgs.rushyards) / count(distinct pgs.gameid), 2) as yards_g
+FROM 
+	playergamestat as pgs
+	join player on player.playerid = pgs.playerid and player.teamid = pgs.teamid
+    join team on team.teamid = pgs.teamid
+	join game on game.gameid = pgs.gameid
+	join conference on conference.conferenceid = team.conferenceid
+WHERE 
+	game.year = ? and 
+	pgs.rushatts > 0 and
+	conference.division = 'FBS' 	
+GROUP BY
+	player.playerid,
+    team.teamid
+-- having
+--	count(distinct pgs.gameid) >= (count(distinct game.hometeamid) + count(distinct game.awayteamid)) * .75
+    ) as t
+limit 0,100

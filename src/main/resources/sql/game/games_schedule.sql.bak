@@ -1,0 +1,49 @@
+-- game/game_schedule.sql
+-- All games played and future games
+
+select
+	date_format(game.date, "%Y-%m-%d") as SqlDate,
+	date_format(game.date, "%m-%d-%Y") as Date,
+    awayconf.name as 'VisitorConf',
+	concat(if(game.awayteamrank > 0, concat("#", game.awayteamrank, " ", awayteam.name), awayteam.name), " (", game.awayrecord, ")") as Visitor,
+	game.awayscore as 'Visitor Score',
+    homeconf.name as 'HomeConf',
+	concat(if(game.hometeamrank > 0, concat("#", game.hometeamrank, " ", hometeam.name), hometeam.name), " (", game.homerecord, ")") as Home,
+	game.homescore as 'Home Score',
+	game.gameid as GameId,
+	hometeam.teamid as HomeTeamId,
+	awayteam.teamid as VisitorTeamId
+from
+	game
+	join team as hometeam on hometeam.teamid = game.hometeamid
+    join team as awayteam on awayteam.teamid = game.awayteamid
+    join conference as homeconf on homeconf.conferenceid = hometeam.conferenceid
+    join conference as awayconf on awayconf.conferenceid = awayteam.conferenceid
+where
+	game.year = :year and
+	game.week = :week
+union
+select
+	date_format(schedule.date, "%Y-%m-%d") as SqlDate,
+	date_format(schedule.date, "%m-%d-%Y") as Date,
+    awayconf.name as 'VisitorConf',
+	awayteam.name as Visitor,
+	"TBD" as 'Visitor Score',
+    homeconf.name as 'HomeConf',
+	hometeam.name as Home,
+	"TBD" as 'Home Score',
+	schedule.gameid as GameId,
+	hometeam.teamid as HomeTeamId,
+	awayteam.teamid as VisitorTeamId
+from
+	schedule
+	join team as hometeam on hometeam.teamid = schedule.hometeamid
+    join team as awayteam on awayteam.teamid = schedule.awayteamid
+    join conference as homeconf on homeconf.conferenceid = hometeam.conferenceid
+    join conference as awayconf on awayconf.conferenceid = awayteam.conferenceid
+where 
+	schedule.year = :year and
+	schedule.week = :week and 
+	schedule.complete = 0
+order by
+	SqlDate asc;

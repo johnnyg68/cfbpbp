@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title th:text="${title}">Rankings</title>
+
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFB Geek college football rankings</title>
+<meta name="description" content="College Football Rankings">
+<meta name="author" content="John Gilliam">
+
+<link href="/css/navbar.css" rel="stylesheet">
+<style type="text/css">
+/* DivTable.com */
+
+html { 
+    height: 100%;
+}
+body { 
+    min-height: 100%;
+    margin: 0px;
+}
+
+.divMain {
+	display: block;
+	margin: auto;
+    width: 80%;
+}
+.divTable {
+	display: table;
+	width: 100%;	
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	width: 50%;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-collapse: collapse;
+    width: 100%;
+}
+table td {
+	font-size: 12px;
+    /* border: 1px solid #ddd; */
+    border-bottom: 1px solid #ddd;
+    padding: 2px; 
+    padding-left: 4px;
+}
+table td a {
+	color: #06c;
+	text-decoration: none;
+}
+table th {
+	font-size: 14px;
+	font-weight: bold;
+    text-align: left;
+    background-color: #00274c;
+    font-style: normal;
+    color: white;
+}
+h1 {
+	font-size: 20px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+h3 {
+	font-size: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+#statTable tr:hover {
+	background-color: lightgray;
+}
+
+</style>
+</head>
+
+<body onload="setSelectors(); setRankings()">
+	
+	<!-- 
+	<p th:text="'year= ' + ${year} "/>
+	<p th:text="'stats= ' + ${stats} "/>	
+	<p th:text="'sortOrder= ' + ${sortOrder} "/>
+	
+	
+	<p th:text="'year= ' + ${year} "/>
+	<p th:text="'week= ' + ${week} "/>
+	<p th:text="'yearMaxWeek= ' + ${yearMaxWeek} "/>
+	<p th:text="'polls= ' + ${polls} "/>	
+	-->
+
+<div class="navbar">
+	<a href="/">CFB GEEK</a> 
+	<a href="/teams">Teams</a>
+	<a href="/schedule">Schedule</a>
+	<a href="javascript:void(0)" onclick="gotoYearStats(year)">Stats</a>
+	<a href="javascript:void(0)" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
+</div>
+
+<br />
+
+<div class = "divMain">
+	<div class="divTable">
+		<div class="divTableBody">	
+			<div class = "divTableRow">
+				<h1><span th:text="|Rankings - ${year} Week ${week}|"></span></h1>
+			</div>
+			<div class = "divTableRow">
+				<div class = "divTableCell" id="selectorsDiv">
+					<select id="yearSelector" onchange="yearChange(this.value)"></select> &nbsp;&nbsp;&nbsp;&nbsp;
+					<select id="weekSelector" onchange="weekChange(this.value)"></select>
+				</div>
+			</div>
+		</div>
+		<div class="divTableRow">
+			<div class="divTableCell" id="apPollDiv"></div>
+			<div class="divTableCell" id="coachesPollDiv"></div>
+		</div>
+		<div class = "divTableRow">
+			<div class="divTableCell" id="playoffPollDiv"></div>
+			<div class="divTableCell" id="bcsPollDiv"></div>
+		</div>
+	</div>
+	<br>
+</div>
+
+<script th:inline="javascript">
+
+var year = /*[[${year}]]*/ null;
+var week = /*[[${week}]]*/ null;
+var title = /*[[${title}]]*/ null;
+var yearMaxWeek = /*[[${yearMaxWeek}]]*/ null;
+var polls = /*[[${polls}]]*/ null;
+
+function setRankings() {
+	var AP_POLL = {pollName:"AP Top 25", divId:"apPollDiv"};
+	var BCS_POLL = {pollName:"BCS Standings", divId:"bcsPollDiv"};
+	var COACHES_POLL = {pollName:"Coaches Poll", divId:"coachesPollDiv"};
+	var PLAYOFF_POLL = {pollName:"Playoff Committee Rankings", divId:"playoffPollDiv"};
+	var columnsToExclude = ["pollname", "year", "week", "teamid"]
+	var json = JSON.parse(polls);
+	
+	var tableHeader = getTableHeader(json[0], columnsToExclude);
+	
+	var apHtml = "<h3>AP Top 25</h3><table>" + tableHeader;
+	var bcsHtml = "<h3>BCS Standings</h3><table>" + tableHeader;
+	var coachesHtml = "<h3>Coaches Poll</h3><table>" + tableHeader;
+	var playoffHtml = "<h3>Playoff Committee</h3><table>" + tableHeader;
+		
+	for(var i=0; i<json.length; i++) {
+		var pollRow = json[i];
+		
+		var teamLink = `<a href='/teams/team/${pollRow.teamid}/year/${year}'>${pollRow.Team}</a>`;
+		var columnLinks = {
+			Team : teamLink,
+		}	
+		
+		if(pollRow.pollname == AP_POLL.pollName) {
+			apHtml += getTableRow(pollRow, columnsToExclude, columnLinks);
+		} else if (pollRow.pollname == COACHES_POLL.pollName) {
+			coachesHtml += getTableRow(pollRow, columnsToExclude, columnLinks);
+		} else if (pollRow.pollname == BCS_POLL.pollName) {
+			bcsHtml += getTableRow(pollRow, columnsToExclude, columnLinks);
+		} else if(pollRow.pollname == PLAYOFF_POLL.pollName) {
+			playoffHtml += getTableRow(pollRow, columnsToExclude, columnLinks);
+		} else {}
+	}
+
+	document.getElementById(AP_POLL.divId).innerHTML = apHtml + "</table>";
+	document.getElementById(COACHES_POLL.divId).innerHTML = coachesHtml + "</table>";
+	document.getElementById(PLAYOFF_POLL.divId).innerHTML = playoffHtml + "</table>";
+	document.getElementById(BCS_POLL.divId).innerHTML = bcsHtml + "</table>";
+	
+}
+
+	
+function setSelectors() {
+	var json = JSON.parse(yearMaxWeek);
+	var yearOptions = "";
+	var weekOptions = "";
+	var maxWeek = "";
+	
+	for(var i=0; i<json.length; i++) {
+		optionYear = json[i].year;
+		
+		if(optionYear == year) {
+			selected = "selected";
+			maxWeek = json[i].maxweek;
+		} else {
+			selected = "";
+		}
+		yearOptions += `<option value="${optionYear}" ${selected}>${optionYear}</option>`;	
+	}
+	
+	for(var i=1; i<=maxWeek; i++) {
+		var selected = (i == week ? "selected" : "");
+		weekOptions += `<option value="${i}" ${selected}>Week ${i}</option>`;	
+	}
+	
+	document.getElementById("yearSelector").innerHTML = yearOptions;
+	document.getElementById("weekSelector").innerHTML = weekOptions;	
+}
+
+function yearChange(value) {
+	window.location = `/rankings/year/${value}/week/${week}`;
+}
+
+function weekChange(value) {
+	window.location = `/rankings/year/${year}/week/${value}`;
+}
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+<script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+<script type="text/javascript" th:src="@{/js/table.js}"></script>
+</body>
+</html>

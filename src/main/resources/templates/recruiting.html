@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title th:text="${title}">College Football Data - Recruiting</title>
+
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFB Geek college football recruiting</title>
+<meta name="description" content="College Football Data Recruiting">
+<meta name="author" content="John Gilliam">
+
+<link href="/css/navbar.css" rel="stylesheet">
+<style type="text/css">
+
+html { 
+    height: 100%;
+}
+body { 
+    min-height: 100%;
+    margin: 0px;
+}
+tbody {
+/* 	background-color: #f2f2f2; */
+}
+.divMain {
+	display: block;
+	margin: auto;
+    width: 80%;
+    /*   fixed menu chnage on next line */
+	margin-top: 30px;
+}
+.divTable {
+	display: table;
+	width: 100%;	
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/* border: 1px solid #999999; */
+	display: table-cell;
+	padding: 3px 5px;
+	width: 50%;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+table td {
+	font-size: 12px;
+    /* border: 1px solid #ddd; */
+    border-bottom: 1px solid #ddd;
+    padding: 2px; 
+    padding-left: 4px;
+}
+table td a {
+	color: #06c;
+	text-decoration: none;
+}
+table th {
+/* 	fixed table header change */
+/*  position: sticky; 
+ 	top: 100px; */
+
+	font-size: 14px;
+	font-weight: bold;
+    text-align: left;
+    background-color: #00274c;
+    font-style: normal;
+    color: white;
+}
+h1 {
+	font-size: 20px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+h3 {
+	font-size: 14px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+#dataTable th:hover {
+	background-color: grey;
+	color: #00274c;
+}
+
+#dataTable tr:hover {
+	background-color: lightgray;
+}
+
+#dataTable th a {
+	color: white;
+	text-decoration: none;
+}
+
+#pageTitle a {
+    color: #06c;
+    text-decoration: none;
+}
+
+</style>
+</head>
+
+<body onload="setSelectorOptions(); setData();">
+	
+	<!-- 
+	<p th:text="'year= ' + ${year} "/>
+	<p th:text="'stats= ' + ${stats} "/>	
+	<p th:text="'sortOrder= ' + ${sortOrder} "/>
+	-->
+
+<div class="navbar">
+	<a href="/">CFB GEEK</a> 
+	<a href="/teams">Teams</a>
+	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
+	<a href="#" onclick="gotoYearStats(year)">Stats</a>
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
+</div>
+
+<br />
+
+<div class="divMain">
+	<div class="divTable">
+		<div class="divTableBody">
+			<div class="divTableRow">
+				<div class="divTableCell" id="pageTitle">
+					<h1 th:text="${title}"></h1>
+				</div>
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell" id="selectorDiv">
+					<select id="yearSelector" onchange="changeYear(this.value)">
+						<option value="empty">Select a year</option>
+					</select>
+					<select id="teamSelector" onchange="changeTeam(this.value)">
+						<option value="empty">Select a Team</option>
+					</select>
+				</div>
+			</div>
+			<br />
+			<div class="divTableRow">
+				<div class="divTableCell" id="dataDiv">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br><br>
+
+<script th:inline="javascript">
+
+var year = /*[[${year}]]*/ null;
+var title = /*[[${title}]]*/ null;
+var type = /*[[${type}]]*/ null;
+var recruiting = /*[[${recruiting}]]*/ null;
+var teams = /*[[${teams}]]*/ null;
+var sortOrder = /*[[${sortOrder}]]*/ null;
+var teamId = /*[[${teamId}]]*/ null;
+var teamName;
+
+function setData() {
+	
+	var json = JSON.parse(recruiting); 
+	var html = "<table id='dataTable'>";
+	var columnsToExclude;
+	var columnLinks;
+	
+	if(type == "Team") {	
+		//recruiting results for a team
+		columnsToExclude = ["TeamId", "Team"];
+		teamName = json[0].Team;
+		document.getElementById("pageTitle").innerHTML = `<h1><a href='/teams/team/${json[0].TeamId}/history'>${json[0].Team}</a> - Recruiting</h1>`;
+		window.document.title = json[0].Team + " - Recruiting";
+	} else if (type == "Year") {
+		//recruity results for all teams for a year
+		columnsToExclude = ["TeamId", "Year"];
+	}
+	
+	html += getTableHeaderSortable(json[0], columnsToExclude); 
+	html += "<tbody>";
+	
+	for(var i=0; i<json.length; i++) {
+		var row = json[i];
+		var teamLink = `<a href='/teams/team/${row.TeamId}/history'>${row.Team}</a>`;
+		var yearLink = `<a href='/teams/team/${row.TeamId}/history'>${row.Year}</a>`;
+		columnLinks = {
+			Team : teamLink,
+			Year : yearLink,
+		}
+
+		html += getTableRow(row, columnsToExclude, columnLinks, i+1);
+	}
+	
+	html += "</tbody></table>";
+	document.getElementById("dataDiv").innerHTML = html;
+
+	// LOAD EVENT HANDLERS FOR TABLE COLUMNS IN DYNAMIC TABLE "#dataTable"
+	
+	// THIS WORKS without performance degradation.  
+	// Solution is to use $(#dataTable).on() instead of $(document).on()
+	$("#dataTable").on("click", "th a", function(e) {
+		//TODO - this seems wrong
+		// stringify json so that setData() { JSON.parse(json) } will work.
+	    recruiting = JSON.stringify(sortByKey(json, this.id));
+	    setData();
+	    // color selected column header and text
+	    document.getElementById(this.id).parentElement.style.background = "#ffcb05";  //maize
+	    document.getElementById(this.id).style.color = "#00274c";	//blue	    
+	});
+
+}
+
+function sortByKey(array, key) {	
+    return array.sort(function(a, b) {
+        var x = a[key]; 
+        var y = b[key];
+        if(sortOrder == null || sortOrder == 1) {
+            return ((x < y) ? 1 : ((x > y) ? -1 : 0));    // descending
+        } else {
+        	return ((x > y) ? 1 : ((x < y) ? -1 : 0));    // ascending
+        }
+    });
+}
+
+function changeYear(selectedYear) {
+	year = selectedYear;
+	window.location = "/recruiting/year/" + selectedYear;
+}
+
+function changeTeam(selectedTeam) {
+	teamId = selectedTeam;
+	window.location = "/recruiting/team/" + selectedTeam;
+}
+
+//TODO - hardcoded max year loop.  fix this
+function setSelectorOptions() {
+	var yearOptions;
+	if(type == "Team") {
+		yearOptions = "<option value='''>Select Year</option>";
+	}
+	
+	for(var i=2025; i>=2000; i--) {
+		var selected = (i == year ? "selected" : "");
+		yearOptions += `<option value="${i}" ${selected}>${i}</option>`;
+	}
+	document.getElementById("yearSelector").innerHTML = yearOptions;
+	
+	var teamOptions;
+	if(type == "Year") {
+		teamOptions = "<option value=''>Select Team</option>";
+	}
+	var json = JSON.parse(teams); 
+	for(var i=0; i<json.length; i++) {
+		var row = json[i];
+		var selected = (teamId == row.TeamId ? "selected" : "");
+		teamOptions += `<option value="${row.TeamId}" ${selected}>${row.Name}</option>`;
+	}
+	document.getElementById("teamSelector").innerHTML = teamOptions;
+}
+
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+<script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+<script type="text/javascript" th:src="@{/js/table.js}"></script>
+</body>
+</html>
