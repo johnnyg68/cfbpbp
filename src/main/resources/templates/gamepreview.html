@@ -255,32 +255,32 @@ img {
 
 <script th:inline="javascript">
 
-var homeTeamName;
-var homeTeamAbbr;
-var homeTeamId;
-var visitorTeamName;
-var visitorTeamAbbr;
-var visitorTeamId;
-var year = /*[[${year}]]*/ null;
+let homeTeamName;
+let homeTeamAbbr;
+let homeTeamId;
+let visitorTeamName;
+let visitorTeamAbbr;
+let visitorTeamId;
+let year = /*[[${year}]]*/ null;
 
 function setBannerAndTitle() {
 
-	var gameHeader = /*[[${gamePreviewHeader}]]*/ null;
-	var gameHeaderParsed = JSON.parse(gameHeader);
-	var game = gameHeaderParsed[0];
+	const gameHeader = /*[[${gamePreviewHeader}]]*/ null;
+	let gameHeaderParsed = JSON.parse(gameHeader);
+	let game = gameHeaderParsed[0];
 
-	var site = (game.Site == 'NEUTRAL') ? 'vs' : 'at';
+	let site = (game.Site == 'NEUTRAL') ? 'vs' : 'at';
 
-	var visitorUrl = "/teams/team/" + game.VisitorTeamId + "/year/" + game.Year;
-	var homeUrl = "/teams/team/" + game.HomeTeamId + "/year/" + game.Year;
-	var visitorLogo = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${game.VisitorTeamId}.png' height='50' width='50'>`;
-	var homeLogo = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${game.HomeTeamId}.png' height='50' width='50'>`;
-	var homeTeamRank = (game.HomeTeamRank == null) ? "" : "#" + game.HomeTeamRank;
-	var visitorTeamRank = (game.VisitorTeamRank == null) ? "" : "#" + game.VisitorTeamRank;
-	var homeTeamRecord = (game.HomeTeamRecord == null) ? "" : "(" + game.HomeTeamRecord + ")";
-	var visitorTeamRecord = (game.VisitorTeamRecord == null) ? "" : "(" + game.VisitorTeamRecord + ")";
-	var visitorTeamMascot = game.VisitorTeamMascot;
-	var homeTeamMascot = game.HomeTeamMascot;
+	let visitorUrl = "/teams/team/" + game.VisitorTeamId + "/year/" + game.Year;
+	let homeUrl = "/teams/team/" + game.HomeTeamId + "/year/" + game.Year;
+	let visitorLogo = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${game.VisitorTeamId}.png' height='50' width='50'>`;
+	let homeLogo = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${game.HomeTeamId}.png' height='50' width='50'>`;
+	let homeTeamRank = (game.HomeTeamRank == null) ? "" : "#" + game.HomeTeamRank;
+	let visitorTeamRank = (game.VisitorTeamRank == null) ? "" : "#" + game.VisitorTeamRank;
+	let homeTeamRecord = (game.HomeTeamRecord == null) ? "" : "(" + game.HomeTeamRecord + ")";
+	let visitorTeamRecord = (game.VisitorTeamRecord == null) ? "" : "(" + game.VisitorTeamRecord + ")";
+	let visitorTeamMascot = game.VisitorTeamMascot;
+	let homeTeamMascot = game.HomeTeamMascot;
 
 	//set globals for use by setBoxscoreTable()
 	homeTeamName = game.HomeTeamName;
@@ -291,10 +291,10 @@ function setBannerAndTitle() {
 	visitorTeamId = game.VisitorTeamId;
 	year = game.Year;
 
-	var visitorTeamDetails = visitorTeamRank + " " + visitorTeamName + " " + visitorTeamMascot + " " + visitorTeamRecord;
-	var homeTeamDetails = homeTeamRank + " " + homeTeamName + " " + homeTeamMascot + " " + homeTeamRecord;
+	let visitorTeamDetails = visitorTeamRank + " " + visitorTeamName + " " + visitorTeamMascot + " " + visitorTeamRecord;
+	let homeTeamDetails = homeTeamRank + " " + homeTeamName + " " + homeTeamMascot + " " + homeTeamRecord;
 
-	var html = `
+	let html = `
 		<div class="scoreboard-row">
 			<div class="sb-team sb-team--visitor">
 				<a href="${visitorUrl}">${visitorTeamDetails}</a>
@@ -315,18 +315,18 @@ function setBannerAndTitle() {
 }
 
 function setTeamStats() {
-	var awayTeamOffense = /*[[${awayTeamOffense}]]*/ null;
-	var homeTeamOffense = /*[[${homeTeamOffense}]]*/ null;
-	var awayTeamDefense = /*[[${awayTeamDefense}]]*/ null;
-	var homeTeamDefense = /*[[${homeTeamDefense}]]*/ null;
+	const awayTeamOffense = /*[[${awayTeamOffense}]]*/ null;
+	const homeTeamOffense = /*[[${homeTeamOffense}]]*/ null;
+	const awayTeamDefense = /*[[${awayTeamDefense}]]*/ null;
+	const homeTeamDefense = /*[[${homeTeamDefense}]]*/ null;
 
 	// offense for both teams
-	var html = "<h3>Team Offense Stats</h3>";
+	let html = "<h3>Team Offense Stats</h3>";
  	html += "<table><tr>";
 	html += "<th></th><th>" + visitorTeamName + "</th><th>" + homeTeamName + "</th></tr>";
-	var awayJson = JSON.parse(awayTeamOffense);
-	var homeJson = JSON.parse(homeTeamOffense);
-	for(var key in awayJson[0]) {
+	let awayJson = JSON.parse(awayTeamOffense);
+	let homeJson = JSON.parse(homeTeamOffense);
+	for(let key in awayJson[0]) {
 		if(key == "TeamId" || key == "Team") {continue;}
 		html+= "<tr><td>" + key + "</td><td>" + awayJson[0][key] + "</td><td>" + homeJson[0][key] + "</td></tr>";
 	}
@@ -339,7 +339,7 @@ function setTeamStats() {
 	html += "<th></th><th>" + visitorTeamName + "</th><th>" + homeTeamName + "</th></tr>";
 	awayJson = JSON.parse(awayTeamDefense);
 	homeJson = JSON.parse(homeTeamDefense);
-	for(var key in awayJson[0]) {
+	for(let key in awayJson[0]) {
 		if(key == "TeamId" || key == "Team") {continue;}
 		html+= "<tr><td>" + key + "</td><td>" + awayJson[0][key] + "</td><td>" + homeJson[0][key] + "</td></tr>";
 	}
@@ -348,17 +348,17 @@ function setTeamStats() {
 }
 
 function setSeasonResults() {
-	var awaySeasonResults = /*[[${awaySeasonResults}]]*/ null;
-	var homeSeasonResults = /*[[${homeSeasonResults}]]*/ null;
+	const awaySeasonResults = /*[[${awaySeasonResults}]]*/ null;
+	const homeSeasonResults = /*[[${homeSeasonResults}]]*/ null;
 
-	var json;
-	var targetDiv;
-	var teamId;
-	var teamName;
+	let json;
+	let targetDiv;
+	let teamId;
+	let teamName;
 
-	var teams = [visitorTeamId, homeTeamId];
+	let teams = [visitorTeamId, homeTeamId];
 
-	for(var t=0; t<teams.length; t++) {
+	for(let t=0; t<teams.length; t++) {
 		if(teams[t] == visitorTeamId) {
 			teamId = visitorTeamId;
 			teamName = visitorTeamName;
@@ -371,23 +371,23 @@ function setSeasonResults() {
 			targetDiv = "homeSeasonResultsDiv";
 		}
 
-		var tableColumns = ["Date", "Opponent", "Result"];
+		const tableColumns = ["Date", "Opponent", "Result"];
 
 		//set table header
-		var html = "<h3>" + teamName + " Schedule</h3>";
-		var columnsToExclude = ["GameId", "HomeTeamId", "AwayTeamId"];
+		let html = "<h3>" + teamName + " Schedule</h3>";
+		const columnsToExclude = ["GameId", "HomeTeamId", "AwayTeamId"];
 		html += "<table>";
 		html += getTableHeader(json[0], columnsToExclude);
 
 		//add row data
-		for(i=0; i<json.length; i++) {
-			var row = json[i];
-			var opponentId = teamId == row.HomeTeamId ? row.AwayTeamId : row.HomeTeamId;
-			var opponentLink = `<a href='/teams/team/${opponentId}/year/${year}'>${row.Opponent}</a>`;
-			var linkPage = (row.Result == "TBD") ? "gamepreview" : "boxscore";
-			var gameLink = `<a href='/games/game/${row.GameId}/${linkPage}'>${row.Date}</a>`;
+		for(let i=0; i<json.length; i++) {
+			let row = json[i];
+			let opponentId = teamId == row.HomeTeamId ? row.AwayTeamId : row.HomeTeamId;
+			let opponentLink = `<a href='/teams/team/${opponentId}/year/${year}'>${row.Opponent}</a>`;
+			let linkPage = (row.Result == "TBD") ? "gamepreview" : "boxscore";
+			let gameLink = `<a href='/games/game/${row.GameId}/${linkPage}'>${row.Date}</a>`;
 
-			var columnLinks = {
+			let columnLinks = {
 				Date : gameLink,
 				Opponent : opponentLink,
 			}
@@ -401,9 +401,9 @@ function setSeasonResults() {
 }
 
 function setOdds() {
-	var odds = /*[[${odds}]]*/ null;
-	var json = JSON.parse(odds);
-	var html = "<h3>Odds</h3>"
+	const odds = /*[[${odds}]]*/ null;
+	let json = JSON.parse(odds);
+	let html = "<h3>Odds</h3>"
 	html += "<table>";
 
 	if(json[0] == undefined) {
@@ -412,7 +412,7 @@ function setOdds() {
 	}
 
 	html += getTableHeader(json[0]);
-	for(var i=0; i<json.length; i++) {
+	for(let i=0; i<json.length; i++) {
 		html += getTableRow(json[i]);
 	}
 	html += "</table>";
@@ -420,9 +420,9 @@ function setOdds() {
 }
 
 function setSpRankings() {
-	var spRankings = /*[[${spRankings}]]*/ null;
-	var json = JSON.parse(spRankings);
-	var html = "<h3>SP+ Rankings</h3>"
+	const spRankings = /*[[${spRankings}]]*/ null;
+	let json = JSON.parse(spRankings);
+	let html = "<h3>SP+ Rankings</h3>"
 	html += "<table>";
 
 	if(json[0] == undefined) {
@@ -431,7 +431,7 @@ function setSpRankings() {
 	}
 
 	html += getTableHeader(json[0]);
-	for(var i=0; i<json.length; i++) {
+	for(let i=0; i<json.length; i++) {
 		html += getTableRow(json[i]);
 	}
 	html += "</table>";
@@ -439,30 +439,30 @@ function setSpRankings() {
 }
 
 function setGameHistory() {
-	var gameHistory = /*[[${gameHistory}]]*/ null;
-	var json = JSON.parse(gameHistory);
+	const gameHistory = /*[[${gameHistory}]]*/ null;
+	let json = JSON.parse(gameHistory);
 
 	if(json[0] == undefined) {
 		return;
 	}
 
-	var columnsToExclude = ["GameId", "Year", "WinnerTeamId", "HomeTeamId", "AwayTeamId"];
+	const columnsToExclude = ["GameId", "Year", "WinnerTeamId", "HomeTeamId", "AwayTeamId"];
 
-	var html = "<h3>Game History</h3>"
+	let html = "<h3>Game History</h3>"
 	html += "<table>";
 
 	html += getTableHeader(json[0], columnsToExclude);
 
 	//add table rows
-	for(var i=0; i<json.length; i++) {
-		var row = json[i];
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
 
-		var gameLink = `<a href='/games/game/${row.GameId}/boxscore'>${row.Date}</a>`;
-		var winnerTeamHistoryLink = `<a href='/teams/team/${row.WinnerTeamId}/year/${row.Year}'>${row.Winner}</a>`;
-		var homeTeamYearLink = `<a href='/teams/team/${row.HomeTeamId}/year/${row.Year}'>${row.Home}</a>`;
-		var awayTeamYearLink = `<a href='/teams/team/${row.AwayTeamId}/year/${row.Year}'>${row.Visitor}</a>`;
+		let gameLink = `<a href='/games/game/${row.GameId}/boxscore'>${row.Date}</a>`;
+		let winnerTeamHistoryLink = `<a href='/teams/team/${row.WinnerTeamId}/year/${row.Year}'>${row.Winner}</a>`;
+		let homeTeamYearLink = `<a href='/teams/team/${row.HomeTeamId}/year/${row.Year}'>${row.Home}</a>`;
+		let awayTeamYearLink = `<a href='/teams/team/${row.AwayTeamId}/year/${row.Year}'>${row.Visitor}</a>`;
 
-		var columnLinks = {
+		let columnLinks = {
 			Date : gameLink,
 			Winner : winnerTeamHistoryLink,
 			Home : homeTeamYearLink,

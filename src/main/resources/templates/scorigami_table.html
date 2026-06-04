@@ -257,20 +257,20 @@ label {
 
 <script th:inline="javascript">
 
-var title = /*[[${title}]]*/ null;
-var stats = /*[[${stats}]]*/ null;
-var maxWinnerScore = /*[[${maxWinnerScore}]]*/ null;
-var maxLoserScore = /*[[${maxLoserScore}]]*/ null;
-var rows = JSON.parse(maxLoserScore)[0].max_loser_score;
-var cols = JSON.parse(maxWinnerScore)[0].max_winner_score;
-var json = JSON.parse(stats); 
-var year = (year == null) ? getMaxYear() : year;
+let title = /*[[${title}]]*/ null;
+const stats = /*[[${stats}]]*/ null;
+const maxWinnerScore = /*[[${maxWinnerScore}]]*/ null;
+const maxLoserScore = /*[[${maxLoserScore}]]*/ null;
+let rows = JSON.parse(maxLoserScore)[0].max_loser_score;
+let cols = JSON.parse(maxWinnerScore)[0].max_winner_score;
+let json = JSON.parse(stats); 
+let year = (year == null) ? getMaxYear() : year;
 
 function setStats() {
-	var html = "<table id='statTable'>";
+	let html = "<table id='statTable'>";
 
 	html += "<thead><tr><th>&nbsp;</th>";
-	for(var i = 0; i<=cols; i++) {
+	for(let i = 0; i<=cols; i++) {
 		if(i < 10) {
 			html += "<th>&nbsp;" + i + "</th>";
 		} else {
@@ -281,10 +281,10 @@ function setStats() {
 	html += "<tbody>";
 	
 	// add rows in table body and assign IDs to each cell based on row+col
- 	for(var x = 0; x < rows + 1; x++) {
+ 	for(let x = 0; x < rows + 1; x++) {
 		html += "<tr>"
 
-		for(var y=0; y <= cols + 1; y++) { 
+		for(let y=0; y <= cols + 1; y++) { 
 			// y-axis
 			if( y === 0 ) {
 				html += "<td><b>" + x + "</b></td>";	
@@ -303,11 +303,11 @@ function setStats() {
 	paintImpossibleScores();
 	
 	$("#statTable").on("click", "td a", function(e) {
-		var cell = this.parentElement;
-		var games = cell.innerText; 
-		var id = cell.id;
-		var winnerScore = id.substr(1, id.indexOf("y") - 1);
-		var loserScore = id.substr(id.indexOf("y") + 1);
+		let cell = this.parentElement;
+		let games = cell.innerText; 
+		let id = cell.id;
+		let winnerScore = id.substr(1, id.indexOf("y") - 1);
+		let loserScore = id.substr(id.indexOf("y") + 1);
 
 		window.location = "/stats/games/byscore/winner/" + winnerScore + "/loser/" + loserScore;
 
@@ -316,16 +316,16 @@ function setStats() {
 }
 
 function paintScorigamiCells() {
-	var winner; 
-	var loser;
-	var games;
+	let winner; 
+	let loser;
+	let games;
 	
-	for(var i=0; i<json.length; i++) {
+	for(let i=0; i<json.length; i++) {
 		winner = json[i].winner;
 		loser = json[i].loser;
 		games = json[i].games;
 		
-		var cell = document.getElementById("x" + winner + "y" + loser);
+		let cell = document.getElementById("x" + winner + "y" + loser);
 		cell.style.backgroundColor = "#ffcb05"; // MAIZE
 
 		cell.innerHTML = "<a href=''>" + games + "</a>";
@@ -333,10 +333,10 @@ function paintScorigamiCells() {
 }
 
 function paintImpossibleScores() {
-	for(var x = 0; x < cols; x++) {
-		for(var y = 0; y < rows + 1; y++) {
+	for(let x = 0; x < cols; x++) {
+		for(let y = 0; y < rows + 1; y++) {
 			if(x <= y) {
-				var cell = document.getElementById("x" + x + "y" + y);
+				let cell = document.getElementById("x" + x + "y" + y);
 				cell.style.backgroundColor = "#00274c"; // BLUE 
 			}
 		}
@@ -344,7 +344,7 @@ function paintImpossibleScores() {
 }
 
 function setMostCommonTable() {
-	var scores = /*[[${mostCommonScores}]]*/ null;
+	const scores = /*[[${mostCommonScores}]]*/ null;
 	scores = JSON.parse(scores);
 	var html = "";
 	
@@ -361,18 +361,18 @@ function setMostCommonTable() {
 }
 
 function setLeastCommonTable() {
-	var scores = /*[[${leastCommonScores}]]*/ null;
+	const scores = /*[[${leastCommonScores}]]*/ null;
 	scores = JSON.parse(scores);
-	var html = "";
+	let html = "";
 	
 	//function getTableHeader(row, columnsToExclude, sortColumns)
-	var columnsToExclude = ["gameid", "Games"];
+	const columnsToExclude = ["gameid", "Games"];
 	html += getTableHeader(scores[0], columnsToExclude, "");
 	
 	//function getTableRow(row, columnsToExclude, linkColumns, rowNum)
 	for (score of scores) {
-		var gameLink = `<a href='/games/game/${score.gameid}/boxscore'>${score.Date}</a>`;
-		var columnLinks = {
+		let gameLink = `<a href='/games/game/${score.gameid}/boxscore'>${score.Date}</a>`;
+		let columnLinks = {
 			Date : gameLink
 		};
 		

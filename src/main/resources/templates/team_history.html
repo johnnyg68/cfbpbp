@@ -85,8 +85,8 @@ h3 {
 }
 
 #bannerImg {
-	height: 125px;
-	width: 125px;
+	height: 75px;
+	width: 75px;
 	object-fit: contain;
 }
 
@@ -149,6 +149,14 @@ table td {
 	border-bottom: 1px solid var(--border);
 	padding: 8px 10px;
 	vertical-align: middle;
+}
+
+table td:first-child {
+	border-left: 1px solid var(--border);
+}
+
+table td:last-child {
+	border-right: 1px solid var(--border);
 }
 
 table td a {
@@ -327,6 +335,7 @@ label {
      		<label for="passingByYear">Year</label>
       		<input type="radio" id="passingByCareer" name="passingTable" value="career" onchange="changePlayerData(name, value)">
       		<label for="passingByCareer">Career</label>
+      		<br><br>
 
 			<div class="divTableRow">
 				<div class="divTableCell" id="passingTableDiv">
@@ -346,6 +355,8 @@ label {
      		<label for="rushingByYear">Year</label>
       		<input type="radio" id="rushingByCareer" name="rushingTable" value="career" onchange="changePlayerData(name, value)">
       		<label for="rushingByCareer">Career</label>
+      		<br><br>
+      		
 			<div class="divTableRow">
 				<div class="divTableCell" id="rushingTableDiv">
 					<table id="rushingTable" class="sortable">
@@ -364,6 +375,8 @@ label {
      		<label for="receivingByYear">Year</label>
       		<input type="radio" id="receivingByCareer" name="receivingTable" value="career" onchange="changePlayerData(name, value)">
       		<label for="receivingByCareer">Career</label>
+      		<br><br>
+      		
 			<div class="divTableRow">
 				<div class="divTableCell" id="receivingTableDiv">
 					<table id="receivingTable" class="sortable">
@@ -389,19 +402,19 @@ label {
 
 <script th:inline="javascript">
 
-var teamColor = "";
-var teamId = /*[[${teamId}]]*/ null;
-var year;  // this is a hack. value is set in setRankingsTable()
-var sortOrder = null;
+let teamColor = "";
+const teamId = /*[[${teamId}]]*/ null;
+let year;  // this is a hack. value is set in setRankingsTable()
+let sortOrder = null;
 
 function setTeamDetails() {
-	var metadata = /*[[${metadata}]]*/ null;
-	var json = JSON.parse(metadata);
-	var teamName = json[0].name;
-	var mascot = json[0].mascot;
+	const metadata = /*[[${metadata}]]*/ null;
+	let json = JSON.parse(metadata);
+	let teamName = json[0].name;
+	let mascot = json[0].mascot;
 	teamColor = json[0].color != "" ? "#" + json[0].color : "";
 
-	var html = "";
+	let html = "";
 
 	html += "<h1>" + teamName + " " + mascot + "</h1>" ;
 	html += `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' alt='${teamName}' height='125' width='125' id='bannerImg'>`;
@@ -411,21 +424,21 @@ function setTeamDetails() {
 }
 
 function setRankingsTable() {
-	var rankings = /*[[${rankings}]]*/ null;
-	var json = JSON.parse(rankings);
-	var html = "";
-	var columnsToExclude;
+	const rankings = /*[[${rankings}]]*/ null;
+	let json = JSON.parse(rankings);
+	let html = "";
+	let columnsToExclude;
 
 	//set table header
 	html += "<br/><table>";
 	html += getTableHeader(json[0]);
 
 	//add row data
-	for(i=0; i<json.length; i++) {
-		var row = json[i];
-		var yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
+		let yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
 
-		var columnLinks = {
+		let columnLinks = {
 			Year : yearLink,
 		}
 		year = row.Year;
@@ -436,28 +449,28 @@ function setRankingsTable() {
 }
 
 function setBowlsTable() {
-	var bowls = /*[[${bowls}]]*/ null;
-	var bowlsRecord = /*[[${bowlsRecord}]]*/ null;
-	var json = JSON.parse(bowlsRecord);
-	var html = "<h3>Bowl Record: " + json[0].W + " - " + json[0].L + "</h3>";
+	const bowls = /*[[${bowls}]]*/ null;
+	const bowlsRecord = /*[[${bowlsRecord}]]*/ null;
+	let json = JSON.parse(bowlsRecord);
+	let html = "<h3>Bowl Record: " + json[0].W + " - " + json[0].L + "</h3>";
 
 	json = JSON.parse(bowls);
-	var columnsToExclude = ["GameId", "HomeTeamId", "AwayTeamId"];
+	const columnsToExclude = ["GameId", "HomeTeamId", "AwayTeamId"];
 
 	//set table header
 	html += "<table>";
 	html += getTableHeader(json[0], columnsToExclude);
 
 	//add row data
-	for(i=0; i<json.length; i++) {
-		var row = json[i];
-		var yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
-		var teamLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Team}</a>`;
-		var opponentId = teamId == row.HomeTeamId ? row.AwayTeamId : row.HomeTeamId;
-		var opponentLink = `<a href='/teams/team/${opponentId}/year/${row.Year}'>${row.Opponent}</a>`;
-		var resultLink = `<a href='/games/game/${row.GameId}/boxscore'>${row.Result}</a>`;
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
+		let yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
+		let teamLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Team}</a>`;
+		let opponentId = teamId == row.HomeTeamId ? row.AwayTeamId : row.HomeTeamId;
+		let opponentLink = `<a href='/teams/team/${opponentId}/year/${row.Year}'>${row.Opponent}</a>`;
+		let resultLink = `<a href='/games/game/${row.GameId}/boxscore'>${row.Result}</a>`;
 
-		var columnLinks = {
+		let columnLinks = {
 			Year : yearLink,
 			Team : teamLink,
 			Opponent : opponentLink,
@@ -472,23 +485,23 @@ function setBowlsTable() {
 }
 
 function setVsOpponentTable() {
-	var vsOpponent = /*[[${vsOpponent}]]*/ null;
-	var json = JSON.parse(vsOpponent);
+	const vsOpponent = /*[[${vsOpponent}]]*/ null;
+	let json = JSON.parse(vsOpponent);
 
-	var plus = '<a href="#"><img src="/images/plus.png" /></a>';
-	var minus = '<a href="#"><img src="/images/minus.png" /></a>';
+	const plus = '<a href="#"><img src="/images/plus.png" /></a>';
+	const minus = '<a href="#"><img src="/images/minus.png" /></a>';
 
-	var wins = 0;
-	var losses = 0;
+	let wins = 0;
+	let losses = 0;
 
-	var html = "<br/>";
+	let html = "<br/>";
 	columnsToExclude = ["OpponentId", "Date", "GameId", "Result", "Opponent", "ThisTeam"];
 	html += "<table id='vsOpponent'>";
 	html += getTableHeader(json[0], columnsToExclude);
 
-	for(i=0; i<json.length; i++) {
-		var row = json[i];
-		var teamLink;
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
+		let teamLink;
 
 		if(row.Date == null) {
 			teamLink = plus;
@@ -500,10 +513,10 @@ function setVsOpponentTable() {
 			html += "<tr class='parent'>"
 			html += "<td>" + teamLink + "</td><td>" + row.Wins + "</td><td>" + row.Losses + "</td><td>" + row.Pct +"</td></tr>";
 		} else {
-			var date = new Date(row.Date);
-			var year = date.getFullYear();
-			var thisTeamLink = `<a href='/teams/team/${teamId}/year/${year}'>${row.ThisTeam}</a>`
-			var opponentLink = `<a href='/teams/team/${row.OpponentId}/year/${year}'>${row.Opponent}</a>`
+			let date = new Date(row.Date);
+			let year = date.getFullYear();
+			let thisTeamLink = `<a href='/teams/team/${teamId}/year/${year}'>${row.ThisTeam}</a>`
+				let opponentLink = `<a href='/teams/team/${row.OpponentId}/year/${year}'>${row.Opponent}</a>`
 
 			html +=
 				`<tr class='child'>
@@ -516,7 +529,7 @@ function setVsOpponentTable() {
 	}
 
 	// add total wins, losses, pct to last table row
-	var pct = +(Math.round(wins/(wins + losses) + "e+2")  + "e-2");
+	let pct = +(Math.round(wins/(wins + losses) + "e+2")  + "e-2");
 	html += "<tr><td>&nbsp;</td><td><b>" + wins + "</b></td><td><b>" + losses + "</b></td><td><b>" + pct + "</b></td>";
 	html += "</table><br/>";
 	document.getElementById('vsOpponentTableDiv').innerHTML = html;
@@ -526,19 +539,19 @@ function setVsOpponentTable() {
 	    e.preventDefault();
 	    $(this).closest("tr").nextUntil(".parent").toggleClass("child");
 
-	    var src = $(this).attr('src');
-	    var newsrc = (src == '/images/plus.png') ? '/images/minus.png' : '/images/plus.png';
+	    let src = $(this).attr('src');
+	    let newsrc = (src == '/images/plus.png') ? '/images/minus.png' : '/images/plus.png';
 	    $(this).attr('src', newsrc );
 	});
 }
 
 function setYearAvgsTables() {
-	var offenseAvg = /*[[${yearAvgOffense}]]*/ null;
-	var defenseAvg = /*[[${yearAvgDefense}]]*/ null;
+	const offenseAvg = /*[[${yearAvgOffense}]]*/ null;
+	const defenseAvg = /*[[${yearAvgDefense}]]*/ null;
 
-	var json = JSON.parse(offenseAvg);
-	var columnsToExclude = ["TeamId"];
-	var html = "";
+	let json = JSON.parse(offenseAvg);
+	let columnsToExclude = ["TeamId"];
+	let html = "";
 
 	html += getTableHeaderSortableExt(json[0], columnsToExclude);  // new function here
 	document.getElementById("yearAvgOffenseTable").tHead.innerHTML = html;
@@ -553,11 +566,11 @@ function setYearAvgsTables() {
 }
 
 function setYearAvgsTableData(table, json, columnsToExclude) {
-	var html = "";
+	let html = "";
 	for(i=0; i<json.length; i++) {
-		var row = json[i];
-		var yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
-		var columnLinks = {
+		let row = json[i];
+		let yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
+		let columnLinks = {
 			Year : yearLink
 		}
 
@@ -569,11 +582,11 @@ function setYearAvgsTableData(table, json, columnsToExclude) {
 
 function setPlayerTables() {
 	//player data by year
-	var playerPassing = /*[[${playerPassing}]]*/ null;
-	var playerRushing = /*[[${playerRushing}]]*/ null;
-	var playerReceiving = /*[[${playerReceiving}]]*/ null;
+	const playerPassing = /*[[${playerPassing}]]*/ null;
+	const playerRushing = /*[[${playerRushing}]]*/ null;
+	const playerReceiving = /*[[${playerReceiving}]]*/ null;
 
-	var json = JSON.parse(playerPassing);
+	let json = JSON.parse(playerPassing);
 	setPlayerTableHeader("passingTable", json);
 	setTableBody("passingTable", json);
 
@@ -589,16 +602,16 @@ function setPlayerTables() {
 // radio button onclick for year or career
 function changePlayerData(table, radioValue) {
 	//player data by year
-	var playerPassing = /*[[${playerPassing}]]*/ null;
-	var playerRushing = /*[[${playerRushing}]]*/ null;
-	var playerReceiving = /*[[${playerReceiving}]]*/ null;
+	const playerPassing = /*[[${playerPassing}]]*/ null;
+	const playerRushing = /*[[${playerRushing}]]*/ null;
+	const playerReceiving = /*[[${playerReceiving}]]*/ null;
 
 	//player career data, i.e. grouped by career instead of season
-	var playerPassingCareer = /*[[${playerPassingCareer}]]*/ null;
-	var playerRushingCareer = /*[[${playerRushingCareer}]]*/ null;
-	var playerReceivingCareer = /*[[${playerReceivingCareer}]]*/ null;
+	const playerPassingCareer = /*[[${playerPassingCareer}]]*/ null;
+	const playerRushingCareer = /*[[${playerRushingCareer}]]*/ null;
+	const playerReceivingCareer = /*[[${playerReceivingCareer}]]*/ null;
 
-	var json;
+	let json;
 
 	if(table == "passingTable") {
 		json = radioValue == "year" ? playerPassing : playerPassingCareer;
@@ -618,8 +631,8 @@ function changePlayerData(table, radioValue) {
 }
 
 function setPlayerTableHeader(table, json) {
-	var columnsToExclude = ["PlayerId", "Team", "TeamId"];
-	var html = "";
+	const columnsToExclude = ["PlayerId", "Team", "TeamId"];
+	let html = "";
 	html += getTableHeaderSortableExt(json[0], columnsToExclude);  // new function here
 
 	document.getElementById(table).tHead.innerHTML = html;
@@ -627,13 +640,13 @@ function setPlayerTableHeader(table, json) {
 }
 
 function setTableBody(table, json) {
-	var columnsToExclude = ["PlayerId", "Team", "TeamId"];
-	var html = "";
-	for(i=0; i<json.length; i++) {
-		var row = json[i];
-		var yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
-		var nameLink = `<a href='/players/player/${row.PlayerId}'>${row.Name}</a>`;
-		var columnLinks = {
+	const columnsToExclude = ["PlayerId", "Team", "TeamId"];
+	let html = "";
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
+		let yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
+		let nameLink = `<a href='/players/player/${row.PlayerId}'>${row.Name}</a>`;
+		let columnLinks = {
 			Year : yearLink,
 			Name : nameLink
 		}
@@ -645,29 +658,29 @@ function setTableBody(table, json) {
 }
 
 function setRecruiting() {
-	var teamRecruiting = /*[[${teamRecruiting}]]*/ null;
-	var playerRecruiting = /*[[${playerRecruiting}]]*/ null;
-	var teamJson = JSON.parse(teamRecruiting);
-	var playerJson = JSON.parse(playerRecruiting);
+	const teamRecruiting = /*[[${teamRecruiting}]]*/ null;
+	const playerRecruiting = /*[[${playerRecruiting}]]*/ null;
+	let teamJson = JSON.parse(teamRecruiting);
+	let playerJson = JSON.parse(playerRecruiting);
 
-	var html = "<br/><table>";
+	let html = "<br/><table>";
 
 	//set team header
-	var teamColumnsToExclude = ["TeamId", "Team"];
-	var teamHeader = getTableHeader(teamJson[0], teamColumnsToExclude, null);
+	const teamColumnsToExclude = ["TeamId", "Team"];
+	let teamHeader = getTableHeader(teamJson[0], teamColumnsToExclude, null);
 
 	//set player header
-	var playerColumnsToExclude = ["Year"];
-	var playerHeader = getTableHeader(playerJson[0], playerColumnsToExclude, null);
+	const playerColumnsToExclude = ["Year"];
+	let playerHeader = getTableHeader(playerJson[0], playerColumnsToExclude, null);
 
-	for(i=0; i<teamJson.length; i++) {
-		var teamYearRow = teamJson[i];
+	for(let i=0; i<teamJson.length; i++) {
+		let teamYearRow = teamJson[i];
 		html += teamHeader;
 		html += getTableRow(teamYearRow, teamColumnsToExclude, "");
 		html += playerHeader;
 
-		for(j=0; j<playerJson.length; j++) {
-			var playerRow = playerJson[j];
+		for(let j=0; j<playerJson.length; j++) {
+			let playerRow = playerJson[j];
 			if(playerRow.Year == teamYearRow.Year) {
 				html += getTableRow(playerRow, playerColumnsToExclude, "");
 			}
@@ -678,7 +691,7 @@ function setRecruiting() {
 }
 
 function isValidData(data) {
-	var result = 0;
+	let result = 0;
 	if(data === null) {return result;}
 	if (data === undefined || data.length == 0) {return result;}
 	if(data == "[]") {return result;}
@@ -694,22 +707,22 @@ function setTableHeaderColor() {
 }
 
 function setYearLinks() {
-	var teamYearsDiv = document.getElementById("teamYears");
-	var html = "";
-	var MAX_YEAR = getMaxYear();
+	let teamYearsDiv = document.getElementById("teamYears");
+	let html = "";
+	let MAX_YEAR = getMaxYear();
 
-	for(var i=MAX_YEAR; i>=2001; i--) {
-		var url = `/teams/team/${teamId}/year/${i}`;
+	for(let i=MAX_YEAR; i>=2001; i--) {
+		let url = `/teams/team/${teamId}/year/${i}`;
 		html += `<a href='${url}'>${i}</a>`;
 	}
 	teamYearsDiv.innerHTML = html;
 }
 
 function tabClick(tab) {
-	var tabs = document.getElementById("tabs").children;
-	var tabContents = document.getElementsByClassName("tabcontent");
+	let tabs = document.getElementById("tabs").children;
+	let tabContents = document.getElementsByClassName("tabcontent");
 
-	for(i=0; i<tabs.length; i++) {
+	for(let i=0; i<tabs.length; i++) {
 		if(tab.id == tabs[i].id) {
 			tabs[i].style.backgroundColor = teamColor;
 			tabContents[i].style.display = "table";
@@ -721,14 +734,14 @@ function tabClick(tab) {
 }
 
 function sortTable(table, col, json, sortOrder) {
-	var stats = sortByKey(json, col, sortOrder);
+	let stats = sortByKey(json, col, sortOrder);
 	setTableBody(table, stats);
 }
 
 function sortByKey(array, key, sortOrder) {
     return array.sort(function(a, b) {
-        var x = a[key];
-        var y = b[key];
+    	let x = a[key];
+    	let y = b[key];
         if(sortOrder == null || sortOrder == 1) {
             return ((x < y) ? 1 : ((x > y) ? -1 : 0));    // descending
         } else {
@@ -740,7 +753,7 @@ function sortByKey(array, key, sortOrder) {
 function makeTableSortable(table, json, sortOrder) {
 
 	$(`#${table}`).on("click", "th", function(event) {
-	    var col = $(this).text();
+		let col = $(this).text();
 
 	    //reset the table header background and text colors
 	    $(`#${table} th`).css("background-color", teamColor);

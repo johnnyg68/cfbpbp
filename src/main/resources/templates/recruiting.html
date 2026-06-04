@@ -212,21 +212,21 @@ table th {
 
 <script th:inline="javascript">
 
-var year = /*[[${year}]]*/ null;
-var title = /*[[${title}]]*/ null;
-var type = /*[[${type}]]*/ null;
-var recruiting = /*[[${recruiting}]]*/ null;
-var teams = /*[[${teams}]]*/ null;
-var sortOrder = /*[[${sortOrder}]]*/ null;
-var teamId = /*[[${teamId}]]*/ null;
-var teamName;
+let year = /*[[${year}]]*/ null;
+let title = /*[[${title}]]*/ null;
+let type = /*[[${type}]]*/ null;
+const recruiting = /*[[${recruiting}]]*/ null;
+let teams = /*[[${teams}]]*/ null;
+let sortOrder = /*[[${sortOrder}]]*/ null;
+let teamId = /*[[${teamId}]]*/ null;
+let teamName;
 
 function setData() {
 
-	var json = JSON.parse(recruiting);
-	var html = "<table id='dataTable'>";
-	var columnsToExclude;
-	var columnLinks;
+	let json = JSON.parse(recruiting);
+	let html = "<table id='dataTable'>";
+	let columnsToExclude;
+	let columnLinks;
 
 	if(type == "Team") {
 		//recruiting results for a team
@@ -242,10 +242,10 @@ function setData() {
 	html += getTableHeaderSortable(json[0], columnsToExclude);
 	html += "<tbody>";
 
-	for(var i=0; i<json.length; i++) {
-		var row = json[i];
-		var teamLink = `<a href='/teams/team/${row.TeamId}/history'>${row.Team}</a>`;
-		var yearLink = `<a href='/teams/team/${row.TeamId}/history'>${row.Year}</a>`;
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
+		let teamLink = `<a href='/teams/team/${row.TeamId}/history'>${row.Team}</a>`;
+		let yearLink = `<a href='/teams/team/${row.TeamId}/history'>${row.Year}</a>`;
 		columnLinks = {
 			Team : teamLink,
 			Year : yearLink,
@@ -297,25 +297,25 @@ function changeTeam(selectedTeam) {
 
 //TODO - hardcoded max year loop.  fix this
 function setSelectorOptions() {
-	var yearOptions;
+	let yearOptions;
 	if(type == "Team") {
 		yearOptions = "<option value='''>Select Year</option>";
 	}
 
-	for(var i=2025; i>=2000; i--) {
-		var selected = (i == year ? "selected" : "");
+	for(let i=2025; i>=2000; i--) {
+		let selected = (i == year ? "selected" : "");
 		yearOptions += `<option value="${i}" ${selected}>${i}</option>`;
 	}
 	document.getElementById("yearSelector").innerHTML = yearOptions;
 
-	var teamOptions;
+	let teamOptions;
 	if(type == "Year") {
 		teamOptions = "<option value=''>Select Team</option>";
 	}
-	var json = JSON.parse(teams);
-	for(var i=0; i<json.length; i++) {
-		var row = json[i];
-		var selected = (teamId == row.TeamId ? "selected" : "");
+	let json = JSON.parse(teams);
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
+		let selected = (teamId == row.TeamId ? "selected" : "");
 		teamOptions += `<option value="${row.TeamId}" ${selected}>${row.Name}</option>`;
 	}
 	document.getElementById("teamSelector").innerHTML = teamOptions;
