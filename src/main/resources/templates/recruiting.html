@@ -1,171 +1,214 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<title th:text="${title}">College Football Data - Recruiting</title>
-
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CFB Geek college football recruiting</title>
+<title th:text="${title}">CFB Geek college football recruiting</title>
 <meta name="description" content="College Football Data Recruiting">
 <meta name="author" content="John Gilliam">
 
 <link href="/css/navbar.css" rel="stylesheet">
 <style type="text/css">
-
-html { 
-    height: 100%;
-}
-body { 
-    min-height: 100%;
-    margin: 0px;
-}
-tbody {
-/* 	background-color: #f2f2f2; */
-}
-.divMain {
-	display: block;
-	margin: auto;
-    width: 80%;
-    /*   fixed menu chnage on next line */
-	margin-top: 30px;
-}
-.divTable {
-	display: table;
-	width: 100%;	
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 50%;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
-}
-.divTableBody {
-	display: table-row-group;
+:root {
+	--brand-navy: #00274c;
+	--brand-navy-light: #003a70;
+	--accent: #ffcb05;
+	--accent-hover: #ffd633;
+	--link: #0a66c2;
+	--text: #1a1a1a;
+	--text-muted: #5a6472;
+	--surface: #ffffff;
+	--bg: #f4f6f9;
+	--border: #e3e8ef;
+	--radius: 12px;
+	--shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+	--shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.12);
+	--font: "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    width: 100%;
+* {
+	box-sizing: border-box;
 }
-table td {
-	font-size: 12px;
-    /* border: 1px solid #ddd; */
-    border-bottom: 1px solid #ddd;
-    padding: 2px; 
-    padding-left: 4px;
+
+html {
+	height: 100%;
 }
-table td a {
-	color: #06c;
+
+body {
+	min-height: 100%;
+	margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	line-height: 1.55;
+}
+
+a {
+	color: var(--link);
 	text-decoration: none;
-}
-table th {
-/* 	fixed table header change */
-/*  position: sticky; 
- 	top: 100px; */
-
-	font-size: 14px;
-	font-weight: bold;
-    text-align: left;
-    background-color: #00274c;
-    font-style: normal;
-    color: white;
-}
-h1 {
-	font-size: 20px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-#dataTable th:hover {
-	background-color: grey;
-	color: #00274c;
+	transition: color 0.15s ease;
 }
 
-#dataTable tr:hover {
-	background-color: lightgray;
+a:hover {
+	color: var(--brand-navy);
 }
 
-#dataTable th a {
-	color: white;
-	text-decoration: none;
+/* ---- Hero ---- */
+.hero {
+	background: var(--bg);
+	color: #000;
+	padding: 18px 24px;
+	text-align: center;
+}
+
+.hero h1 {
+	margin: 0;
+	font-size: clamp(22px, 4vw, 32px);
+	font-weight: 700;
+	letter-spacing: -0.5px;
 }
 
 #pageTitle a {
-    color: #06c;
-    text-decoration: none;
+	color: var(--link);
 }
 
+/* ---- Layout ---- */
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 24px 24px 64px;
+}
+
+/* ---- Controls / filters ---- */
+.controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+
+.controls select {
+	font-family: var(--font);
+	font-size: 14px;
+	color: var(--text);
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 8px 12px;
+	box-shadow: var(--shadow);
+	cursor: pointer;
+	transition: border-color 0.15s ease;
+}
+
+.controls select:hover,
+.controls select:focus {
+	border-color: var(--brand-navy);
+	outline: none;
+}
+
+/* ---- Table ---- */
+.table-wrap {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	overflow: hidden;
+}
+
+table {
+	font-family: var(--font);
+	font-size: 13px;
+	border-collapse: collapse;
+	width: 100%;
+	border: none;
+}
+
+table td {
+	font-size: 13px;
+	border-bottom: 1px solid var(--border);
+	padding: 8px 10px;
+	vertical-align: middle;
+}
+
+table td a {
+	color: var(--link);
+	font-weight: 600;
+}
+
+table th {
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	text-align: left;
+	background-color: var(--brand-navy);
+	color: #fff;
+	padding: 10px;
+}
+
+/* Sortable header links */
+#dataTable th a {
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#dataTable th:hover {
+	background-color: var(--brand-navy-light);
+	cursor: pointer;
+}
+
+#dataTable tbody tr:hover {
+	background-color: #eef2f7;
+}
+
+/* First column (row rank) shrinks to fit its content for any dataset */
+#dataTable th:nth-child(1),
+#dataTable td:nth-child(1) {
+	width: 1%;
+	white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+	.container {
+		padding: 20px 14px 48px;
+	}
+}
 </style>
 </head>
 
 <body onload="setSelectorOptions(); setData();">
-	
-	<!-- 
-	<p th:text="'year= ' + ${year} "/>
-	<p th:text="'stats= ' + ${stats} "/>	
-	<p th:text="'sortOrder= ' + ${sortOrder} "/>
-	-->
 
 <div class="navbar">
-	<a href="/">CFB GEEK</a> 
+	<a href="/">CFB GEEK</a>
 	<a href="/teams">Teams</a>
 	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
 	<a href="#" onclick="gotoYearStats(year)">Stats</a>
-	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>
 	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
 </div>
 
-<br />
-
-<div class="divMain">
-	<div class="divTable">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="pageTitle">
-					<h1 th:text="${title}"></h1>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="selectorDiv">
-					<select id="yearSelector" onchange="changeYear(this.value)">
-						<option value="empty">Select a year</option>
-					</select>
-					<select id="teamSelector" onchange="changeTeam(this.value)">
-						<option value="empty">Select a Team</option>
-					</select>
-				</div>
-			</div>
-			<br />
-			<div class="divTableRow">
-				<div class="divTableCell" id="dataDiv">
-				</div>
-			</div>
-		</div>
+<header class="hero">
+	<div id="pageTitle">
+		<h1 th:text="${title}"></h1>
 	</div>
-</div>
-<br><br>
+</header>
+
+<main class="container">
+
+	<div class="controls" id="selectorDiv">
+		<select id="yearSelector" onchange="changeYear(this.value)">
+			<option value="empty">Select a year</option>
+		</select>
+		<select id="teamSelector" onchange="changeTeam(this.value)">
+			<option value="empty">Select a Team</option>
+		</select>
+	</div>
+
+	<div class="table-wrap" id="dataDiv"></div>
+
+</main>
 
 <script th:inline="javascript">
 
@@ -179,13 +222,13 @@ var teamId = /*[[${teamId}]]*/ null;
 var teamName;
 
 function setData() {
-	
-	var json = JSON.parse(recruiting); 
+
+	var json = JSON.parse(recruiting);
 	var html = "<table id='dataTable'>";
 	var columnsToExclude;
 	var columnLinks;
-	
-	if(type == "Team") {	
+
+	if(type == "Team") {
 		//recruiting results for a team
 		columnsToExclude = ["TeamId", "Team"];
 		teamName = json[0].Team;
@@ -195,10 +238,10 @@ function setData() {
 		//recruity results for all teams for a year
 		columnsToExclude = ["TeamId", "Year"];
 	}
-	
-	html += getTableHeaderSortable(json[0], columnsToExclude); 
+
+	html += getTableHeaderSortable(json[0], columnsToExclude);
 	html += "<tbody>";
-	
+
 	for(var i=0; i<json.length; i++) {
 		var row = json[i];
 		var teamLink = `<a href='/teams/team/${row.TeamId}/history'>${row.Team}</a>`;
@@ -210,13 +253,13 @@ function setData() {
 
 		html += getTableRow(row, columnsToExclude, columnLinks, i+1);
 	}
-	
+
 	html += "</tbody></table>";
 	document.getElementById("dataDiv").innerHTML = html;
 
 	// LOAD EVENT HANDLERS FOR TABLE COLUMNS IN DYNAMIC TABLE "#dataTable"
-	
-	// THIS WORKS without performance degradation.  
+
+	// THIS WORKS without performance degradation.
 	// Solution is to use $(#dataTable).on() instead of $(document).on()
 	$("#dataTable").on("click", "th a", function(e) {
 		//TODO - this seems wrong
@@ -225,14 +268,14 @@ function setData() {
 	    setData();
 	    // color selected column header and text
 	    document.getElementById(this.id).parentElement.style.background = "#ffcb05";  //maize
-	    document.getElementById(this.id).style.color = "#00274c";	//blue	    
+	    document.getElementById(this.id).style.color = "#00274c";	//blue
 	});
 
 }
 
-function sortByKey(array, key) {	
+function sortByKey(array, key) {
     return array.sort(function(a, b) {
-        var x = a[key]; 
+        var x = a[key];
         var y = b[key];
         if(sortOrder == null || sortOrder == 1) {
             return ((x < y) ? 1 : ((x > y) ? -1 : 0));    // descending
@@ -258,18 +301,18 @@ function setSelectorOptions() {
 	if(type == "Team") {
 		yearOptions = "<option value='''>Select Year</option>";
 	}
-	
+
 	for(var i=2025; i>=2000; i--) {
 		var selected = (i == year ? "selected" : "");
 		yearOptions += `<option value="${i}" ${selected}>${i}</option>`;
 	}
 	document.getElementById("yearSelector").innerHTML = yearOptions;
-	
+
 	var teamOptions;
 	if(type == "Year") {
 		teamOptions = "<option value=''>Select Team</option>";
 	}
-	var json = JSON.parse(teams); 
+	var json = JSON.parse(teams);
 	for(var i=0; i<json.length; i++) {
 		var row = json[i];
 		var selected = (teamId == row.TeamId ? "selected" : "");

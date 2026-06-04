@@ -1,9 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<title>CFB Geek - Team Season</title>
-
-<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CFB Geek college football team data</title>
@@ -12,180 +9,212 @@
 
 <link href="/css/navbar.css" rel="stylesheet">
 <style type="text/css">
-
-html { 
-    height: 100%;
+:root {
+	--brand-navy: #00274c;
+	--brand-navy-light: #003a70;
+	--accent: #ffcb05;
+	--accent-hover: #ffd633;
+	--link: #0a66c2;
+	--text: #1a1a1a;
+	--text-muted: #5a6472;
+	--surface: #ffffff;
+	--bg: #f4f6f9;
+	--border: #e3e8ef;
+	--radius: 12px;
+	--shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+	--shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.12);
+	--font: "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
-body { 
-    min-height: 100%;
-    margin: 0px;
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+	margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	line-height: 1.55;
+}
+
+a {
+	color: var(--link);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+a:hover {
+	color: var(--brand-navy);
+}
+
+/* ---- Layout ---- */
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 24px 24px 64px;
+}
+
+h1 {
+	font-size: clamp(20px, 3vw, 26px);
+	margin: 0 0 4px;
+}
+
+h3 {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-muted);
+	margin: 0 0 12px;
+}
+
+/* ---- Team header + schedule panels ---- */
+.panel-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	margin-bottom: 24px;
+}
+
+.panel {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	overflow: hidden;
 }
 
 #teamDetails {
-	margin: auto;
+	flex: 1 1 100%;
+	width: 100%;
 	text-align: center;
+	padding: 20px 24px;
 }
 
-#playerDiv {
-	display: none;
+#teamDetails img {
+	height: 125px;
+	width: 125px;
+	object-fit: contain;
 }
-#scheduleResultsDiv {
-/* 	background-color: #f2f2f2; */
-	border-style: none;
-} 
-#teamDiv {
+
+
+/* ---- Tabs ---- */
+.tab {
+	display: flex;
+	overflow: hidden;
+	font-family: var(--font);
+}
+
+.tab button {
+	background-color: #999999;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 10px 18px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	font-family: var(--font);
+	font-size: 14px;
+	font-weight: 700;
+	color: #fff;
+	text-decoration: none;
+	transition: background-color 0.15s ease;
+}
+
+.tab button:hover {
+	background-color: var(--brand-navy-light);
+}
+
+/* ---- Tab content panels ---- */
+.tabcontent {
+	display: none;
+	width: 100%;
+	padding: 18px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-top: none;
+	border-bottom-left-radius: var(--radius);
+	border-bottom-right-radius: var(--radius);
+	box-shadow: var(--shadow);
+}
+
+/* Schedule tab is shown by default */
+#scheduleDiv {
 	display: table;
 }
-.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;
-    /* background-color: #333; */
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 6px 10px;
-    /* transition: 0.3s; */
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
+
+/* ---- Tables ---- */
+table {
+	font-family: var(--font);
+	font-size: 13px;
+	border-collapse: collapse;
+	width: 100%;
+	border: none;
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+	overflow: hidden;
 }
 
-/* Change background color of a href links on hover */
-/* this doesn't work because I am dynamically setting bgcolor based on teamcolor */
-.tab button:hover {
-    background-color: green;
+table td {
+	font-size: 13px;
+	border-bottom: 1px solid var(--border);
+	padding: 8px 10px;
+	vertical-align: middle;
 }
 
-/* Create an active/current tablink class */
-/* .tab button.active { */
-/*     background-color: #ccc; */
-/* } */
+table td a {
+	color: var(--link);
+	font-weight: 600;
+}
 
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-    border-width: 1px;
-    /* border-style: solid; */
-    /* background-color: #f2f2f2; */
+table th {
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	text-align: left;
+	background-color: var(--brand-navy);
+	color: #fff;
+	padding: 10px;
 }
-.divMain {
-	display: block;
-	margin: auto;
-    width: 80%;
-    /*   fixed menu chnage on next line */
-	margin-top: 30px;
+
+table tr:hover {
+	background-color: #eef2f7;
 }
+
+/* ---- DivTable layout utilities (used by the tab stat panels) ---- */
 .divTable {
 	display: table;
-	width: 100%	
+	width: 100%;
 }
 .divTableRow {
 	display: table-row;
 }
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 50%;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
-}
 .divTableBody {
 	display: table-row-group;
 }
-
-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
-    border: 1px solid lightgrey;
-}
-table td {
-	font-size: 12px;
-    /* border: 1px solid #ddd; */
-    border-bottom: 1px solid #ddd;
-    padding: 2px; 
-    padding-left: 4px;
-}
-table td a {
-	color: #06c;
-	text-decoration: none;
-}
-table th {
-	font-size: 14px;
-	font-weight: bold;
-    text-align: left;
-    background-color: #00274c;
-    font-style: normal;
-    color: white;
-}
-table tr:hover {
-	background-color: lightgray;
+.divTableCell {
+	display: table-cell;
+	width: 100%;
+	padding: 0 0 18px;
+	vertical-align: top;
 }
 
-h1 {
-	font-size: 20px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+@media (max-width: 600px) {
+	.container {
+		padding: 20px 14px 48px;
+	}
 }
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-
 </style>
 </head>
 <body onload="setYearLinks(); setTeamDetails(); setScheduleResultsTable(); setStatTables(); setTableHeaderColor();">
 
-	<!-- 
-	<p th:text="'year= ' + ${year} "/>
-	<p th:text="'teamId= ' + ${teamId} "/>
-	<p th:text="'teamYearRecord= ' + ${teamYearRecord} "/>
-	<p th:text="'scheduleResults= ' + ${scheduleResults} "/>
-	
-	<p th:text="'teamScoringOffense= ' + ${teamScoringOffense} "/>
-	<p th:text="'teamPassingOffense= ' + ${teamPassingOffense} "/>
-	<p th:text="'teamRusingOffense= ' + ${teamRushingOffense} "/>
-	
-	<p th:text="'playerPassing= ' + ${playerPassing} "/>
-	<p th:text="'playerRushing= ' + ${playerRushing} "/>
-	<p th:text="'playerRushing= ' + ${playerReceiving} "/>
-	<p th:text="'playerDefense= ' + ${playerDefense} "/>
-	<p th:text="'playerInts= ' + ${playerInts} "/>
-	<p th:text="'playerKickReturns= ' + ${playerKickReturns} "/>
-	<p th:text="'playerPuntReturns= ' + ${playerPuntReturns} "/>
-	<p th:text="'playerPunting= ' + ${playerPunting} "/>
-	<p th:text="'playerKicking= ' + ${playerKicking} "/>
-	-->
-
 	<div class="navbar">
-		<a href="/">CFB GEEK</a> 
+		<a href="/">CFB GEEK</a>
 		<a href="/teams">Teams</a>
 		<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
 		<a href="#" onclick="gotoYearStats(year)">Stats</a>
@@ -193,30 +222,30 @@ h3 {
 			<button class="dropbtn">Year<i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content" id="teamYears">
-				// links are set by function setYearsLinks()
 			</div>
 		</div>
 		<a href="#" onclick="gotoYearRankings(year)">Rankings</a>
 		<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
 	</div>
 
-	<br /><br />
+	<main class="container">
 
-	<div class="divMain">
-		<div class="divTable">
+		<div class="panel-row">
+			<div class="panel" id="teamDetails"></div>
+		</div>
+
+		<div class="tab" id="tabs">
+			<button onclick="tabClick(this)" id="scheduleTab">Schedule</button>
+			<button onclick="tabClick(this)" id="teamTab">Team</button>
+			<button onclick="tabClick(this)" id="playerTab">Player</button>
+		</div>
+
+		<div class="tabcontent" id="scheduleDiv">
 			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="teamDetails"></div>
 					<div class="divTableCell" id="scheduleResultsDiv"></div>
 				</div>
 			</div>
-		</div>
-
-		<br />
-
-		<div class="tab" id="tabs">
-			<button onclick="tabClick(this)" id="teamTab">Team</button>
-			<button onclick="tabClick(this)" id="playerTab">Player</button>
 		</div>
 
 		<div class="tabcontent" id="teamDiv">
@@ -262,7 +291,6 @@ h3 {
 					</div>
 				</div>
 			</div>
-			<br />
 		</div>
 
 		<div class="tabcontent" id="playerDiv">
@@ -313,11 +341,8 @@ h3 {
 					</div>
 				</div>
 			</div>
-			<br />
 		</div>
-	</div>
-	<!--  end divMain -->	
-<br/><br/>
+	</main>
 
 <script th:inline="javascript">
 var teamYearRecord = /*[[${teamYearRecord}]]*/ null;
@@ -336,13 +361,13 @@ function setTeamDetails() {
 	//var rank = json[0].Rank == null ? "" : "#" + json[0].Rank;
 	var rank = json[0].ranking == null ? "" : "#" + json[0].ranking;
 	teamColor = json[0].Color != "" ? "#" + json[0].Color : "";
-	
+
 	var html = "";
-	
+
 	html += "<h1>" + year + " " + rank + " " + teamName + " " + mascot + " (" + record + ") </h1>" ;
-	html += "<h3>through: " + json[0].Date + "</h3>"; 
+	html += "<h3>through: " + json[0].Date + "</h3>";
 	html += `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' alt='${teamName} logo' height='125' width='125'>`;
-	
+
 	document.getElementById('teamDetails').innerHTML = html;
 	document.title = teamName + " " + year;
 }
@@ -351,12 +376,12 @@ function setScheduleResultsTable() {
 	var json = JSON.parse(scheduleResults);
 	var tableColumns = ["Date", "Opponent", "Result"];
 	var html = "";
-	
+
 	//set table header
 	var columnsToExclude = ["GameId", "sqldate", "HomeTeamId", "AwayTeamId"];
 	html += "<table>";
 	html += getTableHeader(json[0], columnsToExclude);
-	
+
 	//add row data
 	for(i=0; i<json.length; i++) {
 		var row = json[i];
@@ -364,83 +389,83 @@ function setScheduleResultsTable() {
 		var opponentLink = `<a href='/teams/team/${opponentId}/year/${year}'>${row.Opponent}</a>`;
 		var linkPage = (row.Result == "TBD") ? "gamepreview" : "boxscore";
 		var gameLink = `<a href='/games/game/${row.GameId}/${linkPage}'>${row.Date}</a>`;
-		
+
 		var columnLinks = {
-			Date : gameLink,	
+			Date : gameLink,
 			Opponent : opponentLink,
 		}
-		
+
 		html += getTableRow(row, columnsToExclude, columnLinks);
-	}	
+	}
 	html += "</table>";
-	
+
 	document.getElementById('scheduleResultsDiv').innerHTML = html;
 }
 
 function setStatTables() {
-	
-	//TEAM	
-		
+
+	//TEAM
+
 	var stat =  /*[[${teamScoring}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Scoring", "teamScoringDiv");
-	
+
 	stat =  /*[[${teamYards}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Total Yards", "teamYardsDiv");
-	
+
 	stat =  /*[[${teamDownSuccessRate}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Team Down Success Rate", "teamDownSuccessRateDiv");
-	
+
 	stat =  /*[[${teamPassing}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Passing", "teamPassingDiv");
-	
+
 	stat =  /*[[${teamRushing}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Rushing", "teamRushingDiv");
 
 	stat =  /*[[${team3rdDowns}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "3rd Down Conversion", "team3rdDownsDiv");
-	
+
 	stat =  /*[[${teamTurnoverMargin}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Turnover Margin", "teamTurnoverMarginDiv");
-	
+
 	stat =  /*[[${teamSos}]]*/ null;
-	setTeamPlayerStatTable(stat, "", "Team Strength of Schedule", "teamSos"); 
-	
+	setTeamPlayerStatTable(stat, "", "Team Strength of Schedule", "teamSos");
+
 	// PLAYERS
-	
+
 	stat =  /*[[${playerPassing}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Passing", "playerPassingDiv");
-	
+
 	stat = /*[[${playerRushing}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Rushing", "playerRushingDiv");
-	
+
 	stat = /*[[${playerReceiving}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Receiving", "playerReceivingDiv");
-	
+
 	stat = /*[[${playerDefense}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Defense", "playerDefenseDiv");
-	
+
 	stat = /*[[${playerInts}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Interceptions", "playerIntsDiv");
-	
+
 	stat = /*[[${playerKickReturns}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Kick Returns", "playerKickReturnsDiv");
-	
+
 	stat = /*[[${playerPuntReturns}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Punt Returns", "playerPuntReturnsDiv");
-	
+
 	stat = /*[[${playerPunting}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Punting", "playerPuntingDiv");
-	
+
 	stat = /*[[${playerKicking}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Kicking", "playerKickingDiv");
 }
 
 function isValidData(data) {
 	var result = 0;
-	if(data === null) {return result;}	
-	if (data === undefined || data.length == 0) {return result;}	
+	if(data === null) {return result;}
+	if (data === undefined || data.length == 0) {return result;}
 	if(data == "[]") {return result;}
-	
+
 	return 1;
 }
 
@@ -448,16 +473,17 @@ function setTableHeaderColor() {
 	if(teamColor == "") {
 		return;
 	}
-	
+
 	var tableHeaders = document.getElementsByTagName("th");
 	for(var i=0; i<tableHeaders.length; i++) {
 		tableHeader = tableHeaders[i];
 		tableHeader.style.backgroundColor = teamColor;
 	}
 
-	//tabs 
+	//tabs - Schedule is active by default
+	document.getElementById("scheduleTab").style.backgroundColor = teamColor;
+	document.getElementById("teamTab").style.backgroundColor = "#999999";
 	document.getElementById("playerTab").style.backgroundColor = "#999999";
-	document.getElementById("teamTab").style.backgroundColor = teamColor;
 }
 
 function setYearLinks() {
@@ -465,9 +491,9 @@ function setYearLinks() {
 	var currentYear = "/year/" + year;
 	var html = "";
 	var MAX_YEAR = getMaxYear();
-	
+
 	html += `<a href='/teams/team/${teamId}/history'>History</a>`;
-	
+
 	for(var i=MAX_YEAR; i>=2001; i--) {
 		var newYear = "/year/" + i;
 		var currentUrl = window.location.href;
@@ -478,21 +504,18 @@ function setYearLinks() {
 }
 
 function tabClick(tab) {
-	var playerDiv = document.getElementById("playerDiv");
-	var teamDiv = document.getElementById("teamDiv");
-	
-	if(tab.id == "teamTab") {
-    	playerDiv.style.display = "none";
-    	teamDiv.style.display = "table";
-    	document.getElementById("teamTab").style.backgroundColor = teamColor;
-    	document.getElementById("playerTab").style.backgroundColor = "#999999";
-	} else {
-		playerDiv.style.display = "table";
-		teamDiv.style.display = "none";		
-    	document.getElementById("teamTab").style.backgroundColor = "#999999";
-    	document.getElementById("playerTab").style.backgroundColor = teamColor;
+	//map each tab button to its content panel
+	var tabMap = {
+		scheduleTab : "scheduleDiv",
+		teamTab : "teamDiv",
+		playerTab : "playerDiv"
+	};
+
+	for(var tabId in tabMap) {
+		var isActive = (tab.id == tabId);
+		document.getElementById(tabMap[tabId]).style.display = isActive ? "table" : "none";
+		document.getElementById(tabId).style.backgroundColor = isActive ? teamColor : "#999999";
 	}
-	
 }
 
 </script>

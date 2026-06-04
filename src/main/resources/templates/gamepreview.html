@@ -1,333 +1,259 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>College Football Data - Boxscore</title>
-
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>CFB Geek Boxscore</title>
-<meta name="description" content="College Football Geek Boxscores">
+<title>CFB Geek Game Preview</title>
+<meta name="description" content="College Football Geek Game Preview">
 <meta name="author" content="John Gilliam">
 
 <link href="/css/navbar.css" rel="stylesheet">
 
 <style type="text/css">
+:root {
+	--brand-navy: #00274c;
+	--brand-navy-light: #003a70;
+	--accent: #ffcb05;
+	--accent-hover: #ffd633;
+	--link: #0a66c2;
+	--text: #1a1a1a;
+	--text-muted: #5a6472;
+	--surface: #ffffff;
+	--bg: #f4f6f9;
+	--border: #e3e8ef;
+	--radius: 12px;
+	--shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+	--shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.12);
+	--font: "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
 
-html { 
-    height: 100%;
+* {
+	box-sizing: border-box;
 }
-body { 
-    min-height: 100%;
-    margin: 0px;
-  	background-color: white;
+
+html {
+	height: 100%;
 }
-#bannerTable {
+
+body {
+	min-height: 100%;
+	margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	line-height: 1.55;
+}
+
+a {
+	color: var(--link);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+a:hover {
+	color: var(--brand-navy);
+}
+
+/* ---- Layout ---- */
+.container {
+	max-width: 1100px;
 	margin: 0 auto;
-	border-width: 0px;
+	padding: 24px 24px 64px;
 }
-#boxscoreTable {
-	width: 100%;
+
+h3 {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--brand-navy);
+	margin: 0 0 12px;
 }
-#boxscoreDiv {
-/* 	background-color: #f2f2f2; */
-	border-style: outset;
-	border-width: 1px;
-}	
-#playersDiv {
-	display: table;
+
+/* ---- Scoreboard banner ---- */
+.scoreboard {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 16px 24px;
+	margin-bottom: 20px;
 }
-#playsDiv {
-	display: none;
+
+.scoreboard-row {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	flex-wrap: wrap;
 }
-.tab {
-    overflow: hidden;
-    /* border: 1px solid #ccc; */
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;
-    /* background-color: #333; */
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+
+.sb-team {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex: 1 1 0;
+	min-width: 0;
 }
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    /* border-top: none; */
-    border-width: 1px;
-    border-style: solid;
-    /* background-color: #f2f2f2; */
+
+.sb-team--visitor {
+	justify-content: flex-end;
+	text-align: right;
 }
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 6px 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
+
+.sb-team--home {
+	justify-content: flex-start;
+	text-align: left;
 }
+
+.sb-team a {
+	font-weight: 700;
+	font-size: 18px;
+	color: var(--link);
+}
+
+.sb-team img {
+	height: 50px;
+	width: 50px;
+	object-fit: contain;
+	flex-shrink: 0;
+}
+
+.sb-vs {
+	font-size: 14px;
+	color: var(--text-muted);
+}
+
+.sb-meta {
+	margin-top: 8px;
+	text-align: center;
+}
+
+.sb-meta p {
+	font-size: 14px;
+	color: var(--text-muted);
+	margin: 2px 0;
+}
+
+/* ---- Section cards ---- */
+.card {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 18px 22px;
+	margin-bottom: 20px;
+}
+
+.panel-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	align-items: flex-start;
+}
+
+.panel-row .card {
+	flex: 1 1 360px;
+}
+
+/* ---- Tables ---- */
 table.fixedWidth {
 	table-layout: fixed;
 }
+
 table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid lightgrey;
+	font-family: var(--font);
+	font-size: 13px;
+	border-collapse: collapse;
+	width: 100%;
+	border: none;
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+	overflow: hidden;
 }
+
 table td {
-	font-size: 12px;
-    /* border: 1px solid #ddd; */
-    border-bottom: 1px solid #ddd;
-    padding: 2px; 
-    padding-left: 4px;
+	font-size: 13px;
+	border-bottom: 1px solid var(--border);
+	padding: 8px 10px;
+	vertical-align: middle;
 }
+
+/* Side borders drawn as cell borders so they match the row border exactly */
+table td:first-child,
+table th:first-child {
+	border-left: 1px solid var(--border);
+}
+
+table td:last-child,
+table th:last-child {
+	border-right: 1px solid var(--border);
+}
+
 table td a {
-	color: #06c;
-	text-decoration: none;
+	color: var(--link);
+	font-weight: 600;
 }
+
 table th {
-	font-size: 14px;
-	font-weight: bold;
-    text-align: left;
-    background-color: #00274c;
-    font-style: normal;
-    color: white;
-    padding-left: 4px;
-}
-table tr:hover {
-	background-color: lightgray;
-}
-h1 {
-	font-size: 24px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-img {
-	vertical-align: middle;
-	padding-right: 5px;
-}
-
-/* Create an active/current tablink class */
-/* .tab button.active { */
-/*     background-color: #ccc; */
-/* } */
-
-#bannerDiv {
-	/* text-align: center; */
-	display: inline;
-	margin: auto;
-	background-color: #f2f2f2;
-}
-#bannerDiv a {
-	font-weight: bold;
-	font-size: 20px;
-}
-#bannerDiv p {
-	font-weight: normal;
-	font-size: 14px;
-	border: 0px;
-}
-#bannerDiv img {
-	vertical-align: middle;
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	text-align: left;
+	background-color: var(--brand-navy);
+	color: #fff;
 	padding: 10px;
 }
-#bannerTable td, th {
-	border: 0px;
-}
-#bannerTable tr:hover {
-	background-color: white;
-}
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-#drivesAndPlaysTable {
-	table-layout: fixed;
-	width: 100%;
-}
-#driveTeamSelectorTable tr:hover {
-	background-color: white;
-}
-#driveTeamSelectorTable {
-	border: none;
-}
-.child {
-	display: none;
-}
-.parent {
-	display: table-row;
-}
-#teamStatsDiv {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 20%;
-/* 	background-color: #f2f2f2; */
-	border-style: none;
-	border-width: 1px;
-}
-#scoringPlaysDiv {
-/* 	background-color: #f2f2f2; */
-	border-style: none;
-	border-width: 1px;
-}
-/* DivTable.com */
-.divMain {
-	display: block;
-	margin: auto;
-    width: 80%;
-    /*   fixed menu chnage on next line */
-    margin-top: 30px;
-}
-.divTable {
-	display: table;
-	width: 100%;	
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 50%;  
-}
-.seasonResults {
-	width: 40%;  
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
-}
-.divTableBody {
-	display: table-row-group;
+
+table tr:hover {
+	background-color: #eef2f7;
 }
 
+img {
+	vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+	.container {
+		padding: 20px 14px 48px;
+	}
+	.sb-team a {
+		font-size: 15px;
+	}
+}
 </style>
 </head>
-<body onload = "setBannerAndTitle(); setTeamStats(); setSeasonResults(); setOdds(); setSpRankings(); setGameHistory();"> 
-
-<!-- 
-	<body onload="
-	setBannerAndTitle();
-	setBoxscoreTable(); 
-	setScoringPlaysTable(); 
-	setAllPlayerStats(); 
-	setAllPlaysTable(); 
-	setPlaySummary();
-	setDrivesAndPlaysTable('All'); 
-	setDrivesAndPlaysTeamSelectors();
-	setOdds();"> 
-	-->
-	
-	<!--  
-	<p th:text="'year= ' + ${year} "/>
-	<p th:text="'week= ' + ${week} "/>
-	<p th:text="'gameId= ' + ${gameId} "/>	
-	<p th:text="'gameHeader= ' + ${gameHeader}"/>	
-	<p th:text="'dataJson= ' + ${dataJson} "/>
-	<p th:text="'scoringPlays= ' + ${scoringPlays} "/>
-	<p th:text="'scoringPlays= ' + ${allPlays} "/>
-	<p th:text="'playerPassing= ' + ${playerPassing} "/>
-	<p th:text="'playerRushing= ' + ${playerRushing} "/>
-	<p th:text="'playerReceiving= ' + ${playerReceiving} "/>
-	<p th:text="'playerDefense= ' + ${playerDefense} "/>
-	<p th:text="'playerInts= ' + ${playerInts} "/>
-	<p th:text="'playerKickReturns= ' + ${playerKickReturns} "/>
-	<p th:text="'playerPuntReturns= ' + ${playerPuntReturns} "/>
-	<p th:text="'playerKicking= ' + ${playerKicking} "/>
-	<p th:text="'playerPunting= ' + ${playerPunting} "/>
-	<p th:text="'drivesAndPlays= ' + ${drivesAndPlays} "/>
-	-->
+<body onload="setBannerAndTitle(); setTeamStats(); setSeasonResults(); setOdds(); setSpRankings(); setGameHistory();">
 
 <div class="navbar">
-	<a href="/">CFB GEEK</a> 
+	<a href="/">CFB GEEK</a>
 	<a href="/teams">Teams</a>
 	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
 	<a href="#" onclick="gotoYearStats(year)">Stats</a>
-	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>
 	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
 </div>
 
-<br/><br/>
+<main class="container">
 
-<div class = "divMain">
-	<div class="divTable">
-		<div class="divTableBody">	
-			<div class="divTableRow">
-				<div class="divTableCell" id="bannerDiv" style="background-color:white">
-				</div>
-			</div>
-		</div>
-	</div>	
-	<div class="divTable">
-		<div class="divTableBody">	
-			<div class="divTableRow">
-				<div class="divTableCell" id="oddsDiv">
-				</div>
-			</div>
-		</div>
+	<section id="bannerDiv" class="scoreboard"></section>
+
+	<div class="card" id="oddsDiv"></div>
+
+	<div class="card" id="spRankingsDiv"></div>
+
+	<div class="panel-row">
+		<div class="card" id="teamOffenseDiv"></div>
+		<div class="card" id="teamDefenseDiv"></div>
 	</div>
-		<div class="divTable">
-			<div class="divTableBody">	
-				<div class="divTableRow">
-					<div class="divTableCell" id="spRankingsDiv">
-					</div>
-			</div>
-		</div>
+
+	<div class="panel-row">
+		<div class="card" id="awaySeasonResultsDiv"></div>
+		<div class="card" id="homeSeasonResultsDiv"></div>
 	</div>
-	
-	<div class="divTable">
-		<div class="divTableBody">	
-			<div class="divTableRow">
-				<div class="divTableCell" id="teamOffenseDiv">
-				</div>
-				<div class="divTableCell" id="teamDefenseDiv">
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="divTable">
-		<div class="divTableBody">
-			<div class = "divTableRow">	
-				<div class="divTableCell seasonResults" id="awaySeasonResultsDiv">
-				</div>
-				<div class="divTableCell seasonResults" id="homeSeasonResultsDiv">
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="divTable">
-		<div class="divTableBody">
-			<div class = "divTableRow">	
-				<div class="divTableCell" id="gameHistoryDiv">
-				</div>
-			</div>
-		</div>
-	</div>
-</div>	<!-- end divMain -->
-<br/><br/>
-	
+
+	<div class="card" id="gameHistoryDiv"></div>
+
+</main>
 
 <script th:inline="javascript">
 
@@ -340,24 +266,24 @@ var visitorTeamId;
 var year = /*[[${year}]]*/ null;
 
 function setBannerAndTitle() {
-	
+
 	var gameHeader = /*[[${gamePreviewHeader}]]*/ null;
 	var gameHeaderParsed = JSON.parse(gameHeader);
 	var game = gameHeaderParsed[0];
-	
+
 	var site = (game.Site == 'NEUTRAL') ? 'vs' : 'at';
 
 	var visitorUrl = "/teams/team/" + game.VisitorTeamId + "/year/" + game.Year;
-	var homeUrl = "/teams/team/" + game.HomeTeamId + "/year/" + game.Year;	
-	var visitorLogo = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${game.VisitorTeamId}.png' height='50' width='50'>`;
-	var homeLogo = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${game.HomeTeamId}.png' height='50' width='50'>`;
+	var homeUrl = "/teams/team/" + game.HomeTeamId + "/year/" + game.Year;
+	var visitorLogo = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${game.VisitorTeamId}.png' height='50' width='50'>`;
+	var homeLogo = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${game.HomeTeamId}.png' height='50' width='50'>`;
 	var homeTeamRank = (game.HomeTeamRank == null) ? "" : "#" + game.HomeTeamRank;
 	var visitorTeamRank = (game.VisitorTeamRank == null) ? "" : "#" + game.VisitorTeamRank;
 	var homeTeamRecord = (game.HomeTeamRecord == null) ? "" : "(" + game.HomeTeamRecord + ")";
 	var visitorTeamRecord = (game.VisitorTeamRecord == null) ? "" : "(" + game.VisitorTeamRecord + ")";
 	var visitorTeamMascot = game.VisitorTeamMascot;
 	var homeTeamMascot = game.HomeTeamMascot;
-	
+
 	//set globals for use by setBoxscoreTable()
 	homeTeamName = game.HomeTeamName;
 	homeTeamAbbr = game.HomeTeamAbbreviation;
@@ -366,20 +292,28 @@ function setBannerAndTitle() {
 	visitorTeamAbbr = game.VisitorTeamAbbreviation;
 	visitorTeamId = game.VisitorTeamId;
 	year = game.Year;
-	
-	var visitorTeamDetails = visitorTeamRank + " " + visitorTeamName + " " + visitorTeamMascot + " " + visitorTeamRecord;
-	var homeTeamDetails = homeTeamRank + " " + homeTeamName + " " + homeTeamMascot + " " + homeTeamRecord; 
 
-	var html = "";
-	html += "<table id='bannerTable'>"
-	html += `<tr><td align='right'><a href='${visitorUrl}'>${visitorTeamDetails}</a>${visitorLogo}</td>`;
-	html +=	"<td align='center'><p>" + site + "</p></td>";
-	html += `<td align='left'>${homeLogo}<a href='${homeUrl}'>${homeTeamDetails}</a></td></tr>`;
-	html +=	"<tr><td></td><td align='center'><p>" + game.Date + "</td><td></td></tr>";
-	html += "</table>";
-	
+	var visitorTeamDetails = visitorTeamRank + " " + visitorTeamName + " " + visitorTeamMascot + " " + visitorTeamRecord;
+	var homeTeamDetails = homeTeamRank + " " + homeTeamName + " " + homeTeamMascot + " " + homeTeamRecord;
+
+	var html = `
+		<div class="scoreboard-row">
+			<div class="sb-team sb-team--visitor">
+				<a href="${visitorUrl}">${visitorTeamDetails}</a>
+				${visitorLogo}
+			</div>
+			<div class="sb-vs">${site}</div>
+			<div class="sb-team sb-team--home">
+				${homeLogo}
+				<a href="${homeUrl}">${homeTeamDetails}</a>
+			</div>
+		</div>
+		<div class="sb-meta">
+			<p>${game.Date}</p>
+		</div>`;
+
 	document.title = game.Title;
-	document.getElementById('bannerDiv').innerHTML = html;		
+	document.getElementById('bannerDiv').innerHTML = html;
 }
 
 function setTeamStats() {
@@ -387,19 +321,19 @@ function setTeamStats() {
 	var homeTeamOffense = /*[[${homeTeamOffense}]]*/ null;
 	var awayTeamDefense = /*[[${awayTeamDefense}]]*/ null;
 	var homeTeamDefense = /*[[${homeTeamDefense}]]*/ null;
-	
-	// offense for both teams 
+
+	// offense for both teams
 	var html = "<h3>Team Offense Stats</h3>";
  	html += "<table><tr>";
 	html += "<th></th><th>" + visitorTeamName + "</th><th>" + homeTeamName + "</th></tr>";
 	var awayJson = JSON.parse(awayTeamOffense);
 	var homeJson = JSON.parse(homeTeamOffense);
 	for(var key in awayJson[0]) {
-		if(key == "TeamId" || key == "Team") {continue;} 
-		html+= "<tr><td>" + key + "</td><td>" + awayJson[0][key] + "</td><td>" + homeJson[0][key] + "</td></tr>"; 
-	} 
-	html += "</table";
-	document.getElementById('teamOffenseDiv').innerHTML = html; 
+		if(key == "TeamId" || key == "Team") {continue;}
+		html+= "<tr><td>" + key + "</td><td>" + awayJson[0][key] + "</td><td>" + homeJson[0][key] + "</td></tr>";
+	}
+	html += "</table>";
+	document.getElementById('teamOffenseDiv').innerHTML = html;
 
 	// defense for both teams
 	html = "<h3>Team Defense Stats</h3>";
@@ -408,24 +342,24 @@ function setTeamStats() {
 	awayJson = JSON.parse(awayTeamDefense);
 	homeJson = JSON.parse(homeTeamDefense);
 	for(var key in awayJson[0]) {
-		if(key == "TeamId" || key == "Team") {continue;} 
-		html+= "<tr><td>" + key + "</td><td>" + awayJson[0][key] + "</td><td>" + homeJson[0][key] + "</td></tr>"; 
+		if(key == "TeamId" || key == "Team") {continue;}
+		html+= "<tr><td>" + key + "</td><td>" + awayJson[0][key] + "</td><td>" + homeJson[0][key] + "</td></tr>";
 	}
-	html += "</table";
-	document.getElementById('teamDefenseDiv').innerHTML = html;  
+	html += "</table>";
+	document.getElementById('teamDefenseDiv').innerHTML = html;
 }
 
 function setSeasonResults() {
 	var awaySeasonResults = /*[[${awaySeasonResults}]]*/ null;
 	var homeSeasonResults = /*[[${homeSeasonResults}]]*/ null;
-	
+
 	var json;
 	var targetDiv;
 	var teamId;
 	var teamName;
-	
+
 	var teams = [visitorTeamId, homeTeamId];
-	
+
 	for(var t=0; t<teams.length; t++) {
 		if(teams[t] == visitorTeamId) {
 			teamId = visitorTeamId;
@@ -438,15 +372,15 @@ function setSeasonResults() {
 			json = JSON.parse(homeSeasonResults);
 			targetDiv = "homeSeasonResultsDiv";
 		}
-		
+
 		var tableColumns = ["Date", "Opponent", "Result"];
-		
+
 		//set table header
 		var html = "<h3>" + teamName + " Schedule</h3>";
 		var columnsToExclude = ["GameId", "HomeTeamId", "AwayTeamId"];
 		html += "<table>";
 		html += getTableHeader(json[0], columnsToExclude);
-		
+
 		//add row data
 		for(i=0; i<json.length; i++) {
 			var row = json[i];
@@ -454,16 +388,16 @@ function setSeasonResults() {
 			var opponentLink = `<a href='/teams/team/${opponentId}/year/${year}'>${row.Opponent}</a>`;
 			var linkPage = (row.Result == "TBD") ? "gamepreview" : "boxscore";
 			var gameLink = `<a href='/games/game/${row.GameId}/${linkPage}'>${row.Date}</a>`;
-			
+
 			var columnLinks = {
-				Date : gameLink,	
+				Date : gameLink,
 				Opponent : opponentLink,
 			}
-			
+
 			html += getTableRow(row, columnsToExclude, columnLinks);
-		}	
+		}
 		html += "</table>";
-		
+
 		document.getElementById(targetDiv).innerHTML = html;
 	}
 }
@@ -473,12 +407,12 @@ function setOdds() {
 	var json = JSON.parse(odds);
 	var html = "<h3>Odds</h3>"
 	html += "<table>";
-	
+
 	if(json[0] == undefined) {
 		document.getElementById("oddsDiv").innerHTML = "<h3>Odds</h3><br>Data Currently Unavailable."
 		return;
 	}
-	
+
 	html += getTableHeader(json[0]);
 	for(var i=0; i<json.length; i++) {
 		html += getTableRow(json[i]);
@@ -492,12 +426,12 @@ function setSpRankings() {
 	var json = JSON.parse(spRankings);
 	var html = "<h3>SP+ Rankings</h3>"
 	html += "<table>";
-	
+
 	if(json[0] == undefined) {
 		document.getElementById("spRankingsDiv").innerHTML = "<h3>SP+ Rankings</h3><br>Data Currently Unavailable."
 		return;
 	}
-	
+
 	html += getTableHeader(json[0]);
 	for(var i=0; i<json.length; i++) {
 		html += getTableRow(json[i]);
@@ -509,18 +443,18 @@ function setSpRankings() {
 function setGameHistory() {
 	var gameHistory = /*[[${gameHistory}]]*/ null;
 	var json = JSON.parse(gameHistory);
-	
+
 	if(json[0] == undefined) {
 		return;
 	}
-	
+
 	var columnsToExclude = ["GameId", "Year", "WinnerTeamId", "HomeTeamId", "AwayTeamId"];
-	
+
 	var html = "<h3>Game History</h3>"
 	html += "<table>";
-	
+
 	html += getTableHeader(json[0], columnsToExclude);
-	
+
 	//add table rows
 	for(var i=0; i<json.length; i++) {
 		var row = json[i];
@@ -529,14 +463,14 @@ function setGameHistory() {
 		var winnerTeamHistoryLink = `<a href='/teams/team/${row.WinnerTeamId}/year/${row.Year}'>${row.Winner}</a>`;
 		var homeTeamYearLink = `<a href='/teams/team/${row.HomeTeamId}/year/${row.Year}'>${row.Home}</a>`;
 		var awayTeamYearLink = `<a href='/teams/team/${row.AwayTeamId}/year/${row.Year}'>${row.Visitor}</a>`;
-		
+
 		var columnLinks = {
 			Date : gameLink,
 			Winner : winnerTeamHistoryLink,
 			Home : homeTeamYearLink,
 			Visitor : awayTeamYearLink
 		}
-		
+
 		html += getTableRow(row, columnsToExclude, columnLinks);
 	}
 	html += "</table>";

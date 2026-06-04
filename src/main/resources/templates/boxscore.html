@@ -1,9 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>College Football Data - Boxscore</title>
-
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>CFB Geek Boxscore</title>
 <meta name="description" content="College Football Geek Boxscores">
@@ -12,277 +10,380 @@
 <link href="/css/navbar.css" rel="stylesheet">
 
 <style type="text/css">
+:root {
+	--brand-navy: #00274c;
+	--brand-navy-light: #003a70;
+	--accent: #ffcb05;
+	--accent-hover: #ffd633;
+	--link: #0a66c2;
+	--text: #1a1a1a;
+	--text-muted: #5a6472;
+	--surface: #ffffff;
+	--bg: #f4f6f9;
+	--border: #e3e8ef;
+	--radius: 12px;
+	--shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+	--shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.12);
+	--font: "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
 
-html { 
-    height: 100%;
+* {
+	box-sizing: border-box;
 }
-body { 
-    min-height: 100%;
-    margin: 0px;
-  	background-color: white;
+
+html {
+	height: 100%;
 }
-#bannerTable {
+
+body {
+	min-height: 100%;
+	margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	line-height: 1.55;
+}
+
+a {
+	color: var(--link);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+a:hover {
+	color: var(--brand-navy);
+}
+
+/* ---- Layout ---- */
+.container {
+	max-width: 1200px;
 	margin: 0 auto;
-	border-width: 0px;
+	padding: 24px 24px 64px;
 }
-#boxscoreTable {
-	width: 100%;
+
+h1 {
+	font-size: 32px;
+	margin: 0;
 }
+
+h3 {
+	font-size: 14px;
+	margin: 0 0 8px;
+	color: var(--brand-navy);
+}
+
+/* ---- Scoreboard banner ---- */
+.scoreboard {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 16px 24px;
+	margin-bottom: 20px;
+}
+
+.scoreboard-row {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+.sb-team {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex: 1 1 0;
+	min-width: 0;
+}
+
+.sb-team--visitor {
+	justify-content: flex-end;
+	text-align: right;
+}
+
+.sb-team--home {
+	justify-content: flex-start;
+	text-align: left;
+}
+
+.sb-team a {
+	font-weight: 700;
+	font-size: 20px;
+	color: var(--link);
+}
+
+.sb-team img {
+	height: 50px;
+	width: 50px;
+	object-fit: contain;
+	flex-shrink: 0;
+}
+
+.sb-score {
+	font-size: 32px;
+	font-weight: 800;
+	color: var(--text);
+	font-variant-numeric: tabular-nums;
+	min-width: 48px;
+	text-align: center;
+}
+
+.sb-vs {
+	font-size: 14px;
+	color: var(--text-muted);
+}
+
+.sb-meta {
+	margin-top: 8px;
+	text-align: center;
+}
+
+.sb-meta p {
+	font-size: 14px;
+	color: var(--text-muted);
+	margin: 2px 0;
+}
+
+@media (max-width: 600px) {
+	.sb-team a {
+		font-size: 16px;
+	}
+	.sb-score {
+		font-size: 26px;
+	}
+}
+
+/* ---- Boxscore + scoring plays panels ---- */
+.panel-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	margin-bottom: 24px;
+}
+
+.panel {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	overflow: hidden;
+}
+
 #boxscoreDiv {
-/* 	background-color: #f2f2f2; */
-	border-style: outset;
-	border-width: 1px;
-}	
-#playersDiv {
-	display: table;
+	flex: 0 1 320px;
 }
-#playsDiv {
-	display: none;
+
+#scoringPlaysDiv {
+	flex: 1 1 420px;
 }
+
+/* ---- Tabs ---- */
 .tab {
-    overflow: hidden;
-    /* border: 1px solid #ccc; */
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;
-    /* background-color: #333; */
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	display: flex;
+	/* gap: 4px; */
+	overflow: hidden;
+	font-family: var(--font);
+	/* border-bottom: 2px solid var(--brand-navy); */
+	margin-bottom: 0;
 }
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    /* border-top: none; */
-    border-width: 1px;
-    border-style: solid;
-    /* background-color: #f2f2f2; */
-}
+
 .tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 6px 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
+	background-color: #999999;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 10px 18px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	font-family: var(--font);
+	font-size: 14px;
+	font-weight: 700;
+	color: #fff;
+	text-decoration: none;
+	transition: background-color 0.15s ease;
 }
+
+.tab button:hover {
+	background-color: var(--brand-navy-light);
+}
+
+/* ---- Tab content panels ---- */
+.tabcontent {
+	display: none;
+	width: 100%;
+	padding: 18px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-top: none;
+	border-bottom-left-radius: var(--radius);
+	border-bottom-right-radius: var(--radius);
+	box-shadow: var(--shadow);
+}
+
+/* ---- Tables ---- */
 table.fixedWidth {
 	table-layout: fixed;
 }
+
 table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid lightgrey;
+	font-family: var(--font);
+	font-size: 13px;
+	border-collapse: collapse;
+	width: 100%;
+	border: none;
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+	overflow: hidden;
 }
+
 table td {
-	font-size: 12px;
-    /* border: 1px solid #ddd; */
-    border-bottom: 1px solid #ddd;
-    padding: 2px; 
-    padding-left: 4px;
+	font-size: 13px;
+	border-bottom: 1px solid var(--border);
+	padding: 8px 10px;
+	vertical-align: middle;
 }
+
 table td a {
-	color: #06c;
+	color: var(--link);
 	text-decoration: none;
 }
+
 table th {
-	font-size: 14px;
-	font-weight: bold;
-    text-align: left;
-    background-color: #00274c;
-    font-style: normal;
-    color: white;
-    padding-left: 4px;
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	text-align: left;
+	background-color: var(--brand-navy);
+	color: #fff;
+	padding: 10px;
 }
+
+table tbody tr:hover,
 table tr:hover {
-	background-color: lightgray;
+	background-color: #eef2f7;
 }
-h1 {
-	font-size: 24px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
+
 img {
 	vertical-align: middle;
 	padding-right: 5px;
 }
 
-/* Create an active/current tablink class */
-/* .tab button.active { */
-/*     background-color: #ccc; */
-/* } */
-
-#bannerDiv {
-	/* text-align: center; */
-	display: inline;
-	margin: auto;
-	background-color: #f2f2f2;
-}
-#bannerDiv a {
-	font-weight: bold;
-	font-size: 20px;
-}
-#bannerDiv p {
-	font-weight: normal;
-	font-size: 14px;
-	border: 0px;
-}
-#bannerDiv img {
-	vertical-align: middle;
-	padding: 10px;
-}
-#bannerTable td, th {
-	border: 0px;
-}
-#bannerTable tr:hover {
-	background-color: white;
-}
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
+/* ---- Drives / plays ---- */
 #drivesAndPlaysTable {
 	table-layout: fixed;
 	width: 100%;
 }
-#driveTeamSelectorTable tr:hover {
-	background-color: white;
-}
+
 #driveTeamSelectorTable {
 	border: none;
+	width: auto;
+	margin-bottom: 12px;
 }
+
+#driveTeamSelectorTable td {
+	border: none;
+}
+
+#driveTeamSelectorTable tr:hover {
+	background-color: transparent;
+}
+
+#driveTeamSelector {
+	font-family: var(--font);
+	font-size: 14px;
+	color: var(--text);
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 6px 10px;
+	cursor: pointer;
+}
+
 .child {
 	display: none;
 }
+
 .parent {
 	display: table-row;
 }
-#boxscoreDiv {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 20%;
-/* 	background-color: #f2f2f2; */
-	border-style: none;
-	border-width: 1px;
-}
-#scoringPlaysDiv {
-/* 	background-color: #f2f2f2; */
-	border-style: none;
-	border-width: 1px;
-}
-/* DivTable.com */
-.divMain {
-	display: block;
-	margin: auto;
-    width: 80%;
-    /*   fixed menu chnage on next line */
-    margin-top: 30px;
-}
+
+/* DivTable layout utilities (used by player-stat + tab panels) */
 .divTable {
 	display: table;
-	width: 100%;	
+	width: 100%;
 }
 .divTableRow {
 	display: table-row;
 }
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 50%;  
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
-}
 .divTableBody {
 	display: table-row-group;
 }
+.divTableCell {
+	display: table-cell;
+	padding: 8px 12px;
+	width: 50%;
+	vertical-align: top;
+}
 
+@media (max-width: 700px) {
+	.container {
+		padding: 20px 14px 48px;
+	}
+	.divTableCell {
+		display: block;
+		width: 100%;
+	}
+}
 </style>
 </head>
 <body onload="
-	setBannerAndTitle(); 
-	setBoxscoreTable(); 
-	setScoringPlaysTable(); 
-	setAllPlayerStats(); 
-	setAllPlaysTable(); 
+	setBannerAndTitle();
+	setBoxscoreTable();
+	setScoringPlaysTable();
+	setAllPlayerStats();
+	setAllPlaysTable();
 	setPlaySummary();
-	setDrivesAndPlaysTable('All'); 
+	setDrivesAndPlaysTable('All');
 	setDrivesAndPlaysTeamSelectors();
 	setOdds();">
 
 <div class="navbar">
-	<a href="/">CFB GEEK</a> 
+	<a href="/">CFB GEEK</a>
 	<a href="/teams">Teams</a>
 	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
 	<a href="#" onclick="gotoYearStats(year)">Stats</a>
-	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>
 	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
 </div>
 
-<br/><br/>
+<main class="container">
 
-<div class = "divMain">
-	<div class="divTable">
-		<div class="divTableBody">	
-			<div class="divTableRow">
-				<div class="divTableCell" id="bannerDiv" style="background-color:white">
-				</div>
-			</div>
-		</div>
-	</div>	
-	
-	<div class="divTable">
-		<div class="divTableBody">	
-			<div class="divTableRow">
-				<div class="divTableCell" id="boxscoreDiv">
-				</div>
-				<div class="divTableCell" id="scoringPlaysDiv">
-				</div>
-			</div>
-		</div>
-	</div>	
-	
-	<br />
-	
-	<div class="tab" id="tabs">
-	  <button onclick="tabClick(this)" id="playersTab">Players</button>
-	  <button onclick="tabClick(this)" id="playsTab">Plays</button>
-	  <button onclick="tabClick(this)" id="drivesTab">Drives</button>
-	  <button onclick="tabClick(this)" id="oddsTab">Odds</button>
+	<section id="bannerDiv" class="scoreboard"></section>
+
+	<div class="panel-row">
+		<div class="panel" id="boxscoreDiv"></div>
+		<div class="panel" id="scoringPlaysDiv"></div>
 	</div>
-	
+
+	<div class="tab" id="tabs">
+		<button onclick="tabClick(this)" id="playersTab">Players</button>
+		<button onclick="tabClick(this)" id="playsTab">Plays</button>
+		<button onclick="tabClick(this)" id="drivesTab">Drives</button>
+		<button onclick="tabClick(this)" id="oddsTab">Odds</button>
+	</div>
+
 	<div class="tabcontent" id="playersDiv">
-		<div class="divTableBody">	
+		<div class="divTableBody">
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorPassingDiv">
 					<p>Visitor Passing</p>
 				</div>
 				<div class="divTableCell" id="homePassingDiv">
 					<p>Home Passing</p>
-				</div> 
+				</div>
 			</div>
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorRushingDiv">
@@ -290,55 +391,55 @@ h3 {
 				</div>
 				<div class="divTableCell" id="homeRushingDiv">
 					<p>Home Rushing</p>
-				</div> 
-			</div> 
+				</div>
+			</div>
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorReceivingDiv">
 					<p>Visitor Receiving</p>
 				</div>
 				<div class="divTableCell" id="homeReceivingDiv">
 					<p>Home Receiving</p>
-				</div> 
-			</div> 
+				</div>
+			</div>
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorDefenseDiv">
 					<p>Visitor Defense</p>
 				</div>
 				<div class="divTableCell" id="homeDefenseDiv">
 					<p>Home Defense</p>
-				</div> 
-			</div> 
+				</div>
+			</div>
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorIntsDiv">
 					<p>Visitor Ints</p>
 				</div>
 				<div class="divTableCell" id="homeIntsDiv">
 					<p>Home Ints</p>
-				</div> 
-			</div> 
+				</div>
+			</div>
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorKickReturnsDiv">
 					<p>Visitor Kick Returns</p>
 				</div>
 				<div class="divTableCell" id="homeKickReturnsDiv">
 					<p>Home Kick Returns</p>
-				</div> 
-			</div> 
+				</div>
+			</div>
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorPuntReturnsDiv">
 					<p>Visitor Punt Returns</p>
 				</div>
 				<div class="divTableCell" id="homePuntReturnsDiv">
 					<p>Home Punt Returns</p>
-				</div> 
-			</div> 
+				</div>
+			</div>
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorKickingDiv">
 					<p>Visitor Kicking</p>
 				</div>
 				<div class="divTableCell" id="homeKickingDiv">
 					<p>Home Kicking</p>
-				</div> 
+				</div>
 			</div>
 			<div class="divTableRow">
 				<div class="divTableCell" id="visitorPuntingDiv">
@@ -346,79 +447,73 @@ h3 {
 				</div>
 				<div class="divTableCell" id="homePuntingDiv">
 					<p>Home Punting</p>
-				</div> 
-			</div> 
-		</div><br>
-	</div> 
-	
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="tabcontent" id="playSummaryDiv">
+		<div class="divTableBody">
+			<div class="divTableRow">
+				<div class="divTableCell" id="playSummary"></div>
+			</div>
+		</div>
 		<br />
-		<div class="divTableBody">	
+		<div class="divTableBody">
 			<div class="divTableRow">
-				<div class="divTableCell" id="playSummary">	
-				</div>
+				<div class="divTableCell" id="allPlaysDiv"></div>
 			</div>
-		</div><br />
-		<div class="divTableBody">	
-			<div class="divTableRow">
-				<div class="divTableCell" id="allPlaysDiv">	
-				</div>
-			</div>
-		</div><br />
-	</div>		
-	
+		</div>
+	</div>
+
 	<div class="tabcontent" id="drivesDiv">
 		<table id="driveTeamSelectorTable">
 			<tbody>
-			<tr>
-			<td width="5%">
-			<h3>Team: </h3>
-			</td>
-			<td>
-			<select id="driveTeamSelector" onchange="setDrivesAndPlaysTable(this.value)">
-				<option value="All">All</option>
-			</select>
-			</td>
-			</tr>
+				<tr>
+					<td width="5%">
+						<h3>Team: </h3>
+					</td>
+					<td>
+						<select id="driveTeamSelector" onchange="setDrivesAndPlaysTable(this.value)">
+							<option value="All">All</option>
+						</select>
+					</td>
+				</tr>
 			</tbody>
 		</table>
-		<div class="divTableBody">	
+		<div class="divTableBody">
 			<div class="divTableRow">
-				<div class="divTableCell" id="allDrivesDiv">
-				</div>
-			</div>	
-		</div><br>
+				<div class="divTableCell" id="allDrivesDiv"></div>
+			</div>
+		</div>
 	</div>
-		<div class="tabcontent" id="oddsDiv">
-		<br />
-		<div class="divTableBody">	
+
+	<div class="tabcontent" id="oddsDiv">
+		<div class="divTableBody">
 			<div class="divTableRow">
 				<div class="divTableCell" id="allOddsDiv">
-				No Data Available	
+					No Data Available
 				</div>
 			</div>
-		</div><br />
-	</div>		
-	
+		</div>
+	</div>
 
-</div>	<!-- end divMain -->
-<br/><br/>
-	
+</main>
 
 <script th:inline="javascript">
 
-var homeTeamName;
-var homeTeamAbbr;
-var visitorTeamName;
-var visitorTeamAbbr;
-var year = /*[[${year}]]*/ null;
+let homeTeamName;
+let homeTeamAbbr;
+let visitorTeamName;
+let visitorTeamAbbr;
+let year = /*[[${year}]]*/ null;
 
 function setBoxscoreTable() {
-	var json = /*[[${dataJson}]]*/ null;
-	var jsonParsed = JSON.parse(json);	
-	var home;
-	var visitor;
-	
+	const json = /*[[${dataJson}]]*/ null;
+	let jsonParsed = JSON.parse(json);
+	let home;
+	let visitor;
+
 	if(jsonParsed[0].Team == homeTeamName) {
 		home = jsonParsed[0];
 		visitor = jsonParsed[1];
@@ -426,26 +521,26 @@ function setBoxscoreTable() {
 		home = jsonParsed[1];
 		visitor = jsonParsed[0];
 	}
-	
- 	var html = "<table><tr><th></th>";
-	html += "<th>" + visitor.Team + "</th><th>" + home.Team + "</th></tr>";
-	
+
+ 	let html = "<table><tr><th></th>";
+	html += "<th>" + visitorTeamAbbr + "</th><th>" + homeTeamAbbr + "</th></tr>";
+
 	//add row data
-    for (var key in home) {
-    	if(key == "Team") {continue;}    	
+    for (let key in home) {
+    	if(key == "Team") {continue;}
     	html += "<tr><td>" + key + "</td><td>" + visitor[key] + "</td><td>" + home[key] + "</td></tr>";
     }
 	html += "</table>";
-	document.getElementById('boxscoreDiv').innerHTML = html; 
+	document.getElementById('boxscoreDiv').innerHTML = html;
 }
 
 function setScoringPlaysTable() {
-	var scoringPlays = /*[[${scoringPlays}]]*/ null;
-	var json = JSON.parse(scoringPlays);
-	var html = "<table>";
-	
-	html += getTableHeaderScoringPlays(json[0], homeTeamAbbr, visitorTeamAbbr); 
-	for(var i=0; i<json.length; i++) {
+	const scoringPlays = /*[[${scoringPlays}]]*/ null;
+	let json = JSON.parse(scoringPlays);
+	let html = "<table>";
+
+	html += getTableHeaderScoringPlays(json[0], homeTeamAbbr, visitorTeamAbbr);
+	for(let i=0; i<json.length; i++) {
 		html += getTableRow(json[i]);
 	}
 	html += "</table>";
@@ -453,12 +548,12 @@ function setScoringPlaysTable() {
 }
 
 function setPlaySummary() {
-	var playSummary = /*[[${playSummary}]]*/ null;
-	var json = JSON.parse(playSummary);
-	var html = "<table>";
-	
+	const playSummary = /*[[${playSummary}]]*/ null;
+	let json = JSON.parse(playSummary);
+	let html = "<table>";
+
 	html += getTableHeader(json[0]);
-	for(var i=0; i<json.length; i++) {
+	for(let i=0; i<json.length; i++) {
 		html += getTableRow(json[i]);
 	}
 	html += "</table>";
@@ -466,12 +561,12 @@ function setPlaySummary() {
 }
 
 function setAllPlaysTable() {
-	var allPlays = /*[[${allPlays}]]*/ null;
-	var json = JSON.parse(allPlays);
-	var html = "<table>";
-	
+	const allPlays = /*[[${allPlays}]]*/ null;
+	let json = JSON.parse(allPlays);
+	let html = "<table>";
+
 	html += getTableHeader(json[0]);
-	for(var i=0; i<json.length; i++) {
+	for(let i=0; i<json.length; i++) {
 		html += getTableRow(json[i]);
 	}
 	html += "</table>";
@@ -480,20 +575,20 @@ function setAllPlaysTable() {
 
 function setDrivesAndPlaysTable(selectedTeam) {
 
-	var drivesAndPlays = /*[[${drivesAndPlays}]]*/ null;
-	var json = JSON.parse(drivesAndPlays);
-	var drivePlayMap = new Map();
-	var html = "<table id='drivesAndPlaysTable'>";
-	var plus = '<a href="#"><img src="/images/plus.png" height="10" width="10"/></a>';
-	var minus = '<a href="#"><img src="/images/minus.png" height="10" width="10"/></a>';
-	var team;
-	
-	for(var i=0; i<json.length; i++) {
-		var driveId = json[i].driveid; 
+	const drivesAndPlays = /*[[${drivesAndPlays}]]*/ null;
+	let json = JSON.parse(drivesAndPlays);
+	let drivePlayMap = new Map();
+	let html = "<table id='drivesAndPlaysTable'>";
+	let plus = '<a href="#"><img src="/images/plus.png" height="10" width="10"/></a>';
+	let minus = '<a href="#"><img src="/images/minus.png" height="10" width="10"/></a>';
+	let team;
 
-		var drive = json[i].Team + " " + json[i].totalplays + " plays " + json[i].totalyards + " yards " + json[i].duration + " " + json[i].DriveResult;
-		var play = json[i].Clock + " " + json[i].Offense +  " " + json[i].Down + " & " + json[i].Distance + " at " + json[i]['Yard Line'] + " Yards Gained=" + json[i].Yards + " " + json[i].Result;
-		
+	for(let i=0; i<json.length; i++) {
+		let driveId = json[i].driveid;
+
+		let drive = json[i].Offense + " " + json[i].totalplays + " plays " + json[i].totalyards + " yards " + json[i].duration + " " + json[i].DriveResult;
+		let play = json[i].Clock + " " + json[i].Offense +  " " + json[i].Down + " & " + json[i].Distance + " at " + json[i]['Yard Line'] + " Yards Gained=" + json[i].Yards + " " + json[i].Result;
+
 		if(drivePlayMap.get(driveId) == undefined) {
 			team = json[i].Offense;
 			if(team == selectedTeam || selectedTeam == 'All') {
@@ -504,20 +599,20 @@ function setDrivesAndPlaysTable(selectedTeam) {
 			if(team == selectedTeam || selectedTeam == 'All') {
 				html += `<tr class='child ${team}'><td>&nbsp;&nbsp;&nbsp;&nbsp;${play}</td></tr>`;
 			}
-		}		
+		}
 		drivePlayMap.set(driveId, 1);
 	}
-	
+
 	html += "</table>";
 	document.getElementById("allDrivesDiv").innerHTML = html;
-	
+
 	//event handler for expand/collapse rows
 	$("#drivesAndPlaysTable").on("click", "img", function(e) {
 		e.preventDefault();
 	    $(this).closest("tr").nextUntil(".parent").toggleClass("child");
 
-	    var src = $(this).attr('src');
-	    var newsrc = (src == '/images/plus.png') ? '/images/minus.png' : '/images/plus.png';
+	    let src = $(this).attr('src');
+	    let newsrc = (src == '/images/plus.png') ? '/images/minus.png' : '/images/plus.png';
 	    $(this).attr('src', newsrc );
 	});
 }
@@ -527,19 +622,19 @@ function setDrivesAndPlaysTeamSelectors() {
 		return;
 	}
 
-	var optionsAsString = `<option value='${visitorTeamAbbr}'>${visitorTeamName}</option>`;
+	let optionsAsString = `<option value='${visitorTeamAbbr}'>${visitorTeamName}</option>`;
 	$("#driveTeamSelector").append( optionsAsString );
 	optionsAsString = `<option value='${homeTeamAbbr}'>${homeTeamName}</option>`;
 	$("#driveTeamSelector").append( optionsAsString );
 }
 
 function setBannerAndTitle() {
-	
-	var gameHeader = /*[[${gameHeader}]]*/ null;
-	var gameHeaderParsed = JSON.parse(gameHeader);
-	var game = gameHeaderParsed[0];
-	var site = (game.Site == 'NEUTRAL') ? 'vs' : 'at';
-	
+
+	const gameHeader = /*[[${gameHeader}]]*/ null;
+	let gameHeaderParsed = JSON.parse(gameHeader);
+	let game = gameHeaderParsed[0];
+	let site = (game.Site == 'NEUTRAL') ? 'vs' : 'at';
+
 	//set global for use by setBoxscoreTable()
 	homeTeamName = game.HomeTeamName;
 	homeTeamAbbr = game.HomeTeamAbbreviation
@@ -547,106 +642,118 @@ function setBannerAndTitle() {
 	visitorTeamAbbr = game.VisitorTeamAbbreviation;
 	year = game.Year;
 
-	var visitorUrl = "/teams/team/" + game.VisitorTeamId + "/year/" + game.Year;
-	var homeUrl = "/teams/team/" + game.HomeTeamId + "/year/" + game.Year;	
-	var visitorLogo = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${game.VisitorTeamId}.png' alt='${visitorTeamName}' height='50' width='50'>`;
-	var homeLogo = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${game.HomeTeamId}.png' alt='${homeTeamName}' height='50' width='50'>`;
+	let visitorUrl = "/teams/team/" + game.VisitorTeamId + "/year/" + game.Year;
+	let homeUrl = "/teams/team/" + game.HomeTeamId + "/year/" + game.Year;
+	let visitorLogo = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${game.VisitorTeamId}.png' alt='${visitorTeamName}' height='50' width='50'>`;
+	let homeLogo = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${game.HomeTeamId}.png' alt='${homeTeamName}' height='50' width='50'>`;
 
-	var html = "";
-	html += "<table id='bannerTable'>"
-	html += `<tr><td align='right'><a href='${visitorUrl}'>${game.Visitor}</a>${visitorLogo}</td>`;
-	html += `<td align='right'><h1>${game.VisitorScore}</h1></td>`;
-	html +=	`<td align='center'><p>${site}</p></td>`;
-	html += `<td align='left'><h1>${game.HomeScore}</h1></td>`;
-	html += `<td align='left'>${homeLogo}<a href='${homeUrl}'>${game.Home}</a></td></tr>`;
-	html +=	`<tr><td></td><td></td><td align='center'><p>${game.Date}</p><p>${game.Bowl}</p></td><td></td><td></td></tr>`;
-	html += "</table>"; 
-	
+	let html = `
+		<div class="scoreboard-row">
+			<div class="sb-team sb-team--visitor">
+				<a href="${visitorUrl}">${game.Visitor}</a>
+				${visitorLogo}
+			</div>
+			<div class="sb-score">${game.VisitorScore}</div>
+			<div class="sb-vs">${site}</div>
+			<div class="sb-score">${game.HomeScore}</div>
+			<div class="sb-team sb-team--home">
+				${homeLogo}
+				<a href="${homeUrl}">${game.Home}</a>
+			</div>
+		</div>
+		<div class="sb-meta">
+			<p>${game.Date}</p>
+			${game.Bowl ? `<p>${game.Bowl}</p>` : ""}
+		</div>`;
+
 	document.title = game.Title;
-	document.getElementById('bannerDiv').innerHTML = html;		
+	document.getElementById('bannerDiv').innerHTML = html;
 }
 
 function setAllPlayerStats() {
-	var stat =  /*[[${playerPassing}]]*/ null;
+	let stat =  /*[[${playerPassing}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Passing", "visitorPassingDiv");
 	setPlayerStatTable(stat, homeTeamName , "Passing", "homePassingDiv");
-	
+
 	stat = /*[[${playerRushing}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Rushing", "visitorRushingDiv");
 	setPlayerStatTable(stat, homeTeamName , "Rushing", "homeRushingDiv");
-	
+
 	stat = /*[[${playerReceiving}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Receiving", "visitorReceivingDiv");
 	setPlayerStatTable(stat, homeTeamName , "Receiving", "homeReceivingDiv");
-	
+
 	stat = /*[[${playerDefense}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Defense", "visitorDefenseDiv");
 	setPlayerStatTable(stat, homeTeamName , "Defense", "homeDefenseDiv");
-	
+
 	stat = /*[[${playerInts}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Interceptions", "visitorIntsDiv");
 	setPlayerStatTable(stat, homeTeamName , "Interceptions", "homeIntsDiv");
-		
+
 	stat = /*[[${playerKickReturns}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Kick Returns", "visitorKickReturnsDiv");
 	setPlayerStatTable(stat, homeTeamName , "Kick Returns", "homeKickReturnsDiv");
-	
+
 	stat = /*[[${playerPuntReturns}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Punt Returns", "visitorPuntReturnsDiv");
 	setPlayerStatTable(stat, homeTeamName , "Punt Returns", "homePuntReturnsDiv");
-	
+
 	stat = /*[[${playerKicking}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Kicking", "visitorKickingDiv");
 	setPlayerStatTable(stat, homeTeamName , "Kicking", "homeKickingDiv");
-	
+
 	stat = /*[[${playerPunting}]]*/ null;
 	setPlayerStatTable(stat, visitorTeamName , "Punting", "visitorPuntingDiv");
-	setPlayerStatTable(stat, homeTeamName , "Punting", "homePuntingDiv");	
+	setPlayerStatTable(stat, homeTeamName , "Punting", "homePuntingDiv");
 }
 
 function setPlayerStatTable(stats, teamName, heading, divName) {
-	var noData = "<h3>" + teamName + " " + heading + "</h3>";
+	//use the team abbreviation in headings; teamName is still used to filter the rows
+	let teamAbbr = (teamName == homeTeamName) ? homeTeamAbbr : visitorTeamAbbr;
+
+	let noData = "<h3>" + teamAbbr + " " + heading + "</h3>";
 	noData += "<p>No data available</p>";
-	
+
 	//handle bad stats data
 	if(isValidData(stats) == 0) {
 		document.getElementById(divName).innerHTML = noData;
 		return;
 	}
 
-	var json = JSON.parse(stats);
-	
-	var html = "<h3>" + teamName + " " + heading + "</h3>";
-	html += "<table class='fixedWidth'>";	
-	var columnsToExclude = ["PlayerId", "Team"];
+	let json = JSON.parse(stats);
+
+	let html = "<h3>" + teamAbbr + " " + heading + "</h3>";
+	html += "<table class='fixedWidth'>";
+	let columnsToExclude = ["PlayerId", "Team"];
 	html += getTableHeader(json[0], columnsToExclude);
-	
-	for(var i=0; i<json.length; i++) {
-		var row = json[i];
-		if(row.Team == teamName) {		
-			var temp = `/players/player/${row.PlayerId}`;
-			var link = `<a href="${temp}">${row.Name}</a>`;
-			var linkColumns = {
+
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
+		if(row.Team == teamName) {
+			let temp = `/players/player/${row.PlayerId}`;
+			let link = `<a href="${temp}">${row.Name}</a>`;
+			let linkColumns = {
 				Name : link
 			}
 			html += getTableRow(row, columnsToExclude, linkColumns);
 		}
 	}
 	html += "</table>";
-	document.getElementById(divName).innerHTML = html;	
+	document.getElementById(divName).innerHTML = html;
 }
 
 function setOdds() {
-	var odds = /*[[${odds}]]*/ null;
-	var json = JSON.parse(odds);
-	var html = "<table>";
-	
+	const odds = /*[[${odds}]]*/ null;
+	let json = JSON.parse(odds);
+	let html = "<table>";
+
 	if(json[0] == undefined) {
 		return;
 	}
-	
+
 	html += getTableHeader(json[0]);
-	for(var i=0; i<json.length; i++) {
+	for(let i=0; i<json.length; i++) {
 		html += getTableRow(json[i]);
 	}
 	html += "</table>";
@@ -654,9 +761,9 @@ function setOdds() {
 }
 
 function tabClick(tab) {
-	var tabs = document.getElementById("tabs").children;
-	var tabContents = document.getElementsByClassName("tabcontent");
-	
+	let tabs = document.getElementById("tabs").children;
+	let tabContents = document.getElementsByClassName("tabcontent");
+
 	for(i=0; i<tabs.length; i++) {
 		if(tab.id == tabs[i].id) {
 			tabs[i].style.backgroundColor = "#00274c";

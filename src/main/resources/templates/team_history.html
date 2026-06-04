@@ -1,9 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<title>CFB Geek - Team History</title>
-
-<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CFB Geek college football teams</title>
@@ -12,196 +9,235 @@
 <link href="/css/navbar.css" rel="stylesheet">
 
 <style type="text/css">
-
-html { 
-    height: 100%;
+:root {
+	--brand-navy: #00274c;
+	--brand-navy-light: #003a70;
+	--accent: #ffcb05;
+	--accent-hover: #ffd633;
+	--link: #0a66c2;
+	--text: #1a1a1a;
+	--text-muted: #5a6472;
+	--surface: #ffffff;
+	--bg: #f4f6f9;
+	--border: #e3e8ef;
+	--radius: 12px;
+	--shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+	--shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.12);
+	--font: "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-body { 
-    min-height: 100%;
-    margin: 0px;
+* {
+	box-sizing: border-box;
 }
 
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+	margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	line-height: 1.55;
+}
+
+a {
+	color: var(--link);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+a:hover {
+	color: var(--brand-navy);
+}
+
+/* ---- Layout ---- */
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 24px 24px 64px;
+}
+
+h1 {
+	font-size: clamp(20px, 3vw, 26px);
+	margin: 0 0 4px;
+}
+
+h3 {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--brand-navy);
+	margin: 0 0 10px;
+}
+
+/* ---- Team header ---- */
 #teamDetails {
-	margin: auto;
 	text-align: center;
-	border-style: none;
-	background-color: white;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 20px 24px;
+	margin-bottom: 20px;
 }
 
-#playerDiv {
-	display: none;
+#bannerImg {
+	height: 125px;
+	width: 125px;
+	object-fit: contain;
 }
 
-#teamDiv {
-	display: table;
-}
-
+/* ---- Tabs ---- */
 .tab {
-    overflow: hidden;
-    /* border: 1px solid #ccc; */
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
-    /* background-color: #333; */
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	display: flex;
+	flex-wrap: wrap;
+	/* gap: 4px; */
+	overflow: hidden;
+	font-family: var(--font);
 }
 
 .tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 6px 10px;
-    /* transition: 0.3s; */
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
+	background-color: #999999;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 9px 16px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	font-family: var(--font);
+	font-size: 14px;
+	font-weight: 700;
+	color: #fff;
+	text-decoration: none;
+	transition: background-color 0.15s ease;
 }
 
-/* Change background color of a href links on hover */
-.tab a:hover {
-    background-color: #999999;
+.tab button:hover {
+	background-color: var(--brand-navy-light);
 }
 
-/* Create an active/current tablink class */
-/* .tab button.active { */
-/*     background-color: #ccc; */
-/* } */
-
+/* ---- Tab content panels ---- */
 .tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    /* border-top: none; */
-    border-width: 1px;
-    border-style: solid;
-    /* background-color: #f2f2f2; */
+	display: none;
+	width: 100%;
+	padding: 18px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-top: none;
+	border-bottom-left-radius: var(--radius);
+	border-bottom-right-radius: var(--radius);
+	box-shadow: var(--shadow);
 }
-.divMain {
-	display: block;
-	margin: auto;
-    width: 80%;
-    /*   fixed menu chnage on next line */
-	margin-top: 30px;
+
+/* ---- Tables ---- */
+table {
+	font-family: var(--font);
+	font-size: 13px;
+	border-collapse: collapse;
+	width: 100%;
+	border: none;
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+	overflow: hidden;
 }
+
+table td {
+	font-size: 13px;
+	border-bottom: 1px solid var(--border);
+	padding: 8px 10px;
+	vertical-align: middle;
+}
+
+table td a {
+	color: var(--link);
+	font-weight: 600;
+}
+
+table th {
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	text-align: left;
+	vertical-align: top;
+	background-color: var(--brand-navy);
+	color: #fff;
+	padding: 10px;
+}
+
+table.sortable thead th:hover {
+	background-color: var(--brand-navy-light) !important;
+	cursor: pointer;
+}
+
+table tr:hover {
+	background-color: #eef2f7;
+}
+
+.child {
+	display: none;
+}
+
+.parent {
+	display: table-row;
+}
+
+/* small expand/collapse (plus/minus) icons in the vs-opponent table */
+img {
+	margin-right: 10px;
+	height: 10px;
+	width: 10px;
+}
+
+label {
+	font-family: var(--font);
+	font-size: 14px;
+	margin-right: 12px;
+}
+
+/* ---- DivTable layout utilities (used by the tab panels) ---- */
 .divTable {
 	display: table;
-	width: 100%	
+	width: 100%;
 }
 .divTableRow {
 	display: table-row;
-/*  	background-color: #f2f2f2;  */
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 50%;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
 }
 .divTableBody {
 	display: table-row-group;
 }
-
-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
-    border: 1px solid lightgrey;
-}
-table td {
-	font-size: 12px;
-    /* border: 1px solid #ddd; */
-    border-bottom: 1px solid #ddd;
-    padding: 2px; 
-    padding-left: 4px;
-}
-table td a {
-	color: #06c;
-	text-decoration: none;
-}
-table th {
-	font-size: 14px;
-    text-align: left;
-    vertical-align: top;
-    background-color: #00274c;
-    font-style: normal;
-    color: white;
-}
-table.sortable thead th:hover {
-	background-color: gray!important; 
-	cursor: pointer;
-}
-table tr:hover {
-	background-color: lightgray;
-}
-h1 {
-	font-size: 20px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-.child {
-	display: none;
-}
-.parent {
-	display: table-row;
-}
-img {
-	margin-right: 10px;
- 	height: 10px;
-	width: 10px; 
-}
-label {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    margin-right: 12px;
-}
-#bannerImg {
-	height: 125px;
-	width: 125px;
+.divTableCell {
+	display: table-cell;
+	width: 100%;
+	padding: 0 0 12px;
+	vertical-align: top;
 }
 
+@media (max-width: 600px) {
+	.container {
+		padding: 20px 14px 48px;
+	}
+}
 </style>
 </head>
 
-<body onload=" 
+<body onload="
 	setYearLinks();
  	setTeamDetails();
- 	setRankingsTable();	 
- 	setBowlsTable();  
- 	setVsOpponentTable();  
+ 	setRankingsTable();
+ 	setBowlsTable();
+ 	setVsOpponentTable();
  	setYearAvgsTables();
- 	setPlayerTables();  
-	setRecruiting(); 
- 	setTableHeaderColor();  
+ 	setPlayerTables();
+	setRecruiting();
+ 	setTableHeaderColor();
 	document.getElementById('rankingsTab').click();"
 >
 
 <div class="navbar">
-	<a href="/">CFB GEEK</a> 
+	<a href="/">CFB GEEK</a>
 	<a href="/teams">Teams</a>
 	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
 	<a href="#" onclick="gotoYearStats(year)">Stats</a>
@@ -216,17 +252,9 @@ label {
 	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
 </div>
 
-<br/><br/>
+<main class="container">
 
-<div class="divMain">
-		<div class="divTable">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="teamDetails"></div>
-				</div>
-			</div>
-		</div>
-	<br/>
+	<div id="teamDetails"></div>
 
 	<div class="tab" id="tabs">
 	  <button onclick="tabClick(this)" id="rankingsTab">Rankings</button>
@@ -238,7 +266,7 @@ label {
 	  <button onclick="tabClick(this)" id="receivingTab">Receiving</button>
 	  <button onclick="tabClick(this)" id="recruitingTab">Recruiting</button>
 	</div>
-		
+
 	<div class="tabcontent" id="rankingsContent">
 		<div class="divTableBody">
 			<div class="divTableRow">
@@ -247,10 +275,10 @@ label {
 				</div>
 			</div>
 		</div>
-	</div>	
-	
+	</div>
+
 	<div class="tabcontent" id="bowlsContent">
-		<div class="divTableBody">	
+		<div class="divTableBody">
 			<div class="divTableRow">
 				<div class="divTableCell" id="bowlsTableDiv">
 					<p>Bowls</p>
@@ -258,9 +286,9 @@ label {
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="tabcontent" id="vsOpponentContent">
-		<div class="divTableBody">	
+		<div class="divTableBody">
 			<div class="divTableRow">
 				<div class="divTableCell" id="vsOpponentTableDiv">
 					<p>vs Opponent</p>
@@ -268,9 +296,9 @@ label {
 			</div>
 		</div>
 	</div>
-			
+
 	<div class="tabcontent" id="yearsAvgContent">
-		<div class="divTableBody">	
+		<div class="divTableBody">
 			<div class="divTableRow">
 				<div class="divTableCell" id="yearAvgOffense">
 					<h3>Offense</h3>
@@ -287,37 +315,32 @@ label {
 						<thead></thead>
 						<tbody></tbody>
 					</table>
-					<br/>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="tabcontent" id="passingContent">
-		<div class="divTableBody">	
-			<br/>
+		<div class="divTableBody">
 			<label><b>Passing Totals by:</b></label>
 			<input type="radio" id="passingByYear" name="passingTable" value="year" onchange="changePlayerData(name, value)" checked>
      		<label for="passingByYear">Year</label>
       		<input type="radio" id="passingByCareer" name="passingTable" value="career" onchange="changePlayerData(name, value)">
       		<label for="passingByCareer">Career</label>
-			
+
 			<div class="divTableRow">
 				<div class="divTableCell" id="passingTableDiv">
-				<br/>
 					<table id="passingTable" class="sortable">
 						<thead></thead>
 						<tbody></tbody>
 					</table>
-				<br/>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="tabcontent" id="rushingContent">
-		<div class="divTableBody">	
-			<br/>
+		<div class="divTableBody">
 			<label><b>Rushing Totals by:</b></label>
 			<input type="radio" id="rushingByYear" name="rushingTable" value="year" onchange="changePlayerData(name, value)" checked>
      		<label for="rushingByYear">Year</label>
@@ -325,20 +348,17 @@ label {
       		<label for="rushingByCareer">Career</label>
 			<div class="divTableRow">
 				<div class="divTableCell" id="rushingTableDiv">
-				<br/>
 					<table id="rushingTable" class="sortable">
 						<thead></thead>
 						<tbody></tbody>
 					</table>
-				<br/>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="tabcontent" id="receivingContent">
-		<div class="divTableBody">	
-			<br/>
+		<div class="divTableBody">
 			<label><b>Receiving Totals by:</b></label>
 			<input type="radio" id="receivingByYear" name="receivingTable" value="year" onchange="changePlayerData(name, value)" checked>
      		<label for="receivingByYear">Year</label>
@@ -346,19 +366,17 @@ label {
       		<label for="receivingByCareer">Career</label>
 			<div class="divTableRow">
 				<div class="divTableCell" id="receivingTableDiv">
-				<br/>
 					<table id="receivingTable" class="sortable">
 						<thead></thead>
 						<tbody></tbody>
 					</table>
-				<br/>	
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="tabcontent" id="recruitingContent">
-		<div class="divTableBody">	
+		<div class="divTableBody">
 			<div class="divTableRow">
 				<div class="divTableCell" id="recruitingTableDiv">
 					<p>Recruiting</p>
@@ -367,8 +385,7 @@ label {
 		</div>
 	</div>
 
-</div> <!--  end divMain -->	
-<br/><br/>
+</main>
 
 <script th:inline="javascript">
 
@@ -383,12 +400,12 @@ function setTeamDetails() {
 	var teamName = json[0].name;
 	var mascot = json[0].mascot;
 	teamColor = json[0].color != "" ? "#" + json[0].color : "";
-	
+
 	var html = "";
-	
+
 	html += "<h1>" + teamName + " " + mascot + "</h1>" ;
 	html += `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' alt='${teamName}' height='125' width='125' id='bannerImg'>`;
-	
+
 	document.getElementById('teamDetails').innerHTML = html;
 	document.title = teamName + " History";
 }
@@ -398,22 +415,22 @@ function setRankingsTable() {
 	var json = JSON.parse(rankings);
 	var html = "";
 	var columnsToExclude;
-	
+
 	//set table header
 	html += "<br/><table>";
 	html += getTableHeader(json[0]);
-	
+
 	//add row data
 	for(i=0; i<json.length; i++) {
 		var row = json[i];
 		var yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
-		
+
 		var columnLinks = {
 			Year : yearLink,
 		}
 		year = row.Year;
 		html += getTableRow(row, columnsToExclude, columnLinks);
-	}	
+	}
 	html += "</table><br/>";
 	document.getElementById('rankingsTableDiv').innerHTML = html;
 }
@@ -423,14 +440,14 @@ function setBowlsTable() {
 	var bowlsRecord = /*[[${bowlsRecord}]]*/ null;
 	var json = JSON.parse(bowlsRecord);
 	var html = "<h3>Bowl Record: " + json[0].W + " - " + json[0].L + "</h3>";
-	
+
 	json = JSON.parse(bowls);
 	var columnsToExclude = ["GameId", "HomeTeamId", "AwayTeamId"];
-	
+
 	//set table header
 	html += "<table>";
 	html += getTableHeader(json[0], columnsToExclude);
-	
+
 	//add row data
 	for(i=0; i<json.length; i++) {
 		var row = json[i];
@@ -439,17 +456,17 @@ function setBowlsTable() {
 		var opponentId = teamId == row.HomeTeamId ? row.AwayTeamId : row.HomeTeamId;
 		var opponentLink = `<a href='/teams/team/${opponentId}/year/${row.Year}'>${row.Opponent}</a>`;
 		var resultLink = `<a href='/games/game/${row.GameId}/boxscore'>${row.Result}</a>`;
-		
+
 		var columnLinks = {
-			Year : yearLink,	
+			Year : yearLink,
 			Team : teamLink,
 			Opponent : opponentLink,
 			Result : resultLink
 		}
-		
+
 		html += getTableRow(row, columnsToExclude, columnLinks);
-	}	
-	
+	}
+
 	html += "</table><br/>";
 	document.getElementById('bowlsTableDiv').innerHTML = html;
 }
@@ -460,7 +477,7 @@ function setVsOpponentTable() {
 
 	var plus = '<a href="#"><img src="/images/plus.png" /></a>';
 	var minus = '<a href="#"><img src="/images/minus.png" /></a>';
-	
+
 	var wins = 0;
 	var losses = 0;
 
@@ -468,15 +485,15 @@ function setVsOpponentTable() {
 	columnsToExclude = ["OpponentId", "Date", "GameId", "Result", "Opponent", "ThisTeam"];
 	html += "<table id='vsOpponent'>";
 	html += getTableHeader(json[0], columnsToExclude);
-	
+
 	for(i=0; i<json.length; i++) {
 		var row = json[i];
 		var teamLink;
-		
-		if(row.Date == null) {	
+
+		if(row.Date == null) {
 			teamLink = plus;
 			teamLink += "<a href='/teams/team/" + row.OpponentId + "/history'>" + row.Team + "</a>";
-			
+
 			wins += row.Wins;
 			losses += row.Losses;
 
@@ -487,12 +504,12 @@ function setVsOpponentTable() {
 			var year = date.getFullYear();
 			var thisTeamLink = `<a href='/teams/team/${teamId}/year/${year}'>${row.ThisTeam}</a>`
 			var opponentLink = `<a href='/teams/team/${row.OpponentId}/year/${year}'>${row.Opponent}</a>`
-			
-			html += 
+
+			html +=
 				`<tr class='child'>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp; <a href='/games/game/${row.GameId}/boxscore'>${row.Date}</a></td>
 					<td>${thisTeamLink}</td>
-					<td>${opponentLink}</td> 
+					<td>${opponentLink}</td>
 					<td>${row.Result}</td>
 				</tr>`;
 		}
@@ -503,7 +520,7 @@ function setVsOpponentTable() {
 	html += "<tr><td>&nbsp;</td><td><b>" + wins + "</b></td><td><b>" + losses + "</b></td><td><b>" + pct + "</b></td>";
 	html += "</table><br/>";
 	document.getElementById('vsOpponentTableDiv').innerHTML = html;
-	
+
 	//event handler for expand/collapse rows
 	$("#vsOpponent").on("click", "img", function(e) {
 	    e.preventDefault();
@@ -518,36 +535,36 @@ function setVsOpponentTable() {
 function setYearAvgsTables() {
 	var offenseAvg = /*[[${yearAvgOffense}]]*/ null;
 	var defenseAvg = /*[[${yearAvgDefense}]]*/ null;
-	
+
 	var json = JSON.parse(offenseAvg);
 	var columnsToExclude = ["TeamId"];
 	var html = "";
-	
+
 	html += getTableHeaderSortableExt(json[0], columnsToExclude);  // new function here
 	document.getElementById("yearAvgOffenseTable").tHead.innerHTML = html;
 	setYearAvgsTableData("yearAvgOffenseTable", json, columnsToExclude);
 	makeTableSortable("yearAvgOffenseTable", json, 1);
-	
+
 	json = JSON.parse(defenseAvg);
 	html = getTableHeaderSortableExt(json[0], columnsToExclude);  // new function here
 	document.getElementById("yearAvgDefenseTable").tHead.innerHTML = html;
-	setYearAvgsTableData("yearAvgDefenseTable", json, columnsToExclude);	
+	setYearAvgsTableData("yearAvgDefenseTable", json, columnsToExclude);
 	makeTableSortable("yearAvgDefenseTable", json, 0);
 }
 
 function setYearAvgsTableData(table, json, columnsToExclude) {
-	var html = "";  
+	var html = "";
 	for(i=0; i<json.length; i++) {
 		var row = json[i];
 		var yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
 		var columnLinks = {
 			Year : yearLink
 		}
-		
+
 		html += getTableRow(row, columnsToExclude, columnLinks);
-	}	
-	
-	document.getElementById(table).getElementsByTagName('tbody')[0].innerHTML = html;  
+	}
+
+	document.getElementById(table).getElementsByTagName('tbody')[0].innerHTML = html;
 }
 
 function setPlayerTables() {
@@ -559,30 +576,30 @@ function setPlayerTables() {
 	var json = JSON.parse(playerPassing);
 	setPlayerTableHeader("passingTable", json);
 	setTableBody("passingTable", json);
-	
+
 	json = JSON.parse(playerRushing);
 	setPlayerTableHeader("rushingTable", json);
 	setTableBody("rushingTable", json);
-	
+
 	json = JSON.parse(playerReceiving);
 	setPlayerTableHeader("receivingTable", json);
 	setTableBody("receivingTable", json);
 }
 
-// radio button onclick for year or career 
+// radio button onclick for year or career
 function changePlayerData(table, radioValue) {
 	//player data by year
 	var playerPassing = /*[[${playerPassing}]]*/ null;
 	var playerRushing = /*[[${playerRushing}]]*/ null;
 	var playerReceiving = /*[[${playerReceiving}]]*/ null;
-	
+
 	//player career data, i.e. grouped by career instead of season
 	var playerPassingCareer = /*[[${playerPassingCareer}]]*/ null;
 	var playerRushingCareer = /*[[${playerRushingCareer}]]*/ null;
 	var playerReceivingCareer = /*[[${playerReceivingCareer}]]*/ null;
-	
+
 	var json;
-	
+
 	if(table == "passingTable") {
 		json = radioValue == "year" ? playerPassing : playerPassingCareer;
 	}
@@ -592,9 +609,9 @@ function changePlayerData(table, radioValue) {
 	if(table == "receivingTable") {
 		json = radioValue == "year" ? playerReceiving : playerReceivingCareer;
 	}
-	
+
 	json = JSON.parse(json);
-	
+
 	setPlayerTableHeader(table, json);
 	setTableHeaderColor();
 	setTableBody(table, json);
@@ -611,7 +628,7 @@ function setPlayerTableHeader(table, json) {
 
 function setTableBody(table, json) {
 	var columnsToExclude = ["PlayerId", "Team", "TeamId"];
-	var html = "";  
+	var html = "";
 	for(i=0; i<json.length; i++) {
 		var row = json[i];
 		var yearLink = `<a href='/teams/team/${teamId}/year/${row.Year}'>${row.Year}</a>`;
@@ -620,11 +637,11 @@ function setTableBody(table, json) {
 			Year : yearLink,
 			Name : nameLink
 		}
-		
+
 		html += getTableRow(row, columnsToExclude, columnLinks);
-	}	
-	
-	document.getElementById(table).getElementsByTagName('tbody')[0].innerHTML = html;  
+	}
+
+	document.getElementById(table).getElementsByTagName('tbody')[0].innerHTML = html;
 }
 
 function setRecruiting() {
@@ -642,30 +659,30 @@ function setRecruiting() {
 	//set player header
 	var playerColumnsToExclude = ["Year"];
 	var playerHeader = getTableHeader(playerJson[0], playerColumnsToExclude, null);
-	
+
 	for(i=0; i<teamJson.length; i++) {
 		var teamYearRow = teamJson[i];
 		html += teamHeader;
 		html += getTableRow(teamYearRow, teamColumnsToExclude, "");
 		html += playerHeader;
-		
+
 		for(j=0; j<playerJson.length; j++) {
 			var playerRow = playerJson[j];
 			if(playerRow.Year == teamYearRow.Year) {
 				html += getTableRow(playerRow, playerColumnsToExclude, "");
 			}
 		}
-	}	
+	}
 	html += "</table><br/>";
 	document.getElementById("recruitingTableDiv").innerHTML = html;
 }
 
 function isValidData(data) {
 	var result = 0;
-	if(data === null) {return result;}	
-	if (data === undefined || data.length == 0) {return result;}	
+	if(data === null) {return result;}
+	if (data === undefined || data.length == 0) {return result;}
 	if(data == "[]") {return result;}
-	
+
 	return 1;
 }
 
@@ -680,7 +697,7 @@ function setYearLinks() {
 	var teamYearsDiv = document.getElementById("teamYears");
 	var html = "";
 	var MAX_YEAR = getMaxYear();
-	
+
 	for(var i=MAX_YEAR; i>=2001; i--) {
 		var url = `/teams/team/${teamId}/year/${i}`;
 		html += `<a href='${url}'>${i}</a>`;
@@ -691,7 +708,7 @@ function setYearLinks() {
 function tabClick(tab) {
 	var tabs = document.getElementById("tabs").children;
 	var tabContents = document.getElementsByClassName("tabcontent");
-	
+
 	for(i=0; i<tabs.length; i++) {
 		if(tab.id == tabs[i].id) {
 			tabs[i].style.backgroundColor = teamColor;
@@ -708,9 +725,9 @@ function sortTable(table, col, json, sortOrder) {
 	setTableBody(table, stats);
 }
 
-function sortByKey(array, key, sortOrder) {	
+function sortByKey(array, key, sortOrder) {
     return array.sort(function(a, b) {
-        var x = a[key]; 
+        var x = a[key];
         var y = b[key];
         if(sortOrder == null || sortOrder == 1) {
             return ((x < y) ? 1 : ((x > y) ? -1 : 0));    // descending
@@ -721,19 +738,19 @@ function sortByKey(array, key, sortOrder) {
 }
 
 function makeTableSortable(table, json, sortOrder) {
-	
+
 	$(`#${table}`).on("click", "th", function(event) {
 	    var col = $(this).text();
 
 	    //reset the table header background and text colors
 	    $(`#${table} th`).css("background-color", teamColor);
 	    $(`#${table} th`).css("color", "white");
-	   
+
  	    //change the selected header's background and text colors
 	    $(this).css("background-color","#ffcb05"); // maize
-	    $(this).css("color", "#00274c"); // blue 
-	    
-	  	sortTable(table, col, json, sortOrder);  
+	    $(this).css("color", "#00274c"); // blue
+
+	  	sortTable(table, col, json, sortOrder);
 	});
 }
 

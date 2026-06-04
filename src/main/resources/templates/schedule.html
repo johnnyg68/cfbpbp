@@ -1,9 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>College Football Data - Schedule</title>
-
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CFB Geek college football schedule</title>
 <meta name="description" content="College Football Data Schedule">
@@ -11,158 +9,215 @@
 
 <link href="/css/navbar.css" rel="stylesheet">
 <style type="text/css">
-
-html { 
-    height: 100%;
-}
-body { 
-    min-height: 100%;
-    margin: 0px;
-}
-
-.divMain {
-	display: block;
-	margin: auto;
-    width: 80%;
-    /*   fixed menu chnage on next line */
-	margin-top: 40px;
-}
-.divTable {
-	display: table;
-	width: 50%;	
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 50%;
-	vertical-align: middle;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
-}
-.divTableBody {
-	display: table-row-group;
+:root {
+	--brand-navy: #00274c;
+	--brand-navy-light: #003a70;
+	--accent: #ffcb05;
+	--accent-hover: #ffd633;
+	--link: #0a66c2;
+	--text: #1a1a1a;
+	--text-muted: #5a6472;
+	--surface: #ffffff;
+	--bg: #f4f6f9;
+	--border: #e3e8ef;
+	--radius: 12px;
+	--shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+	--shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.12);
+	--font: "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-img {
-	vertical-align: middle;
-	padding-right: 20px;
-	height: 20px;
-	width: 20px;
- }
-
-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    border-collapse: collapse;
-    width: 100%;
-    vertical-align: middle;
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #ddd;
+* {
+	box-sizing: border-box;
 }
 
-table td {
-	font-size: 12px;
-    /* border: 1px solid #ddd; */
-    border-bottom: 1px solid #ddd;
-    padding: 2px; 
-    padding-left: 4px;
-    vertical-align: middle;
+html {
+	height: 100%;
 }
-table td a {
-	color: #06c;
+
+body {
+	min-height: 100%;
+	margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	line-height: 1.55;
+}
+
+a {
+	color: var(--link);
 	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+a:hover {
+	color: var(--brand-navy);
+}
+
+/* ---- Hero ---- */
+.hero {
+	background: var(--bg);
+	color: #000;
+	padding: 18px 24px;
+	text-align: center;
+}
+
+.hero h1 {
+	margin: 0;
+	font-size: clamp(22px, 4vw, 32px);
+	font-weight: 700;
+	letter-spacing: -0.5px;
+}
+
+/* ---- Layout ---- */
+.container {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 24px 24px 64px;
+}
+
+/* ---- Controls / filters ---- */
+.controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-bottom: 20px;
+}
+
+.controls select {
+	font-family: var(--font);
+	font-size: 14px;
+	color: var(--text);
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 8px 12px;
+	box-shadow: var(--shadow);
+	cursor: pointer;
+	transition: border-color 0.15s ease;
+}
+
+.controls select:hover,
+.controls select:focus {
+	border-color: var(--brand-navy);
+	outline: none;
+}
+
+/* ---- Report table ---- */
+.table-wrap {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	overflow: hidden;
+}
+
+#reportTable {
+	font-family: var(--font);
+	font-size: 14px;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#reportTable th {
+	font-size: 15px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	text-align: left;
+	background-color: var(--brand-navy);
+	color: #fff;
+	padding: 14px;
+	white-space: nowrap;
+}
+
+#reportTable td {
+	padding: 10px 14px;
+	border-bottom: 1px solid var(--border);
 	vertical-align: middle;
 }
-table th {
-	font-size: 14px;
-	font-weight: bold;
-    text-align: left;
-    background-color: #00274c;
-    font-style: normal;
-    color: white;
+
+#reportTable tr:last-child td {
+	border-bottom: none;
 }
-h1 {
-	font-size: 20px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+
+/* Score columns (Visitor Score / Home Score) centered and emphasized */
+#reportTable th:nth-child(3),
+#reportTable th:nth-child(5),
+#reportTable td:nth-child(3),
+#reportTable td:nth-child(5) {
+	text-align: center;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
 }
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+
+#reportTable tbody tr:nth-child(even),
+#reportTable tr:nth-child(even) {
+	background-color: #fafbfc;
 }
 
 #reportTable tr:hover {
-	background-color: lightgray;
-	vertical-align: middle;
+	background-color: #eef2f7;
 }
 
+#reportTable td a {
+	color: var(--link);
+	font-weight: 600;
+}
+
+#reportTable img {
+	vertical-align: middle;
+	margin-right: 8px;
+	height: 22px;
+	width: 22px;
+	object-fit: contain;
+}
+
+@media (max-width: 600px) {
+	.container {
+		padding: 20px 14px 48px;
+	}
+}
 </style>
 </head>
 <body onload="setSelectors(); loadPage()">
 
 <div class="navbar">
-	<a href="/">CFB GEEK</a> 
+	<a href="/">CFB GEEK</a>
 	<a href="/teams">Teams</a>
 	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
 	<a href="#" onclick="gotoYearStats(year)">Stats</a>
-	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>
 	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
 </div>
 
-<div class="divMain">
-	<div class="divTable">
-		<div class="divTableBody">	
-			<div class="divTableRow">
-				<div class="divTableCell">
-				<h1><span th:text="|Schedule - ${year} Week ${week}|"></span></h1>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell">
-					<select id="yearSelector" onchange="yearChange(this.value)"></select> &nbsp;&nbsp;&nbsp;&nbsp;
-					<select id="weekSelector" onchange="weekChange(this.value)"></select> &nbsp;&nbsp;&nbsp;&nbsp;
-					<select id="confRankSelector" onchange="confRankChange(this.value)"></select>
-					<p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell">
-					<table id="reportTable">
-					</table>
-				</div>
-			</div>
-		</div>
+<header class="hero">
+	<h1><span th:text="|Schedule - ${year} Week ${week}|"></span></h1>
+</header>
+
+<main class="container">
+	<div class="controls">
+		<select id="yearSelector" onchange="yearChange(this.value)"></select>
+		<select id="weekSelector" onchange="weekChange(this.value)"></select>
+		<select id="confRankSelector" onchange="confRankChange(this.value)"></select>
 	</div>
-</div>
-<br><br>
+
+	<div class="table-wrap">
+		<table id="reportTable"></table>
+	</div>
+</main>
 
 <script th:inline="javascript">
-var conferences = /*[[${conferences}]]*/ null;
-var schedule = /*[[${schedule}]]*/ null;
-var scheduleYearWeekMap = /*[[${scheduleYearWeekMap}]]*/ null;
+const conferences = /*[[${conferences}]]*/ null;
+const schedule = /*[[${schedule}]]*/ null;
+const scheduleYearWeekMap = /*[[${scheduleYearWeekMap}]]*/ null;
 
-var year = /*[[${year}]]*/ null;
-var week = /*[[${week}]]*/ null;
-var yearWeekMap;
+const year = /*[[${year}]]*/ null;
+const week = /*[[${week}]]*/ null;
+let yearWeekMap;
 
 function loadPage() {
-	var json = JSON.parse(schedule);
-	
+	let json = JSON.parse(schedule);
+
 	//handle case where there are no games for the week in the URL
 	//this resets the week to 1, but another idea would be to redirect to MAX week.
 // 	if(Array.isArray(json) && !json.length) {
@@ -172,9 +227,9 @@ function loadPage() {
 }
 
 function jsonToTable(json) {
-	var html = "";
-	var tableColumns = ["Date", "Visitor", "Visitor Score", "Home", "Home Score"];
-	
+	let html = "";
+	const tableColumns = ["Date", "Visitor", "Visitor Score", "Home", "Home Score"];
+
 	//add table header
 	html += "<tr>";
 	for(col in json[0]) {
@@ -183,30 +238,30 @@ function jsonToTable(json) {
 		}
 	}
 	html += "</tr>";
-	
+
 	for(i=0; i<json.length; i++) {
-		var row = json[i];
-		var gameLink = `<a href='/games/game/${row.GameId}/boxscore'>${row.Date}</a>`;
+		let row = json[i];
+		let gameLink = `<a href='/games/game/${row.GameId}/boxscore'>${row.Date}</a>`;
 		// if no scores show the gamepreview page
 		if(row["Visitor Score"] == "TBD" && row["Home Score"] == "TBD") {
 			gameLink = `<a href='/games/game/${row.GameId}/gamepreview'>${row.Date}</a>`;
 		}
-		var img = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${row.VisitorTeamId}.png'></img>`;
-		var visitorLink = `${img}<a href='/teams/team/${row.VisitorTeamId}/year/${year}'>${row.Visitor}</a>`;
+		let img = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${row.VisitorTeamId}.png'></img>`;
+		let visitorLink = `${img}<a href='/teams/team/${row.VisitorTeamId}/year/${year}'>${row.Visitor}</a>`;
 		img = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${row.HomeTeamId}.png'></img>`;
-		var homeLink = `${img}<a href='/teams/team/${row.HomeTeamId}/year/${year}'>${row.Home}</a>`;
-		
+		let homeLink = `${img}<a href='/teams/team/${row.HomeTeamId}/year/${year}'>${row.Home}</a>`;
+
 		html += "<tr>";
 		for(col in row) {
 			if(col == "Date") {
-				html += "<td>" + gameLink + "</td>";				
-			} 
+				html += "<td>" + gameLink + "</td>";
+			}
 			else if(col == "Visitor") {
 				html += "<td>" + visitorLink + "</td>";
-			} 
+			}
 			else if(col == "Home") {
 				html += "<td>" + homeLink + "</td>";
-			}			
+			}
 			else {
 				if(tableColumns.includes(col)) {
 					html += "<td>" + row[col] + "</td>";
@@ -214,40 +269,40 @@ function jsonToTable(json) {
 			}
 		}
 		html += "</tr>";
-	}	
+	}
 
 	document.getElementById('reportTable').innerHTML = html;
 }
 
 function setSelectors() {
-	var json = JSON.parse(scheduleYearWeekMap);
+	let json = JSON.parse(scheduleYearWeekMap);
 	yearWeekMap = jsonToMap(json);
 
-	var yearOptions = "";
-	var weekOptions = "";
-	var confRankOptons = "";
-	
-	for(var key of yearWeekMap.keys()) {	
-		var selected = (key == year ? "selected" : "");
-		yearOptions += `<option value="${key}" ${selected}>${key}</option>`;		
-	}
-	
-	for(value of yearWeekMap.get(year)) {
-		var selected = (value == week ? "selected" : "");
-		weekOptions += `<option value="${value}" ${selected}>Week ${value}</option>`;	
+	let yearOptions = "";
+	let weekOptions = "";
+	let confRankOptons = "";
+
+	for(let key of yearWeekMap.keys()) {
+		let selected = (key == year ? "selected" : "");
+		yearOptions += `<option value="${key}" ${selected}>${key}</option>`;
 	}
 
-	var confJson = JSON.parse(conferences);
+	for(value of yearWeekMap.get(year)) {
+		let selected = (value == week ? "selected" : "");
+		weekOptions += `<option value="${value}" ${selected}>Week ${value}</option>`;
+	}
+
+	let confJson = JSON.parse(conferences);
 	confRankOptions = "<option value='All'>All</option>";
 	confRankOptions += "<option value='Top 25'>Top 25</option>";
-	for(var i=0; i<confJson.length; i++) {
-		var conf = confJson[i].name;
+	for(let i=0; i<confJson.length; i++) {
+		let conf = confJson[i].name;
 		confRankOptions += `<option value="${conf}">${conf}</option>`;
 	}
-		
+
 	document.getElementById("yearSelector").innerHTML = yearOptions;
-	document.getElementById("weekSelector").innerHTML = weekOptions;	
-	document.getElementById("confRankSelector").innerHTML = confRankOptions;	
+	document.getElementById("weekSelector").innerHTML = weekOptions;
+	document.getElementById("confRankSelector").innerHTML = confRankOptions;
 }
 
 function yearChange(value) {
@@ -259,14 +314,14 @@ function weekChange(value) {
 }
 
 function confRankChange(value) {
-	var games = JSON.parse(schedule);
-	var filteredGames;
-	
+	const games = JSON.parse(schedule);
+	let filteredGames;
+
 	if(value == "All") {
 		loadPage();
 		return;
 	}
-		
+
 	if(value == "Top 25") {
 		filteredGames = games.filter(function (el) {
 			return el.Home.includes("#") || el.Visitor.includes("#")
@@ -274,29 +329,29 @@ function confRankChange(value) {
 		jsonToTable(filteredGames);
 		return;
 	}
-	
+
 	// Conference selected
 	filteredGames = games.filter(function (el) {
 		return el.HomeConf == value || el.VisitorConf == value;
 	});
-	
+
 	jsonToTable(filteredGames);
 }
 
 function jsonToMap(json) {
-	var map = new Map();
-	var weeks = [];
-	
-	for(var i=0; i<json.length; i++) {
-		var year = json[i].Year;		
-		weeks = map.get(year);		
+	let map = new Map();
+	let weeks = [];
+
+	for(let i=0; i<json.length; i++) {
+		let year = json[i].Year;
+		weeks = map.get(year);
 		if(weeks == undefined) {
 			weeks = [];
 		}
 		weeks.push(json[i].Week);
 		map.set(year, weeks);
 	}
-	return map; 
+	return map;
 }
 
 </script>

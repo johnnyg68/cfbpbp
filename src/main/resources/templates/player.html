@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<title>College Football Data - Player</title>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>CFB Geek Player</title>
@@ -11,349 +9,391 @@
 <link href="/css/navbar.css" rel="stylesheet">
 
 <style type="text/css">
+:root {
+	--brand-navy: #00274c;
+	--brand-navy-light: #003a70;
+	--accent: #ffcb05;
+	--accent-hover: #ffd633;
+	--link: #0a66c2;
+	--text: #1a1a1a;
+	--text-muted: #5a6472;
+	--surface: #ffffff;
+	--bg: #f4f6f9;
+	--border: #e3e8ef;
+	--radius: 12px;
+	--shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+	--shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.12);
+	--font: "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
 
-html { 
-    height: 100%;
-}
-body { 
-    min-height: 100%;
-    margin: 0px;
+* {
+	box-sizing: border-box;
 }
 
-.divMain {
-	display: block;
-	margin: auto;
-    width: 80%;
-    /*   fixed menu chnage on next line */
-	margin-top: 40px;
+html {
+	height: 100%;
 }
+
+body {
+	min-height: 100%;
+	margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	line-height: 1.55;
+}
+
+a {
+	color: var(--link);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+a:hover {
+	color: var(--brand-navy);
+}
+
+/* ---- Layout ---- */
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 24px 24px 64px;
+}
+
+/* ---- Player banner ---- */
+#bannerDiv {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 16px 22px;
+	margin-bottom: 20px;
+}
+
+#bannerDiv img {
+	height: 50px;
+	width: 50px;
+	object-fit: contain;
+}
+
+h1 {
+	font-size: clamp(20px, 3vw, 26px);
+	margin: 0;
+}
+
+/* ---- Stat section cards ---- */
+.card {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 18px 22px;
+	margin-bottom: 20px;
+}
+
+.card h3 {
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--brand-navy);
+	margin: 0 0 12px;
+}
+
+/* ---- Tabs ---- */
+.tab {
+	display: flex;
+	gap: 4px;
+	overflow: hidden;
+	font-family: var(--font);
+}
+
+.tab button {
+	background-color: #999999;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 8px 16px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	font-family: var(--font);
+	font-size: 14px;
+	font-weight: 700;
+	color: #fff;
+	text-decoration: none;
+	transition: background-color 0.15s ease;
+}
+
+.tab button:hover {
+	background-color: var(--brand-navy-light);
+}
+
+.tabcontent {
+	display: none;
+	width: 100%;
+}
+
+/* ---- Tables ---- */
+table.fixedWidth {
+	table-layout: fixed;
+}
+
+table {
+	font-family: var(--font);
+	font-size: 13px;
+	border-collapse: collapse;
+	width: 100%;
+	border: none;
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+	overflow: hidden;
+}
+
+table td {
+	font-size: 13px;
+	border-bottom: 1px solid var(--border);
+	padding: 8px 10px;
+	vertical-align: middle;
+}
+
+table td a {
+	color: var(--link);
+	font-weight: 600;
+}
+
+table th {
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	text-align: left;
+	background-color: var(--brand-navy);
+	color: #fff;
+	padding: 10px;
+}
+
+table tr:hover {
+	background-color: #eef2f7;
+}
+
+/* ---- DivTable layout utilities (used by the tab panels) ---- */
 .divTable {
 	display: table;
-	width: 100%;	
+	width: 100%;
 }
 .divTableRow {
 	display: table-row;
 }
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 50%;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
-}
 .divTableBody {
 	display: table-row-group;
 }
-#bannerDiv {
-  display: flex;
-  align-items: center;
-}
-.tab {
-    overflow: hidden;
-    /* border: 1px solid #ccc; */
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;
-    /* background-color: #333; */
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-width: 1px;
-/*     border-top: none; */
-    border-style: solid;
-/*     background-color: #f2f2f2; */
-}
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 6px 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-}
-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    width: 100%;
-}
-table td {
-	font-size: 12px;
-    border: 1px solid #ddd;
-    border-left: none;
-    border-right: none;
-    padding: 2px; 
-}
-table td a {
-	color: #06c;
-	text-decoration: none;
-}
-table th {
-	font-size: 14px;
-	font-weight: bold;
-    text-align: left;
-    background-color: #00274c;
-    font-style: normal;
-    color: white;
-}
-table tr:hover {
-	background-color: lightgray;
-}
-table.fixedWidth {
-	table-layout: fixed;
-}
-h1 {
-	font-size: 20px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	margin-left: 10px;
-}
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+.divTableCell {
+	display: table-cell;
+	width: 100%;
+	vertical-align: top;
 }
 
+@media (max-width: 600px) {
+	.container {
+		padding: 20px 14px 48px;
+	}
+}
 </style>
 </head>
 
 <body onload="setStats();">
 
-	<!--  
-	<p th:text="'playerId= ' + ${playerId} "/>
-	<p th:text="'passing= ' + ${passing} "/>
-	-->
-
 <div class="navbar">
-	<a href="/">CFB GEEK</a> 
+	<a href="/">CFB GEEK</a>
 	<a href="/teams">Teams</a>
 	<a href="#" onclick="gotoYearSchedule(year)">Schedule</a>
 	<a href="#" onclick="gotoYearStats(year)">Stats</a>
-	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>	
+	<a href="#" onclick="gotoYearRankings(year)">Rankings</a>
 	<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
 </div>
 
-<div class="divMain">
+<main class="container">
 
-	<br />
-	<div id="bannerDiv"></div>	
-	
-	<div id="passing">
+	<div id="bannerDiv"></div>
+
+	<div class="card" id="passing">
 		<h3>Passing</h3>
 		<div class="tab" id="passingTabs">
 			<button onclick="tabClick('passingYears', this)" id="passingYearsTab">Year Totals</button>
 			<button onclick="tabClick('passingGames', this)" id="passingGamesTab">Games</button>
 		</div>
 		<div class="tabcontent" id="passingYears" style="display:table">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="passingYearsData">	
-					</div>
+					<div class="divTableCell" id="passingYearsData"></div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="tabcontent" id="passingGames">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="passingGamesData">	
-					</div>
+					<div class="divTableCell" id="passingGamesData"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div id="rushing">
+
+	<div class="card" id="rushing">
 		<h3>Rushing</h3>
 		<div class="tab" id="rushingTabs">
 			<button onclick="tabClick('rushingYears', this)" id="rushingYearsTab">Year Totals</button>
 			<button onclick="tabClick('rushingGames', this)" id="rushingGamesTab">Games</button>
 		</div>
 		<div class="tabcontent" id="rushingYears" style="display:table">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="rushingYearsData">	
-					</div>
+					<div class="divTableCell" id="rushingYearsData"></div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="tabcontent" id="rushingGames">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="rushingGamesData">	
-					</div>
+					<div class="divTableCell" id="rushingGamesData"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div id="receiving">
+
+	<div class="card" id="receiving">
 		<h3>Receiving</h3>
 		<div class="tab" id="receivingTabs">
 			<button onclick="tabClick('receivingYears', this)" id="receivingYearsTab">Year Totals</button>
 			<button onclick="tabClick('receivingGames', this)" id="receivingGamesTab">Games</button>
 		</div>
 		<div class="tabcontent" id="receivingYears" style="display:table">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="receivingYearsData">	
-					</div>
+					<div class="divTableCell" id="receivingYearsData"></div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="tabcontent" id="receivingGames">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="receivingGamesData">	
-					</div>
+					<div class="divTableCell" id="receivingGamesData"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div id="defense">
+
+	<div class="card" id="defense">
 		<h3>Defense</h3>
 		<div class="tab" id="defenseTabs">
-			<button onclick="tabClick('defenseYears', this)" id="defenseYearsTab">Year Totals</button> 
-			<button onclick="tabClick('defenseGames', this)" id="defenseGamesTab">Games</button> 
+			<button onclick="tabClick('defenseYears', this)" id="defenseYearsTab">Year Totals</button>
+			<button onclick="tabClick('defenseGames', this)" id="defenseGamesTab">Games</button>
 		</div>
 		<div class="tabcontent" id="defenseYears" style="display:table">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="defenseYearsData">	
-					</div>
+					<div class="divTableCell" id="defenseYearsData"></div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="tabcontent" id="defenseGames">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="defenseGamesData">	
-					</div>
+					<div class="divTableCell" id="defenseGamesData"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div id="kickReturns">
+
+	<div class="card" id="kickReturns">
 		<h3>Kick Returns</h3>
 		<div class="tab" id="kickReturnsTabs">
 			<button onclick="tabClick('kickReturnsYears', this)" id="kickReturnsYearsTab">Year Totals</button>
 			<button onclick="tabClick('kickReturnsGames', this)" id="kickReturnsGamesTab">Games</button>
 		</div>
 		<div class="tabcontent" id="kickReturnsYears" style="display:table">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="kickReturnsYearsData">	
-					</div>
+					<div class="divTableCell" id="kickReturnsYearsData"></div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="tabcontent" id="kickReturnsGames">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="kickReturnsGamesData">	
-					</div>
+					<div class="divTableCell" id="kickReturnsGamesData"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div id="puntReturns">
+
+	<div class="card" id="puntReturns">
 		<h3>Punt Returns</h3>
 		<div class="tab" id="puntReturnsTabs">
 			<button onclick="tabClick('puntReturnsYears', this)" id="puntReturnsYearsTab">Year Totals</button>
 			<button onclick="tabClick('puntReturnsGames', this)" id="puntReturnsGamesTab">Games</button>
 		</div>
 		<div class="tabcontent" id="puntReturnsYears" style="display:table">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="puntReturnsYearsData">	
-					</div>
+					<div class="divTableCell" id="puntReturnsYearsData"></div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="tabcontent" id="puntReturnsGames">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="puntReturnsGamesData">	
-					</div>
+					<div class="divTableCell" id="puntReturnsGamesData"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div id="punting">
+
+	<div class="card" id="punting">
 		<h3>Punting</h3>
 		<div class="tab" id="puntingTabs">
 			<button onclick="tabClick('puntingYears', this)" id="puntingYearsTab">Year Totals</button>
 			<button onclick="tabClick('puntingGames', this)" id="puntingGamesTab">Games</button>
 		</div>
 		<div class="tabcontent" id="puntingYears" style="display:table">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="puntingYearsData">	
-					</div>
+					<div class="divTableCell" id="puntingYearsData"></div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="tabcontent" id="puntingGames">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="puntingGamesData">	
-					</div>
+					<div class="divTableCell" id="puntingGamesData"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div id="kicking">
+
+	<div class="card" id="kicking">
 		<h3>Kicking</h3>
 		<div class="tab" id="kickingTabs">
 			<button onclick="tabClick('kickingYears', this)" id="kickingYearsTab">Year Totals</button>
-			<button onclick="tabClick('kickingGames', this)" id="kickingGamesTab">Year Totals</button>
+			<button onclick="tabClick('kickingGames', this)" id="kickingGamesTab">Games</button>
 		</div>
 		<div class="tabcontent" id="kickingYears" style="display:table">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="kickingYearsData">	
-					</div>
+					<div class="divTableCell" id="kickingYearsData"></div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="tabcontent" id="kickingGames">
-			<div class="divTableBody">	
+			<div class="divTableBody">
 				<div class="divTableRow">
-					<div class="divTableCell" id="kickingGamesData">	
-					</div>
+					<div class="divTableCell" id="kickingGamesData"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-
-</div>	<!-- end divMain -->
-<br/><br/>
+</main>
 
 <script th:inline="javascript">
 var year;
@@ -397,8 +437,8 @@ function setStats() {
   	setYearsTable(kickReturns, "kickReturns", "kickReturnsYearsData", kickReturnsTotal);
 	setYearsTable(puntReturns, "puntReturns", "puntReturnsYearsData", puntReturnsTotal);
 	setYearsTable(punting, "punting", "puntingYearsData", puntingTotal);
-	setYearsTable(kicking, "kicking", "kickingYearsData", kickingTotal);   
-	
+	setYearsTable(kicking, "kicking", "kickingYearsData", kickingTotal);
+
 	setGamesTable(passingGames, "passing", "passingGamesData");
 	setGamesTable(rushingGames, "rushing", "rushingGamesData");
 	setGamesTable(receivingGames, "receiving", "receivingGamesData");
@@ -407,10 +447,10 @@ function setStats() {
 	setGamesTable(puntReturnsGames, "puntReturns", "puntReturnsGamesData");
 	setGamesTable(puntingGames, "punting", "puntingGamesData");
 	setGamesTable(kickingGames, "kicking", "kickingGamesData");
-	
- 	var html = `<img src='http://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' height='50' width='50'><h1>${playerName}</h1>`;
+
+ 	var html = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' height='50' width='50'><h1>${playerName}</h1>`;
 	document.getElementById("bannerDiv").innerHTML = html;
-	document.title = "Player - " + playerName; 
+	document.title = "Player - " + playerName;
 }
 
 function setYearsTable(stats, divParent, divName, totalRow) {
@@ -421,96 +461,96 @@ function setYearsTable(stats, divParent, divName, totalRow) {
 	}
 
 	var json = JSON.parse(stats);
-	
+
 	if(playerName == "") {
 		playerName = json[0].Name;
 	}
-		
+
 	var html = "<br/>";
-	html += "<table class='fixedWidth'>";	
+	html += "<table class='fixedWidth'>";
 	var columnsToExclude = ["TeamId", "Name"];
 	html += getTableHeader(json[0], columnsToExclude);
-	
+
 	for(var i=0; i<json.length; i++) {
-		var row = json[i];		
+		var row = json[i];
 
 		var temp = `/teams/team/${row.TeamId}/year/${row.Year}`;
 		var link = `<a href="${temp}">${row.Team}</a>`;
 		var linkColumns = {
 			Team : link
 		}
-		
+
 		if(year === undefined) {
 			year = row.Year;
 			teamId = row.TeamId;
 		}
-		
+
 		if(row.Year > year) {
 			year = row.Year;
 			teamId = row.TeamId;
-		}	
+		}
 		html += getTableRow(row, columnsToExclude, linkColumns);
 	}
 // append total row to table
 // TODO  this doesn't work for players who played for multiple teams.  See Joe Milton Mich/Tennessee
 // 	var row = JSON.parse(totalRow);
 // 	html += getTableRow(row[0], columnsToExclude, '');
-	
+
 	html += "</table><br/>";
-	document.getElementById(divName).innerHTML = html;	
+	document.getElementById(divName).innerHTML = html;
 }
 
 function setGamesTable(stats, divParent, divName) {
-	
+
 	if(isValidData(stats) == 0) {
 		document.getElementById(divParent).style.display = "none";
 		return;
 	}
-	
+
 	var json = JSON.parse(stats);
-	
+
 	if(playerName == "") {
 		playerName = json[0].Name;
 	}
-		
+
 	var html = "<br/>";
-	html += "<table class='fixedWidth'>";	
+	html += "<table class='fixedWidth'>";
 	var columnsToExclude = ["TeamId", "Name", "Year", "GameId", "OppId", "Site", "OppRank"];
 	html += getTableHeader(json[0], columnsToExclude);
-	
+
 	for(var i=0; i<json.length; i++) {
-		var row = json[i];		
+		var row = json[i];
 
 		var teamLink = `<a href="/teams/team/${row.TeamId}/year/${row.Year}">${row.Team}</a>`;
 		var site = "";
 		var rank = "";
-		
+
 		if(row.Site != '') {
 			site = row.Site + " ";
 		}
-		
+
 		if(row.Rank != '') {
 			rank = row.OppRank + " ";
 		}
 
 		var oppTeamLink = `<a href="/teams/team/${row.OppId}/year/${row.Year}">${site}${rank}${row.Opponent}</a>`;
 		var dateLink = `<a href="/games/game/${row.GameId}/boxscore">${row.Date}</a>`;
-		
+
 		var linkColumns = {
 			Date : dateLink,
 			Team : teamLink,
 			Opponent : oppTeamLink
 			//Result : resultLink
 		}
-		
+
 		html += getTableRow(row, columnsToExclude, linkColumns);
 	}
 	html += "</table><br/>";
-	document.getElementById(divName).innerHTML = html;	
+	document.getElementById(divName).innerHTML = html;
 }
 
 function tabClick(tabContentsId, tab) {
-	
+
 	var tabContents = document.getElementById(tabContentsId);
 	var tabs = tab.parentNode.children;
 
@@ -524,7 +564,7 @@ function tabClick(tabContentsId, tab) {
 			tabContentsId = aTab.id.substr(0, aTab.id.length - 3);
 			document.getElementById(tabContentsId).style.display = "none";
 		}
-	} 
+	}
 }
 
 //TODO - make this more efficient

@@ -1,123 +1,159 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<title th:text="${title}">College Football Data - National Stats</title>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>CFB Geek college football statistics</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title th:text="${title}">CFB Geek college football statistics</title>
 <meta name="description" content="College Football Data Stats">
 <meta name="author" content="John Gilliam">
 
 <link href="/css/navbar.css" rel="stylesheet">
 
 <style type="text/css">
-/* DivTable.com */
-
-html { 
-    height: 100%;
-}
-body { 
-    min-height: 100%;
-    margin: 0px;
-}
-tbody {
-/* 	background-color: #f2f2f2; */
-}
-.divMain {
-	display: block;
-	margin: auto;
-    width: 80%;
-    /*   fixed menu chnage on next line */
-	margin-top: 30px;
-}
-.divTable {
-	display: table;
-	width: 100%;	
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-}
-.divTableCell, .divTableHead {
-	/* border: 1px solid #999999; */
-	display: table-cell;
-	padding: 3px 5px;
-	width: 25%;
-}
-.divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
-}
-.divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
-}
-.divTableBody {
-	display: table-row-group;
+:root {
+	--brand-navy: #00274c;
+	--brand-navy-light: #003a70;
+	--accent: #ffcb05;
+	--accent-hover: #ffd633;
+	--link: #0a66c2;
+	--text: #1a1a1a;
+	--text-muted: #5a6472;
+	--surface: #ffffff;
+	--bg: #f4f6f9;
+	--border: #e3e8ef;
+	--radius: 12px;
+	--shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+	--shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.12);
+	--font: "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+* {
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+	margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	line-height: 1.55;
+}
+
+a {
+	color: var(--link);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+a:hover {
+	color: var(--brand-navy);
+}
+
+/* ---- Hero ---- */
+.hero {
+	background: var(--bg);
+	color: #000;
+	padding: 18px 24px;
+	text-align: center;
+}
+
+.hero h1 {
+	margin: 0;
+	font-size: clamp(22px, 4vw, 32px);
+	font-weight: 700;
+	letter-spacing: -0.5px;
+}
+
+/* ---- Layout ---- */
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 24px 24px 64px;
+}
+
+.card-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+	gap: 20px;
+}
+
+.card {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	padding: 20px 22px;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-hover);
+}
+
+.section-title {
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--brand-navy);
+	margin: 0 0 14px;
+}
+
+/* ---- Tables ---- */
 table {
-	table-layout: fixed;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    width: 100%;
+	font-family: var(--font);
+	font-size: 13px;
+	border-collapse: collapse;
+	width: 100%;
+	border: none;
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+	overflow: hidden;
 }
+
 table td {
-	font-size: 12px;
-    border: 1px solid #ddd;
-    border-left: none;
-    border-right: none;
-    padding: 2px; 
+	font-size: 13px;
+	border-bottom: 1px solid var(--border);
+	padding: 8px 10px;
+	vertical-align: middle;
 }
+
 table td a {
-	color: #06c;
-	text-decoration: none;
+	color: var(--link);
+	font-weight: 600;
 }
+
 table th {
-	font-size: 14px;
-	font-weight: bold;
-    text-align: left;
-    background-color: #00274c;
-    font-style: normal;
-    color: white;
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	text-align: left;
+	background-color: var(--brand-navy);
+	color: #fff;
+	padding: 10px;
 }
-h1 {
-	font-size: 20px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+
+table tr:hover {
+	background-color: #eef2f7;
 }
-h3 {
-	font-size: 14px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-}
-#statTable th:hover {
-	background-color: grey;
-	color: #00274c
-}
-#statTable th a {
-	color: white;
-	text-decoration: none;
+
+@media (max-width: 600px) {
+	.container {
+		padding: 20px 14px 48px;
+	}
 }
 </style>
 </head>
 <body onload="setYearLinks()">
 
-<!-- 
-<p th:text="'year= ' + ${year} "/>
- -->
-
 	<div class="navbar">
-		<a href="/">CFB GEEK</a> 
+		<a href="/">CFB GEEK</a>
 		<a href="/teams">Teams</a>
-<!-- 		<a href="javascript:void(0)" onclick="gotoYearSchedule(year)">Schedule</a> -->
 		<a href="javascript:void(0)" onclick="gotoYearSchedule(year)">Schedule</a>
 		<a href="javascript:void(0)" onclick="gotoYearStats(year)">Stats</a>
 		<div class="dropdown">
@@ -131,208 +167,205 @@ h3 {
 		<a href="#" onclick="gotoYearRecruiting(year)">Recruiting</a>
 	</div>
 
-<div class="divMain">
-	<div class="divTable">
-		<div class="divTableBody">
-			<br />
-			<div class="divTableRow">
-				<div class="divTableCell" id="yearDiv">
-					<h1 th:text="${year} + ' - National Stats'"></h1>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell">
-					<h1>Team Stats</h1>
-					<table>
-						<tr>
-							<th>Offense</th>
-							<th>Defense</th>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/scoringoffense|}">Scoring Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/scoringdefense|}">Scoring Defense</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/totaloffense|}">Total Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/totaldefense|}">Total Defense</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/rushingoffense|}">Rushing Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/rushingdefense|}">Rushing Defense</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/passingoffense|}">Passing Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/passingdefense|}">Passing Defense</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/puntreturnoffense|}">Punt Return Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/puntreturndefense|}">Punt Return Defense</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/kickreturnoffense|}">Kick Return Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/kickreturndefense|}">Kick Return Defense</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/3rddownoffense|}">3rd Down Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/3rddowndefense|}">3rd Down Defense</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/tacklesforlossallowed|}">Sacks and TFL Allowed</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/tacklesforloss|}">Sacks and TFL</a></td>							
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/turnovermargin|}">Turnover Margin</a></td>							
-						</tr>
-					</table>
-				</div>
-				<div class="divTableCell">
-					<h1>Player Stats</h1>
-					<table>
-						<tr>
-							<th>Offense</th>
-							<th>Defense</th>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/players/rushingoffense|}">Rushing Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/players/tackles|}">Tackles</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/players/passingoffense|}">Passing Offense</a></td>
-							<td><a th:href="@{|/stats/year/${year}/players/tacklesforloss|}">Tackles For Loss</a></td>						
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/players/receivingoffense|}">Receiving Offense</a></td>
-							<td>Sacks</td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/players/puntreturns|}">Punt Returns</a></td>
-							<td><a th:href="@{|/stats/year/${year}/players/interceptions|}">Interceptions</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/players/kickreturns|}">Kick Returns</a></td>
-							<td>Passes Defended</td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/players/allpurposeoffense|}">All Purpose Offense</a></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/players/totaloffense|}">Total Offense</a></td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			
-			<div class="divTableRow">
-				<div class="divTableCell">
-					<h1>Advanced Team Stats</h1>
-					<table>
-						<tr>
-							<th>Offense</th>
-							<th>Defense</th>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/offenseplaysuccess|}">Offense Play Success</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/defenseplaysuccess|}">Defense Play Success</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/offensepointsperplay|}">Offense Points Per Play</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/defensepointsperplay|}">Defense Points Per Play Allowed</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/offenseplayexplosiveness|}">Offense Explosive Plays</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/defenseplayexplosiveness|}">Defense Explosive Plays Allowed</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/offensedriveefficiency|}">Offense Drive Efficiency</a></td>
-							<td><a th:href="@{|/stats/year/${year}/team/defensedriveefficiency|}">Defense Drive Efficiency</a></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/spranking|}">SP+ Ranking</a></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/movranking|}">Avg Margin of Victory</a></td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
-				<div class="divTableCell">
-				<h1>Historical Oddities</h1>
-				<table>
-					<tr>
-						<th>Oddity</th>							
-					</tr>
-					<tr>
-						<td><a th:href="@{|/stats/winswith5turnovers|}">Wins with 5+ Turnovers</a></td>						
-					</tr>
-					<tr>
-						<td><a th:href="@{|/stats/winswithmorepointsthanyardsallowed|}">Games where winner has more points than yards allowed</a></td>
-					</tr>
-					<tr>
-						<td><a th:href="@{|/stats/fcsbeatsrankedfbs|}">FCS wins against ranked FBS</a></td>
-					</tr>
-					<tr>
-						<td><a th:href="@{|/stats/upsets|}">Upsets</a></td>
-					</tr>
-				</table>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell">
-					<h1>Team Win Loss Records</h1>
-					<table>
-						<tr>
-							<th>Single Season</th>
-							<th>All Seasons</th>
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/recordvsranked|}">Team Records vs Ranked Teams</a></td>
-							<td><a th:href="@{|/stats/team/recordalltime|}">Overall Records (Since 2001)</a></td>							
-						</tr>
-						<tr>
-							<td><a th:href="@{|/stats/year/${year}/team/sos|}">Strength of Schedule (SOS)</a></td>
-							<td><a th:href="@{|/stats/bowlrecordhistory|}">Bowl Records</a></td>
-						</tr>
-					</table>
-				</div>
-				<div class="divTableCell">
-					<h1>Scorigami</h1>
-					<table>
-					<tr>
-						<th>Scorigami</th>							
-					</tr>
-					<tr>
-						<td><a th:href="@{|/stats/scorigami|}">Scorigami (unique) since 2000</a></td>
-					</tr>
-					<tr>
-						<td><a th:href="@{|/stats/scorigami/table|}">Scorigami Table since 2000</a></td>
-					</tr>
-					</table>
-				</div>
-			</div>
-		</div>
+<header class="hero">
+	<h1 id="yearDiv" th:text="${year} + ' - National Stats'"></h1>
+</header>
+
+<main class="container">
+	<div class="card-grid">
+
+		<article class="card">
+			<h2 class="section-title">Team Stats</h2>
+			<table>
+				<tr>
+					<th>Offense</th>
+					<th>Defense</th>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/scoringoffense|}">Scoring Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/scoringdefense|}">Scoring Defense</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/totaloffense|}">Total Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/totaldefense|}">Total Defense</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/rushingoffense|}">Rushing Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/rushingdefense|}">Rushing Defense</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/passingoffense|}">Passing Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/passingdefense|}">Passing Defense</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/puntreturnoffense|}">Punt Return Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/puntreturndefense|}">Punt Return Defense</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/kickreturnoffense|}">Kick Return Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/kickreturndefense|}">Kick Return Defense</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/3rddownoffense|}">3rd Down Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/3rddowndefense|}">3rd Down Defense</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/tacklesforlossallowed|}">Sacks and TFL Allowed</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/tacklesforloss|}">Sacks and TFL</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/turnovermargin|}">Turnover Margin</a></td>
+					<td></td>
+				</tr>
+			</table>
+		</article>
+
+		<article class="card">
+			<h2 class="section-title">Player Stats</h2>
+			<table>
+				<tr>
+					<th>Offense</th>
+					<th>Defense</th>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/players/rushingoffense|}">Rushing Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/players/tackles|}">Tackles</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/players/passingoffense|}">Passing Offense</a></td>
+					<td><a th:href="@{|/stats/year/${year}/players/tacklesforloss|}">Tackles For Loss</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/players/receivingoffense|}">Receiving Offense</a></td>
+					<td>Sacks</td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/players/puntreturns|}">Punt Returns</a></td>
+					<td><a th:href="@{|/stats/year/${year}/players/interceptions|}">Interceptions</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/players/kickreturns|}">Kick Returns</a></td>
+					<td>Passes Defended</td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/players/allpurposeoffense|}">All Purpose Offense</a></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/players/totaloffense|}">Total Offense</a></td>
+					<td></td>
+				</tr>
+			</table>
+		</article>
+
+		<article class="card">
+			<h2 class="section-title">Advanced Team Stats</h2>
+			<table>
+				<tr>
+					<th>Offense</th>
+					<th>Defense</th>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/offenseplaysuccess|}">Offense Play Success</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/defenseplaysuccess|}">Defense Play Success</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/offensepointsperplay|}">Offense Points Per Play</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/defensepointsperplay|}">Defense Points Per Play Allowed</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/offenseplayexplosiveness|}">Offense Explosive Plays</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/defenseplayexplosiveness|}">Defense Explosive Plays Allowed</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/offensedriveefficiency|}">Offense Drive Efficiency</a></td>
+					<td><a th:href="@{|/stats/year/${year}/team/defensedriveefficiency|}">Defense Drive Efficiency</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/spranking|}">SP+ Ranking</a></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/movranking|}">Avg Margin of Victory</a></td>
+					<td></td>
+				</tr>
+			</table>
+		</article>
+
+		<article class="card">
+			<h2 class="section-title">Historical Oddities</h2>
+			<table>
+				<tr>
+					<th>Oddity</th>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/winswith5turnovers|}">Wins with 5+ Turnovers</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/winswithmorepointsthanyardsallowed|}">Games where winner has more points than yards allowed</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/fcsbeatsrankedfbs|}">FCS wins against ranked FBS</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/upsets|}">Upsets</a></td>
+				</tr>
+			</table>
+		</article>
+
+		<article class="card">
+			<h2 class="section-title">Team Win Loss Records</h2>
+			<table>
+				<tr>
+					<th>Single Season</th>
+					<th>All Seasons</th>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/recordvsranked|}">Team Records vs Ranked Teams</a></td>
+					<td><a th:href="@{|/stats/team/recordalltime|}">Overall Records (Since 2001)</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/year/${year}/team/sos|}">Strength of Schedule (SOS)</a></td>
+					<td><a th:href="@{|/stats/bowlrecordhistory|}">Bowl Records</a></td>
+				</tr>
+			</table>
+		</article>
+
+		<article class="card">
+			<h2 class="section-title">Scorigami</h2>
+			<table>
+				<tr>
+					<th>Scorigami</th>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/scorigami|}">Scorigami (unique) since 2000</a></td>
+				</tr>
+				<tr>
+					<td><a th:href="@{|/stats/scorigami/table|}">Scorigami Table since 2000</a></td>
+				</tr>
+			</table>
+		</article>
+
 	</div>
-</div>
+</main>
 
 <script th:inline="javascript">
 
-var year = /*[[${year}]]*/ null;
+let year = /*[[${year}]]*/ null;
 if(year == null) {
-	year = now.getFullYear();
+	year = new Date().getFullYear();
 }
 
 function setYearLinks() {
-	var teamYearsDiv = document.getElementById("statYears");
-	var currentYear = "/year/" + year;
-	var html = "";
-	var MAX_YEAR = getMaxYear();
-	
-	for(var i=MAX_YEAR; i>=2001; i--) {
-		var newYear = "/year/" + i;
-		var currentUrl = window.location.href;
-		var link = currentUrl.replace(currentYear, newYear);
+	let teamYearsDiv = document.getElementById("statYears");
+	let currentYear = "/year/" + year;
+	let html = "";
+	let MAX_YEAR = getMaxYear();
+
+	for(let i=MAX_YEAR; i>=2001; i--) {
+		let newYear = "/year/" + i;
+		let currentUrl = window.location.href;
+		let link = currentUrl.replace(currentYear, newYear);
 		html += `<a href='${link}'>${i}</a>`;
 	}
 	teamYearsDiv.innerHTML = html;
@@ -343,3 +376,4 @@ function setYearLinks() {
 <script type="text/javascript" th:src="@{/js/table.js}"></script>
 <script type="text/javascript" th:src="@{/js/yearChoices.js}"></script>
 </body>
+</html>

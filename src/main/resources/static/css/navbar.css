@@ -1,27 +1,31 @@
 /* Navbar container */
 .navbar {
-/*   fixed menu chnage on next line */
-/*   overflow: hidden; */
+  display: flex;
+  align-items: center;
   background-color: #333;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   top: 0;
-  padding: 0;
-  padding-left: 10%;
+  padding: 0 6%;
   width: 100%;
-  /*   fixed menu chnage on next line */
-  position: fixed;
+  position: sticky;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
 /* Links inside the navbar */
 .navbar a {
-  float: left;
   font-size: 16px;
-/*   fixed menu chnage on next line */
   display: block;
   color: white;
-  /*text-align: center;*/
-  padding: 14px 16px;
+  padding: 16px 18px;
   text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Brand link (first link) */
+.navbar a:first-child {
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 /* The dropdown container */
@@ -42,9 +46,10 @@
   margin: 0; /* Important for vertical align on mobile phones */
 }
 
-/* Add a grey background color to navbar links on hover */
+/* Highlight navbar links on hover */
 .navbar a:hover, .dropdown:hover .dropbtn {
   background-color: grey;
+  color: #fff;
 }
 
 /* Dropdown content (hidden by default) */
