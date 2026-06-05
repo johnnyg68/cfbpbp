@@ -79,7 +79,7 @@ a:hover {
 
 .card-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+	grid-template-columns: repeat(2, 1fr);
 	gap: 20px;
 }
 
@@ -153,6 +153,9 @@ table tr:hover {
 @media (max-width: 600px) {
 	.container {
 		padding: 20px 14px 48px;
+	}
+	.card-grid {
+		grid-template-columns: 1fr;
 	}
 }
 </style>
