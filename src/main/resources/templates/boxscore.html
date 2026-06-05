@@ -223,6 +223,17 @@ h3 {
 	box-shadow: var(--shadow);
 }
 
+.tabcontent.is-active {
+	display: block;
+}
+
+/* Players tab: visitor | home two-column grid */
+#playersDiv.is-active {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px 24px;
+}
+
 /* ---- Tables ---- */
 table.fixedWidth {
 	table-layout: fixed;
@@ -274,6 +285,18 @@ table tr:hover {
 	background-color: #eef2f7;
 }
 
+/* Scoring plays: keep the Clock column (2nd) on one line */
+#scoringPlaysDiv th:nth-child(2),
+#scoringPlaysDiv td:nth-child(2) {
+	white-space: nowrap;
+}
+
+/* All plays: keep the Clock column (1st) on one line */
+#allPlaysDiv th:nth-child(1),
+#allPlaysDiv td:nth-child(1) {
+	white-space: nowrap;
+}
+
 img {
 	vertical-align: middle;
 	padding-right: 5px;
@@ -285,18 +308,15 @@ img {
 	width: 100%;
 }
 
-#driveTeamSelectorTable {
-	border: none;
-	width: auto;
-	margin-bottom: 12px;
+.drive-selector {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 14px;
 }
 
-#driveTeamSelectorTable td {
-	border: none;
-}
-
-#driveTeamSelectorTable tr:hover {
-	background-color: transparent;
+.drive-selector h3 {
+	margin: 0;
 }
 
 #driveTeamSelector {
@@ -318,31 +338,12 @@ img {
 	display: table-row;
 }
 
-/* DivTable layout utilities (used by player-stat + tab panels) */
-.divTable {
-	display: table;
-	width: 100%;
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableBody {
-	display: table-row-group;
-}
-.divTableCell {
-	display: table-cell;
-	padding: 8px 12px;
-	width: 50%;
-	vertical-align: top;
-}
-
 @media (max-width: 700px) {
 	.container {
 		padding: 20px 14px 48px;
 	}
-	.divTableCell {
-		display: block;
-		width: 100%;
+	#playersDiv.is-active {
+		grid-template-columns: 1fr;
 	}
 }
 </style>
@@ -384,125 +385,45 @@ img {
 	</div>
 
 	<div class="tabcontent" id="playersDiv">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorPassingDiv">
-					<p>Visitor Passing</p>
-				</div>
-				<div class="divTableCell" id="homePassingDiv">
-					<p>Home Passing</p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorRushingDiv">
-					<p>Visitor Rushing</p>
-				</div>
-				<div class="divTableCell" id="homeRushingDiv">
-					<p>Home Rushing</p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorReceivingDiv">
-					<p>Visitor Receiving</p>
-				</div>
-				<div class="divTableCell" id="homeReceivingDiv">
-					<p>Home Receiving</p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorDefenseDiv">
-					<p>Visitor Defense</p>
-				</div>
-				<div class="divTableCell" id="homeDefenseDiv">
-					<p>Home Defense</p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorIntsDiv">
-					<p>Visitor Ints</p>
-				</div>
-				<div class="divTableCell" id="homeIntsDiv">
-					<p>Home Ints</p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorKickReturnsDiv">
-					<p>Visitor Kick Returns</p>
-				</div>
-				<div class="divTableCell" id="homeKickReturnsDiv">
-					<p>Home Kick Returns</p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorPuntReturnsDiv">
-					<p>Visitor Punt Returns</p>
-				</div>
-				<div class="divTableCell" id="homePuntReturnsDiv">
-					<p>Home Punt Returns</p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorKickingDiv">
-					<p>Visitor Kicking</p>
-				</div>
-				<div class="divTableCell" id="homeKickingDiv">
-					<p>Home Kicking</p>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="visitorPuntingDiv">
-					<p>Visitor Punting</p>
-				</div>
-				<div class="divTableCell" id="homePuntingDiv">
-					<p>Home Punting</p>
-				</div>
-			</div>
-		</div>
+		<div id="visitorPassingDiv"></div>
+		<div id="homePassingDiv"></div>
+		<div id="visitorRushingDiv"></div>
+		<div id="homeRushingDiv"></div>
+		<div id="visitorReceivingDiv"></div>
+		<div id="homeReceivingDiv"></div>
+		<div id="visitorDefenseDiv"></div>
+		<div id="homeDefenseDiv"></div>
+		<div id="visitorIntsDiv"></div>
+		<div id="homeIntsDiv"></div>
+		<div id="visitorKickReturnsDiv"></div>
+		<div id="homeKickReturnsDiv"></div>
+		<div id="visitorPuntReturnsDiv"></div>
+		<div id="homePuntReturnsDiv"></div>
+		<div id="visitorKickingDiv"></div>
+		<div id="homeKickingDiv"></div>
+		<div id="visitorPuntingDiv"></div>
+		<div id="homePuntingDiv"></div>
 	</div>
 
 	<div class="tabcontent" id="playSummaryDiv">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="playSummary"></div>
-			</div>
-		</div>
+		<div id="playSummary"></div>
 		<br />
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="allPlaysDiv"></div>
-			</div>
-		</div>
+		<div id="allPlaysDiv"></div>
 	</div>
 
 	<div class="tabcontent" id="drivesDiv">
-		<table id="driveTeamSelectorTable">
-			<tbody>
-				<tr>
-					<td width="5%">
-						<h3>Team: </h3>
-					</td>
-					<td>
-						<select id="driveTeamSelector" onchange="setDrivesAndPlaysTable(this.value)">
-							<option value="All">All</option>
-						</select>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="allDrivesDiv"></div>
-			</div>
+		<div class="drive-selector">
+			<h3>Team:</h3>
+			<select id="driveTeamSelector" onchange="setDrivesAndPlaysTable(this.value)">
+				<option value="All">All</option>
+			</select>
 		</div>
+		<div id="allDrivesDiv"></div>
 	</div>
 
 	<div class="tabcontent" id="oddsDiv">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="allOddsDiv">
-					No Data Available
-				</div>
-			</div>
+		<div id="allOddsDiv">
+			No Data Available
 		</div>
 	</div>
 
@@ -773,13 +694,9 @@ function tabClick(tab) {
 	let tabContents = document.getElementsByClassName("tabcontent");
 
 	for(i=0; i<tabs.length; i++) {
-		if(tab.id == tabs[i].id) {
-			tabs[i].style.backgroundColor = "#00274c";
-			tabContents[i].style.display = "table";
-		} else {
-			tabs[i].style.backgroundColor = "#999999";
-			tabContents[i].style.display = "none";
-		}
+		let isActive = (tab.id == tabs[i].id);
+		tabs[i].style.backgroundColor = isActive ? "#00274c" : "#999999";
+		tabContents[i].classList.toggle("is-active", isActive);
 	}
 }
 

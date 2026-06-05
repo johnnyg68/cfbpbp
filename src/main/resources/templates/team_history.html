@@ -132,6 +132,15 @@ h3 {
 	box-shadow: var(--shadow);
 }
 
+.tabcontent.is-active {
+	display: block;
+}
+
+/* spacing between stacked tables within a tab */
+.tabcontent.is-active > div + div {
+	margin-top: 16px;
+}
+
 /* ---- Tables ---- */
 table {
 	font-family: var(--font);
@@ -205,24 +214,6 @@ label {
 	margin-right: 12px;
 }
 
-/* ---- DivTable layout utilities (used by the tab panels) ---- */
-.divTable {
-	display: table;
-	width: 100%;
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableBody {
-	display: table-row-group;
-}
-.divTableCell {
-	display: table-cell;
-	width: 100%;
-	padding: 0 0 12px;
-	vertical-align: top;
-}
-
 @media (max-width: 600px) {
 	.container {
 		padding: 20px 14px 48px;
@@ -276,126 +267,81 @@ label {
 	</div>
 
 	<div class="tabcontent" id="rankingsContent">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="rankingsTableDiv">
-					<p>Rankings</p>
-				</div>
-			</div>
-		</div>
+		<div id="rankingsTableDiv"></div>
 	</div>
 
 	<div class="tabcontent" id="bowlsContent">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="bowlsTableDiv">
-					<p>Bowls</p>
-				</div>
-			</div>
-		</div>
+		<div id="bowlsTableDiv"></div>
 	</div>
 
 	<div class="tabcontent" id="vsOpponentContent">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="vsOpponentTableDiv">
-					<p>vs Opponent</p>
-				</div>
-			</div>
-		</div>
+		<div id="vsOpponentTableDiv"></div>
 	</div>
 
 	<div class="tabcontent" id="yearsAvgContent">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="yearAvgOffense">
-					<h3>Offense</h3>
-					<table id="yearAvgOffenseTable" class="sortable">
-						<thead></thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
-			<div class="divTableRow">
-				<div class="divTableCell" id="yearAvgDefense">
-					<h3>Defense</h3>
-					<table id="yearAvgDefenseTable" class="sortable">
-						<thead></thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
+		<div id="yearAvgOffense">
+			<h3>Offense</h3>
+			<table id="yearAvgOffenseTable" class="sortable">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
+		</div>
+		<div id="yearAvgDefense">
+			<h3>Defense</h3>
+			<table id="yearAvgDefenseTable" class="sortable">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
 		</div>
 	</div>
 
 	<div class="tabcontent" id="passingContent">
-		<div class="divTableBody">
-			<label><b>Passing Totals by:</b></label>
-			<input type="radio" id="passingByYear" name="passingTable" value="year" onchange="changePlayerData(name, value)" checked>
-     		<label for="passingByYear">Year</label>
-      		<input type="radio" id="passingByCareer" name="passingTable" value="career" onchange="changePlayerData(name, value)">
-      		<label for="passingByCareer">Career</label>
-      		<br><br>
-
-			<div class="divTableRow">
-				<div class="divTableCell" id="passingTableDiv">
-					<table id="passingTable" class="sortable">
-						<thead></thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
+		<label><b>Passing Totals by:</b></label>
+		<input type="radio" id="passingByYear" name="passingTable" value="year" onchange="changePlayerData(name, value)" checked>
+		<label for="passingByYear">Year</label>
+		<input type="radio" id="passingByCareer" name="passingTable" value="career" onchange="changePlayerData(name, value)">
+		<label for="passingByCareer">Career</label>
+		<br><br>
+		<div id="passingTableDiv">
+			<table id="passingTable" class="sortable">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
 		</div>
 	</div>
 
 	<div class="tabcontent" id="rushingContent">
-		<div class="divTableBody">
-			<label><b>Rushing Totals by:</b></label>
-			<input type="radio" id="rushingByYear" name="rushingTable" value="year" onchange="changePlayerData(name, value)" checked>
-     		<label for="rushingByYear">Year</label>
-      		<input type="radio" id="rushingByCareer" name="rushingTable" value="career" onchange="changePlayerData(name, value)">
-      		<label for="rushingByCareer">Career</label>
-      		<br><br>
-      		
-			<div class="divTableRow">
-				<div class="divTableCell" id="rushingTableDiv">
-					<table id="rushingTable" class="sortable">
-						<thead></thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
+		<label><b>Rushing Totals by:</b></label>
+		<input type="radio" id="rushingByYear" name="rushingTable" value="year" onchange="changePlayerData(name, value)" checked>
+		<label for="rushingByYear">Year</label>
+		<input type="radio" id="rushingByCareer" name="rushingTable" value="career" onchange="changePlayerData(name, value)">
+		<label for="rushingByCareer">Career</label>
+		<br><br>
+		<div id="rushingTableDiv">
+			<table id="rushingTable" class="sortable">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
 		</div>
 	</div>
 
 	<div class="tabcontent" id="receivingContent">
-		<div class="divTableBody">
-			<label><b>Receiving Totals by:</b></label>
-			<input type="radio" id="receivingByYear" name="receivingTable" value="year" onchange="changePlayerData(name, value)" checked>
-     		<label for="receivingByYear">Year</label>
-      		<input type="radio" id="receivingByCareer" name="receivingTable" value="career" onchange="changePlayerData(name, value)">
-      		<label for="receivingByCareer">Career</label>
-      		<br><br>
-      		
-			<div class="divTableRow">
-				<div class="divTableCell" id="receivingTableDiv">
-					<table id="receivingTable" class="sortable">
-						<thead></thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
+		<label><b>Receiving Totals by:</b></label>
+		<input type="radio" id="receivingByYear" name="receivingTable" value="year" onchange="changePlayerData(name, value)" checked>
+		<label for="receivingByYear">Year</label>
+		<input type="radio" id="receivingByCareer" name="receivingTable" value="career" onchange="changePlayerData(name, value)">
+		<label for="receivingByCareer">Career</label>
+		<br><br>
+		<div id="receivingTableDiv">
+			<table id="receivingTable" class="sortable">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
 		</div>
 	</div>
 
 	<div class="tabcontent" id="recruitingContent">
-		<div class="divTableBody">
-			<div class="divTableRow">
-				<div class="divTableCell" id="recruitingTableDiv">
-					<p>Recruiting</p>
-				</div>
-			</div>
-		</div>
+		<div id="recruitingTableDiv"></div>
 	</div>
 
 </main>
@@ -723,13 +669,9 @@ function tabClick(tab) {
 	let tabContents = document.getElementsByClassName("tabcontent");
 
 	for(let i=0; i<tabs.length; i++) {
-		if(tab.id == tabs[i].id) {
-			tabs[i].style.backgroundColor = teamColor;
-			tabContents[i].style.display = "table";
-		} else {
-			tabs[i].style.backgroundColor = "#999999";
-			tabContents[i].style.display = "none";
-		}
+		let isActive = (tab.id == tabs[i].id);
+		tabs[i].style.backgroundColor = isActive ? teamColor : "#999999";
+		tabContents[i].classList.toggle("is-active", isActive);
 	}
 }
 

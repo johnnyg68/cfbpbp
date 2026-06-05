@@ -143,9 +143,13 @@ h3 {
 	box-shadow: var(--shadow);
 }
 
-/* Schedule tab is shown by default */
-#scheduleDiv {
-	display: table;
+.tabcontent.is-active {
+	display: block;
+}
+
+/* spacing between stacked stat tables within a tab */
+.tabcontent.is-active > div + div {
+	margin-top: 16px;
 }
 
 /* ---- Tables ---- */
@@ -194,24 +198,6 @@ table tr:hover {
 	background-color: #eef2f7;
 }
 
-/* ---- DivTable layout utilities (used by the tab stat panels) ---- */
-.divTable {
-	display: table;
-	width: 100%;
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableBody {
-	display: table-row-group;
-}
-.divTableCell {
-	display: table-cell;
-	width: 100%;
-	padding: 0 0 18px;
-	vertical-align: top;
-}
-
 @media (max-width: 600px) {
 	.container {
 		padding: 20px 14px 48px;
@@ -248,107 +234,31 @@ table tr:hover {
 			<button onclick="tabClick(this)" id="playerTab">Player</button>
 		</div>
 
-		<div class="tabcontent" id="scheduleDiv">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="scheduleResultsDiv"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="scheduleDiv">
+			<div id="scheduleResultsDiv"></div>
 		</div>
 
 		<div class="tabcontent" id="teamDiv">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="teamScoringDiv">
-						<p>team scoring offense</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="teamYardsDiv">
-						<p>team total offense</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="teamDownSuccessRateDiv">
-						<p>team total down success rate</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="teamPassingDiv">
-						<p>team passing</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="teamRushingDiv">
-						<p>team rushing</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="team3rdDownsDiv">
-						<p>team 3rd down offense</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="teamTurnoverMarginDiv">
-						<p>team turnover margin</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="teamSos">
-						<p>Team Strength of Schedule (SOS)</p>
-					</div>
-				</div>
-			</div>
+			<div id="teamScoringDiv"></div>
+			<div id="teamYardsDiv"></div>
+			<div id="teamDownSuccessRateDiv"></div>
+			<div id="teamPassingDiv"></div>
+			<div id="teamRushingDiv"></div>
+			<div id="team3rdDownsDiv"></div>
+			<div id="teamTurnoverMarginDiv"></div>
+			<div id="teamSos"></div>
 		</div>
 
 		<div class="tabcontent" id="playerDiv">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerPassingDiv">
-						<p>player passing</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerRushingDiv">
-						<p>player rushing</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerReceivingDiv">
-						<p>player receiving</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerDefenseDiv">
-						<p>player defense</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerIntsDiv">
-						<p>player ints</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerKickReturnsDiv">
-						<p>player kickreturns</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerPuntReturnsDiv">
-						<p>player puntreturns</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerPuntingDiv">
-						<p>player punting</p>
-					</div>
-				</div>
-				<div class="divTableRow">
-					<div class="divTableCell" id="playerKickingDiv">
-						<p>player kicking</p>
-					</div>
-				</div>
-			</div>
+			<div id="playerPassingDiv"></div>
+			<div id="playerRushingDiv"></div>
+			<div id="playerReceivingDiv"></div>
+			<div id="playerDefenseDiv"></div>
+			<div id="playerIntsDiv"></div>
+			<div id="playerKickReturnsDiv"></div>
+			<div id="playerPuntReturnsDiv"></div>
+			<div id="playerPuntingDiv"></div>
+			<div id="playerKickingDiv"></div>
 		</div>
 	</main>
 
@@ -521,7 +431,7 @@ function tabClick(tab) {
 
 	for(var tabId in tabMap) {
 		var isActive = (tab.id == tabId);
-		document.getElementById(tabMap[tabId]).style.display = isActive ? "table" : "none";
+		document.getElementById(tabMap[tabId]).classList.toggle("is-active", isActive);
 		document.getElementById(tabId).style.backgroundColor = isActive ? teamColor : "#999999";
 	}
 }

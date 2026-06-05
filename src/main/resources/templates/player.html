@@ -135,6 +135,10 @@ h1 {
 	width: 100%;
 }
 
+.tabcontent.is-active {
+	display: block;
+}
+
 /* ---- Tables ---- */
 table.fixedWidth {
 	table-layout: fixed;
@@ -177,23 +181,6 @@ table tr:hover {
 	background-color: #eef2f7;
 }
 
-/* ---- DivTable layout utilities (used by the tab panels) ---- */
-.divTable {
-	display: table;
-	width: 100%;
-}
-.divTableRow {
-	display: table-row;
-}
-.divTableBody {
-	display: table-row-group;
-}
-.divTableCell {
-	display: table-cell;
-	width: 100%;
-	vertical-align: top;
-}
-
 @media (max-width: 600px) {
 	.container {
 		padding: 20px 14px 48px;
@@ -223,19 +210,11 @@ table tr:hover {
 			<button onclick="tabClick('passingYears', this)" id="passingYearsTab">Year Totals</button>
 			<button onclick="tabClick('passingGames', this)" id="passingGamesTab">Games</button>
 		</div>
-		<div class="tabcontent" id="passingYears" style="display:table">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="passingYearsData"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="passingYears">
+			<div id="passingYearsData"></div>
 		</div>
 		<div class="tabcontent" id="passingGames">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="passingGamesData"></div>
-				</div>
-			</div>
+			<div id="passingGamesData"></div>
 		</div>
 	</div>
 
@@ -245,19 +224,11 @@ table tr:hover {
 			<button onclick="tabClick('rushingYears', this)" id="rushingYearsTab">Year Totals</button>
 			<button onclick="tabClick('rushingGames', this)" id="rushingGamesTab">Games</button>
 		</div>
-		<div class="tabcontent" id="rushingYears" style="display:table">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="rushingYearsData"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="rushingYears">
+			<div id="rushingYearsData"></div>
 		</div>
 		<div class="tabcontent" id="rushingGames">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="rushingGamesData"></div>
-				</div>
-			</div>
+			<div id="rushingGamesData"></div>
 		</div>
 	</div>
 
@@ -267,19 +238,11 @@ table tr:hover {
 			<button onclick="tabClick('receivingYears', this)" id="receivingYearsTab">Year Totals</button>
 			<button onclick="tabClick('receivingGames', this)" id="receivingGamesTab">Games</button>
 		</div>
-		<div class="tabcontent" id="receivingYears" style="display:table">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="receivingYearsData"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="receivingYears">
+			<div id="receivingYearsData"></div>
 		</div>
 		<div class="tabcontent" id="receivingGames">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="receivingGamesData"></div>
-				</div>
-			</div>
+			<div id="receivingGamesData"></div>
 		</div>
 	</div>
 
@@ -289,19 +252,11 @@ table tr:hover {
 			<button onclick="tabClick('defenseYears', this)" id="defenseYearsTab">Year Totals</button>
 			<button onclick="tabClick('defenseGames', this)" id="defenseGamesTab">Games</button>
 		</div>
-		<div class="tabcontent" id="defenseYears" style="display:table">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="defenseYearsData"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="defenseYears">
+			<div id="defenseYearsData"></div>
 		</div>
 		<div class="tabcontent" id="defenseGames">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="defenseGamesData"></div>
-				</div>
-			</div>
+			<div id="defenseGamesData"></div>
 		</div>
 	</div>
 
@@ -311,19 +266,11 @@ table tr:hover {
 			<button onclick="tabClick('kickReturnsYears', this)" id="kickReturnsYearsTab">Year Totals</button>
 			<button onclick="tabClick('kickReturnsGames', this)" id="kickReturnsGamesTab">Games</button>
 		</div>
-		<div class="tabcontent" id="kickReturnsYears" style="display:table">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="kickReturnsYearsData"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="kickReturnsYears">
+			<div id="kickReturnsYearsData"></div>
 		</div>
 		<div class="tabcontent" id="kickReturnsGames">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="kickReturnsGamesData"></div>
-				</div>
-			</div>
+			<div id="kickReturnsGamesData"></div>
 		</div>
 	</div>
 
@@ -333,19 +280,11 @@ table tr:hover {
 			<button onclick="tabClick('puntReturnsYears', this)" id="puntReturnsYearsTab">Year Totals</button>
 			<button onclick="tabClick('puntReturnsGames', this)" id="puntReturnsGamesTab">Games</button>
 		</div>
-		<div class="tabcontent" id="puntReturnsYears" style="display:table">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="puntReturnsYearsData"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="puntReturnsYears">
+			<div id="puntReturnsYearsData"></div>
 		</div>
 		<div class="tabcontent" id="puntReturnsGames">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="puntReturnsGamesData"></div>
-				</div>
-			</div>
+			<div id="puntReturnsGamesData"></div>
 		</div>
 	</div>
 
@@ -355,19 +294,11 @@ table tr:hover {
 			<button onclick="tabClick('puntingYears', this)" id="puntingYearsTab">Year Totals</button>
 			<button onclick="tabClick('puntingGames', this)" id="puntingGamesTab">Games</button>
 		</div>
-		<div class="tabcontent" id="puntingYears" style="display:table">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="puntingYearsData"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="puntingYears">
+			<div id="puntingYearsData"></div>
 		</div>
 		<div class="tabcontent" id="puntingGames">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="puntingGamesData"></div>
-				</div>
-			</div>
+			<div id="puntingGamesData"></div>
 		</div>
 	</div>
 
@@ -377,19 +308,11 @@ table tr:hover {
 			<button onclick="tabClick('kickingYears', this)" id="kickingYearsTab">Year Totals</button>
 			<button onclick="tabClick('kickingGames', this)" id="kickingGamesTab">Games</button>
 		</div>
-		<div class="tabcontent" id="kickingYears" style="display:table">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="kickingYearsData"></div>
-				</div>
-			</div>
+		<div class="tabcontent is-active" id="kickingYears">
+			<div id="kickingYearsData"></div>
 		</div>
 		<div class="tabcontent" id="kickingGames">
-			<div class="divTableBody">
-				<div class="divTableRow">
-					<div class="divTableCell" id="kickingGamesData"></div>
-				</div>
-			</div>
+			<div id="kickingGamesData"></div>
 		</div>
 	</div>
 
@@ -551,19 +474,14 @@ function setGamesTable(stats, divParent, divName) {
 
 function tabClick(tabContentsId, tab) {
 
-	var tabContents = document.getElementById(tabContentsId);
 	var tabs = tab.parentNode.children;
 
 	for(aTab of tabs) {
-		if(tab.id == aTab.id) {
-			aTab.style.backgroundColor = "#00274c";
-			tabContents.style.display = "table";
-		} else {
-			aTab.style.backgroundColor = "#999999";
-			//TODO - this is an ugly hack.  It should be possible to get the tab contents without string manipulation
-			tabContentsId = aTab.id.substr(0, aTab.id.length - 3);
-			document.getElementById(tabContentsId).style.display = "none";
-		}
+		var isActive = (tab.id == aTab.id);
+		aTab.style.backgroundColor = isActive ? "#00274c" : "#999999";
+		// each tab's content id is its button id without the trailing "Tab"
+		var contentId = aTab.id.substr(0, aTab.id.length - 3);
+		document.getElementById(contentId).classList.toggle("is-active", isActive);
 	}
 }
 
