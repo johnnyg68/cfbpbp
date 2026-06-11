@@ -14,7 +14,7 @@ SELECT
     t.att_g as 'Atts/G',
     t.yards_g as 'Yards/G'
 FROM (
-SELECT 
+SELECT STRAIGHT_JOIN -- force the join order to optimize the query
 	player.playername as name,
 	player.playerid as playerid,
     team.name as team,
