@@ -28,11 +28,12 @@ select
     sum(pgs.rushyards) + sum(pgs.passyards) + sum(pgs.passrecyards) + sum(pgs.kickreturnyards) + sum(pgs.puntreturnyards) as TotalYards,
     round((sum(pgs.rushyards) + sum(pgs.passyards) + sum(pgs.passrecyards) + sum(pgs.kickreturnyards) + sum(pgs.puntreturnyards)) / (sum(pgs.rushatts) + sum(pgs.passatts) + sum(pgs.passrecs) + sum(pgs.kickreturns) + sum(pgs.puntreturns)), 2) as YardsPerPlay,
 	round((sum(pgs.rushyards) + sum(pgs.passyards) + sum(pgs.passrecyards) + sum(pgs.kickreturnyards) + sum(pgs.puntreturnyards)) / count(distinct pgs.gameid), 2) as YardsPerGame
-from playergamestat as pgs
-join team on team.teamid = pgs.teamid
-join game on game.gameid = pgs.gameid
-join conference on conference.conferenceid = team.conferenceid
-join player on player.playerid = pgs.playerid and player.teamid = pgs.teamid
+from
+	game
+	join playergamestat as pgs on pgs.gameid = game.gameid
+	join team on team.teamid = pgs.teamid
+	join conference on conference.conferenceid = team.conferenceid
+	join player on player.playerid = pgs.playerid and player.teamid = pgs.teamid
 where 
 	game.year = ? and pgs.passatts > 0 and conference.division = 'FBS'
 group by 

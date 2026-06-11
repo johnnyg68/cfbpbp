@@ -1,4 +1,4 @@
--- Top Player Rushing Offense nationally for a given year.
+-- /CfbPbpSpring/src/main/resources/sql/player/player_rushing_offense.sql
 
 SELECT 
 	row_number() over (order by t.yards_g desc) as '#',
@@ -27,13 +27,13 @@ SELECT
     round(sum(pgs.rushatts) / count(distinct pgs.gameid), 2) as att_g,
     round(sum(pgs.rushyards) / count(distinct pgs.gameid), 2) as yards_g
 FROM 
-	playergamestat as pgs
+	game
+	join playergamestat as pgs on pgs.gameid = game.gameid
 	join player on player.playerid = pgs.playerid and player.teamid = pgs.teamid
     join team on team.teamid = pgs.teamid
-	join game on game.gameid = pgs.gameid
 	join conference on conference.conferenceid = team.conferenceid
 WHERE 
-	game.year = ? and 
+	game.year = ? and
 	pgs.rushatts > 0 and
 	conference.division = 'FBS' 	
 GROUP BY

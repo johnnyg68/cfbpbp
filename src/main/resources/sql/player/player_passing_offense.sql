@@ -36,10 +36,10 @@ select
     round(sum(pgs.passatts) / count(distinct pgs.gameid), 2) as att_g,
     round(sum(pgs.passyards) / count(distinct pgs.gameid), 2) as yards_g
 from 
-	playergamestat as pgs
+	game
+	join playergamestat as pgs on pgs.gameid = game.gameid 
 	join player on player.playerid = pgs.playerid and player.teamid = pgs.teamid
     join team on team.teamid = pgs.teamid
-	join game on game.gameid = pgs.gameid
 	join conference on conference.conferenceid = team.conferenceid
 where 
 	game.year = ? and 

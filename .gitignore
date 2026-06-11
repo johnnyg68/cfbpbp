@@ -61,6 +61,7 @@ Thumbs.db
 .env.*
 
 # Local Spring configs
+application.properties
 application-local.properties
 application-local.yml
 

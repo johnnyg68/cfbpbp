@@ -6,7 +6,7 @@ SELECT
     t.PlayerId,
     t.Team,
     t.TeamId,
-    t.No,
+    t.Returns,
     t.Yards,
     t.Long,
     t.TD,
@@ -17,16 +17,16 @@ select
 	player.playerid as PlayerId,
     team.name as Team,
     team.teamid as TeamId,
-    sum(pgs.kickreturns) as "No",
+    sum(pgs.kickreturns) as "Returns",
     sum(pgs.kickreturnyards) as "Yards",
     round(sum(pgs.kickreturnyards) / sum(pgs.kickreturns), 2) as "Avg",
     max(pgs.kickreturnlong) as "Long",
     sum(pgs.kickreturntds) as "TD" 
 from
-	playergamestat as pgs
+	game
+	join playergamestat as pgs on pgs.gameid = game.gameid
 	join player on player.playerid = pgs.playerid and player.teamid = pgs.teamid
     join team on team.teamid = pgs.teamid
-	join game on game.gameid = pgs.gameid
 	join conference on conference.conferenceid = team.conferenceid
 where 
 	game.year = ? and
@@ -40,7 +40,3 @@ group by
 --	count(distinct pgs.gameid) >= (count(distinct game.hometeamid) + count(distinct game.awayteamid)) * .75
 ) as t
 limit 0,100
-
-	
-	
-	
