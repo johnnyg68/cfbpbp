@@ -18,7 +18,7 @@ with all_plays as (
         and play.down > 0
 ),
 offense_stats as (
-    select
+    select /*+ NO_MERGE(all_plays) */
         offenseteamid as teamid,
         'Offense' as team,
         count(*) as total_plays,
@@ -80,7 +80,7 @@ offense_ranked as (
     where conference.division = 'FBS'
 ),
 defense_stats as (
-    select
+    select /*+ NO_MERGE(all_plays) */
         defenseteamid as teamid,
         'Defense' as team,
         count(*) as total_plays,
