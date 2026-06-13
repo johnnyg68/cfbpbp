@@ -235,10 +235,6 @@ h3 {
 }
 
 /* ---- Tables ---- */
-table.fixedWidth {
-	table-layout: fixed;
-}
-
 table {
 	font-family: var(--font);
 	font-size: 13px;
@@ -657,7 +653,7 @@ function setPlayerStatTable(stats, teamName, heading, divName) {
 	let json = JSON.parse(stats);
 
 	let html = "<h3>" + teamAbbr + " " + heading + "</h3>";
-	html += "<table class='fixedWidth'>";
+	html += "<table>";
 	let columnsToExclude = ["PlayerId", "Team"];
 	html += getTableHeader(json[0], columnsToExclude);
 
