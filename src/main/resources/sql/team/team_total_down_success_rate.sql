@@ -49,7 +49,7 @@ offense_stats as (
         sum(
         	case
         		when down = 2 and distance >=7 then 1
-        		when down in (3,4) and distance >=4 then 1
+        		when down in (3,4) and distance >=5 then 1
         		else 0
         	end
         ) as total_passing_plays,
