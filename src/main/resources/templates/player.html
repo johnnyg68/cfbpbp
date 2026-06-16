@@ -85,14 +85,9 @@ h1 {
 	margin: 0;
 }
 
-/* ---- Stat section cards ---- */
+/* ---- Stat sections ---- */
 .card {
-	background: var(--surface);
-	border: 1px solid var(--border);
-	border-radius: var(--radius);
-	box-shadow: var(--shadow);
-	padding: 18px 22px;
-	margin-bottom: 20px;
+	margin-bottom: 24px;
 }
 
 .card h3 {
@@ -133,6 +128,14 @@ h1 {
 .tabcontent {
 	display: none;
 	width: 100%;
+	padding: 18px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-top: none;
+	border-top-right-radius: var(--radius);
+	border-bottom-left-radius: var(--radius);
+	border-bottom-right-radius: var(--radius);
+	box-shadow: var(--shadow);
 }
 
 .tabcontent.is-active {
@@ -140,9 +143,14 @@ h1 {
 }
 
 /* ---- Tables ---- */
-/* table.fixedWidth {
-	table-layout: fixed;
-} */
+/* far-left / far-right borders on the stat-table data (matches team.html) */
+table.bordered td:first-child {
+	border-left: 1px solid var(--border);
+}
+
+table.bordered td:last-child {
+	border-right: 1px solid var(--border);
+}
 
 table {
 	font-family: var(--font);
@@ -390,7 +398,7 @@ function setYearsTable(stats, divParent, divName, totalRow) {
 	}
 
 	var html = "<br/>";
-	html += "<table class='fixedWidth'>";
+	html += "<table class='bordered'>";
 	var columnsToExclude = ["TeamId", "Name"];
 	html += getTableHeader(json[0], columnsToExclude);
 
@@ -437,7 +445,7 @@ function setGamesTable(stats, divParent, divName) {
 	}
 
 	var html = "<br/>";
-	html += "<table class='fixedWidth'>";
+	html += "<table class='bordered'>";
 	var columnsToExclude = ["TeamId", "Name", "Year", "GameId", "OppId", "Site", "OppRank"];
 	html += getTableHeader(json[0], columnsToExclude);
 
