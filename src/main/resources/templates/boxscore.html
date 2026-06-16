@@ -655,7 +655,7 @@ function setPlayerStatTable(stats, teamName, heading, divName) {
 
 	let html = "<h3>" + teamAbbr + " " + heading + "</h3>";
 	html += "<table>";
-	let columnsToExclude = ["PlayerId", "Team"];
+	const columnsToExclude = ["PlayerId", "Team"];
 	html += getTableHeader(json[0], columnsToExclude);
 
 	for(let i=0; i<json.length; i++) {
@@ -663,7 +663,7 @@ function setPlayerStatTable(stats, teamName, heading, divName) {
 		if(row.Team == teamName) {
 			let temp = `/players/player/${row.PlayerId}`;
 			let link = `<a href="${temp}">${row.Name}</a>`;
-			let linkColumns = {
+			const linkColumns = {
 				Name : link
 			}
 			html += getTableRow(row, columnsToExclude, linkColumns);

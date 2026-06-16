@@ -346,7 +346,7 @@ function paintImpossibleScores() {
 function setMostCommonTable() {
 	const scores = /*[[${mostCommonScores}]]*/ null;
 	scores = JSON.parse(scores);
-	var html = "";
+	let html = "";
 	
 	//function getTableHeader(row, columnsToExclude, sortColumns)
 	html += getTableHeader(scores[0], "", "")

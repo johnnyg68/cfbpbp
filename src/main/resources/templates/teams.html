@@ -163,25 +163,25 @@ a:hover {
 </main>
 
 <script th:inline="javascript">
-var year = "";
+let year = "";
 
 function jsonToTable() {
 	year = getMaxYear();
 
-	var json = /*[[${dataJson}]]*/ null;
-	var jsonParsed = JSON.parse(json);
-	var jsonMap = jsonToMap(jsonParsed);
-	var html = "";
+	let json = /*[[${dataJson}]]*/ null;
+	let jsonParsed = JSON.parse(json);
+	let jsonMap = jsonToMap(jsonParsed);
+	let html = "";
 
-	for (var [conference, teams] of jsonMap.entries()) {
+	for (let [conference, teams] of jsonMap.entries()) {
 		html += `<div class="conference-card">`;
 		html += `<h2 class="conference-name">${conference}</h2>`;
 		html += `<ul class="team-list">`;
 
 		for (team in teams) {
-			var teamObj = teams[team];
-			var teamUrl = `/teams/team/${teamObj.TeamId}/history`;
-			var img = `<img src="https://a.espncdn.com/i/teamlogos/ncaa/500/${teamObj.TeamId}.png" alt="${teamObj.Team} logo" loading="lazy">`;
+			let teamObj = teams[team];
+			let teamUrl = `/teams/team/${teamObj.TeamId}/history`;
+			let img = `<img src="https://a.espncdn.com/i/teamlogos/ncaa/500/${teamObj.TeamId}.png" alt="${teamObj.Team} logo" loading="lazy">`;
 			html += `<li><a class="team-row" href="${teamUrl}">${img}${teamObj.Team}</a></li>`;
 		}
 
@@ -194,11 +194,11 @@ function jsonToTable() {
 
 //create Map<Conference,List<Teams>>
 function jsonToMap(json) {
-	var map = new Map();
-	var teams = [];
+	let map = new Map();
+	let teams = [];
 
-	for (var i = 0; i < json.length; i++) {
-		var conference = json[i].Conference;
+	for (let i = 0; i < json.length; i++) {
+		let conference = json[i].Conference;
 		teams = map.get(conference);
 		if (teams == undefined) {
 			teams = [];

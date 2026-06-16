@@ -264,24 +264,24 @@ table tr:hover {
 	</main>
 
 <script th:inline="javascript">
-var teamYearRecord = /*[[${teamYearRecord}]]*/ null;
-var scheduleResults = /*[[${scheduleResults}]]*/ null;
-var teamOpponentRecord = /*[[${teamOpponentRecord}]]*/ null;
-var year = /*[[${year}]]*/ null;
-var teamId = /*[[${teamId}]]*/ null;
-var teamName = "";
-var teamColor = "";
+const teamYearRecord = /*[[${teamYearRecord}]]*/ null;
+const scheduleResults = /*[[${scheduleResults}]]*/ null;
+const teamOpponentRecord = /*[[${teamOpponentRecord}]]*/ null;
+const year = /*[[${year}]]*/ null;
+const teamId = /*[[${teamId}]]*/ null;
+let teamName = "";
+let teamColor = "";
 
 function setTeamDetails() {
-	var json = JSON.parse(teamYearRecord);
+	let json = JSON.parse(teamYearRecord);
 	teamName = json[0].Name;
-	var mascot = json[0].Mascot;
-	var record = json[0].Record;
-	//var rank = json[0].Rank == null ? "" : "#" + json[0].Rank;
-	var rank = json[0].ranking == null ? "" : "#" + json[0].ranking;
+	let mascot = json[0].Mascot;
+	let record = json[0].Record;
+	//let rank = json[0].Rank == null ? "" : "#" + json[0].Rank;
+	let rank = json[0].ranking == null ? "" : "#" + json[0].ranking;
 	teamColor = json[0].Color != "" ? "#" + json[0].Color : "";
 
-	var html = "";
+	let html = "";
 
 	html += "<h1>" + year + " " + rank + " " + teamName + " " + mascot + " (" + record + ") </h1>" ;
 	html += "<h3>through: " + json[0].Date + "</h3>";
@@ -292,24 +292,24 @@ function setTeamDetails() {
 }
 
 function setScheduleResultsTable() {
-	var json = JSON.parse(scheduleResults);
-	var tableColumns = ["Date", "Opponent", "Result"];
-	var html = "";
+	let json = JSON.parse(scheduleResults);
+	let tableColumns = ["Date", "Opponent", "Result"];
+	let html = "";
 
 	//set table header
-	var columnsToExclude = ["GameId", "sqldate", "HomeTeamId", "AwayTeamId"];
+	const columnsToExclude = ["GameId", "sqldate", "HomeTeamId", "AwayTeamId"];
 	html += "<table>";
 	html += getTableHeader(json[0], columnsToExclude);
 
 	//add row data
 	for(i=0; i<json.length; i++) {
-		var row = json[i];
-		var opponentId = teamId == row.HomeTeamId ? row.AwayTeamId : row.HomeTeamId;
-		var opponentLink = `<a href='/teams/team/${opponentId}/year/${year}'>${row.Opponent}</a>`;
-		var linkPage = (row.Result == "TBD") ? "gamepreview" : "boxscore";
-		var gameLink = `<a href='/games/game/${row.GameId}/${linkPage}'>${row.Date}</a>`;
+		let row = json[i];
+		let opponentId = teamId == row.HomeTeamId ? row.AwayTeamId : row.HomeTeamId;
+		let opponentLink = `<a href='/teams/team/${opponentId}/year/${year}'>${row.Opponent}</a>`;
+		let linkPage = (row.Result == "TBD") ? "gamepreview" : "boxscore";
+		let gameLink = `<a href='/games/game/${row.GameId}/${linkPage}'>${row.Date}</a>`;
 
-		var columnLinks = {
+		let columnLinks = {
 			Date : gameLink,
 			Opponent : opponentLink,
 		}
@@ -325,7 +325,7 @@ function setStatTables() {
 
 	//TEAM
 
-	var stat =  /*[[${teamScoring}]]*/ null;
+	let stat =  /*[[${teamScoring}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Scoring", "teamScoringDiv");
 
 	stat =  /*[[${teamYards}]]*/ null;
@@ -380,7 +380,7 @@ function setStatTables() {
 }
 
 function isValidData(data) {
-	var result = 0;
+	let result = 0;
 	if(data === null) {return result;}
 	if (data === undefined || data.length == 0) {return result;}
 	if(data == "[]") {return result;}
@@ -393,9 +393,9 @@ function setTableHeaderColor() {
 		return;
 	}
 
-	var tableHeaders = document.getElementsByTagName("th");
-	for(var i=0; i<tableHeaders.length; i++) {
-		tableHeader = tableHeaders[i];
+	let tableHeaders = document.getElementsByTagName("th");
+	for(let i=0; i<tableHeaders.length; i++) {
+		let tableHeader = tableHeaders[i];
 		tableHeader.style.backgroundColor = teamColor;
 	}
 
@@ -406,17 +406,17 @@ function setTableHeaderColor() {
 }
 
 function setYearLinks() {
-	var teamYearsDiv = document.getElementById("teamYears");
-	var currentYear = "/year/" + year;
-	var html = "";
-	var MAX_YEAR = getMaxYear();
+	let teamYearsDiv = document.getElementById("teamYears");
+	let currentYear = "/year/" + year;
+	let html = "";
+	let MAX_YEAR = getMaxYear();
 
 	html += `<a href='/teams/team/${teamId}/history'>History</a>`;
 
-	for(var i=MAX_YEAR; i>=2001; i--) {
-		var newYear = "/year/" + i;
-		var currentUrl = window.location.href;
-		var link = currentUrl.replace(currentYear, newYear);
+	for(let i=MAX_YEAR; i>=2001; i--) {
+		let newYear = "/year/" + i;
+		let currentUrl = window.location.href;
+		let link = currentUrl.replace(currentYear, newYear);
 		html += `<a href='${link}'>${i}</a>`;
 	}
 	teamYearsDiv.innerHTML = html;
@@ -424,14 +424,14 @@ function setYearLinks() {
 
 function tabClick(tab) {
 	//map each tab button to its content panel
-	var tabMap = {
+	const tabMap = {
 		scheduleTab : "scheduleDiv",
 		teamTab : "teamDiv",
 		playerTab : "playerDiv"
 	};
 
-	for(var tabId in tabMap) {
-		var isActive = (tab.id == tabId);
+	for(let tabId in tabMap) {
+		let isActive = (tab.id == tabId);
 		document.getElementById(tabMap[tabId]).classList.toggle("is-active", isActive);
 		document.getElementById(tabId).style.backgroundColor = isActive ? teamColor : "#999999";
 	}
