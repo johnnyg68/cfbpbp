@@ -327,38 +327,38 @@ table tr:hover {
 </main>
 
 <script th:inline="javascript">
-var year;
-var playerName = "";
-var teamId = "";
+let year;
+let playerName = "";
+let teamId = "";
 
-var playerId = /*[[${playerId}]]*/ null;
-var passing = /*[[${passing}]]*/ null;
-var rushing = /*[[${rushing}]]*/ null;
-var receiving = /*[[${receiving}]]*/ null;
-var defense = /*[[${defense}]]*/ null;
-var kickReturns = /*[[${kickReturns}]]*/ null;
-var puntReturns = /*[[${puntReturns}]]*/ null;
-var punting = /*[[${punting}]]*/ null;
-var kicking = /*[[${kicking}]]*/ null;
+let playerId = /*[[${playerId}]]*/ null;
+let passing = /*[[${passing}]]*/ null;
+let rushing = /*[[${rushing}]]*/ null;
+let receiving = /*[[${receiving}]]*/ null;
+let defense = /*[[${defense}]]*/ null;
+let kickReturns = /*[[${kickReturns}]]*/ null;
+let puntReturns = /*[[${puntReturns}]]*/ null;
+let punting = /*[[${punting}]]*/ null;
+let kicking = /*[[${kicking}]]*/ null;
 
-var passingGames = /*[[${passingGames}]]*/ null;
-var rushingGames = /*[[${rushingGames}]]*/ null;
-var receivingGames = /*[[${receivingGames}]]*/ null;
-var defenseGames = /*[[${defenseGames}]]*/ null;
-var kickReturnsGames = /*[[${kickReturnsGames}]]*/ null;
-var puntReturnsGames = /*[[${puntReturnsGames}]]*/ null;
-var puntingGames = /*[[${puntingGames}]]*/ null;
-var kickingGames = /*[[${kickingGames}]]*/ null;
+let passingGames = /*[[${passingGames}]]*/ null;
+let rushingGames = /*[[${rushingGames}]]*/ null;
+let receivingGames = /*[[${receivingGames}]]*/ null;
+let defenseGames = /*[[${defenseGames}]]*/ null;
+let kickReturnsGames = /*[[${kickReturnsGames}]]*/ null;
+let puntReturnsGames = /*[[${puntReturnsGames}]]*/ null;
+let puntingGames = /*[[${puntingGames}]]*/ null;
+let kickingGames = /*[[${kickingGames}]]*/ null;
 
 //Career Totals
-var passingTotal = /*[[${passingTotal}]]*/ null;
-var rushingTotal = /*[[${rushingTotal}]]*/ null;
-var receivingTotal = /*[[${receivingTotal}]]*/ null;
-var defenseTotal = /*[[${defenseTotal}]]*/ null;
-var kickReturnsTotal = /*[[${kickReturnsTotal}]]*/ null;
-var puntReturnsTotal = /*[[${puntReturnsTotal}]]*/ null;
-var puntingTotal = /*[[${puntingTotal}]]*/ null;
-var kickingTotal = /*[[${kickingTotal}]]*/ null;
+let passingTotal = /*[[${passingTotal}]]*/ null;
+let rushingTotal = /*[[${rushingTotal}]]*/ null;
+let receivingTotal = /*[[${receivingTotal}]]*/ null;
+let defenseTotal = /*[[${defenseTotal}]]*/ null;
+let kickReturnsTotal = /*[[${kickReturnsTotal}]]*/ null;
+let puntReturnsTotal = /*[[${puntReturnsTotal}]]*/ null;
+let puntingTotal = /*[[${puntingTotal}]]*/ null;
+let kickingTotal = /*[[${kickingTotal}]]*/ null;
 
 function setStats() {
  	setYearsTable(passing, "passing", "passingYearsData", passingTotal);
@@ -379,7 +379,7 @@ function setStats() {
 	setGamesTable(puntingGames, "punting", "puntingGamesData");
 	setGamesTable(kickingGames, "kicking", "kickingGamesData");
 
- 	var html = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' height='50' width='50'><h1>${playerName}</h1>`;
+ 	let html = `<img src='https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png' height='50' width='50'><h1>${playerName}</h1>`;
 	document.getElementById("bannerDiv").innerHTML = html;
 	document.title = "Player - " + playerName;
 }
@@ -391,23 +391,23 @@ function setYearsTable(stats, divParent, divName, totalRow) {
 		return;
 	}
 
-	var json = JSON.parse(stats);
+	let json = JSON.parse(stats);
 
 	if(playerName == "") {
 		playerName = json[0].Name;
 	}
 
-	var html = "<br/>";
+	let html = "<br/>";
 	html += "<table class='bordered'>";
-	var columnsToExclude = ["TeamId", "Name"];
+	const columnsToExclude = ["TeamId", "Name"];
 	html += getTableHeader(json[0], columnsToExclude);
 
-	for(var i=0; i<json.length; i++) {
-		var row = json[i];
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
 
-		var temp = `/teams/team/${row.TeamId}/year/${row.Year}`;
-		var link = `<a href="${temp}">${row.Team}</a>`;
-		var linkColumns = {
+		let temp = `/teams/team/${row.TeamId}/year/${row.Year}`;
+		let link = `<a href="${temp}">${row.Team}</a>`;
+		const linkColumns = {
 			Team : link
 		}
 
@@ -438,23 +438,23 @@ function setGamesTable(stats, divParent, divName) {
 		return;
 	}
 
-	var json = JSON.parse(stats);
+	let json = JSON.parse(stats);
 
 	if(playerName == "") {
 		playerName = json[0].Name;
 	}
 
-	var html = "<br/>";
+	let html = "<br/>";
 	html += "<table class='bordered'>";
-	var columnsToExclude = ["TeamId", "Name", "Year", "GameId", "OppId", "Site", "OppRank"];
+	const columnsToExclude = ["TeamId", "Name", "Year", "GameId", "OppId", "Site", "OppRank"];
 	html += getTableHeader(json[0], columnsToExclude);
 
-	for(var i=0; i<json.length; i++) {
-		var row = json[i];
+	for(let i=0; i<json.length; i++) {
+		let row = json[i];
 
-		var teamLink = `<a href="/teams/team/${row.TeamId}/year/${row.Year}">${row.Team}</a>`;
-		var site = "";
-		var rank = "";
+		let teamLink = `<a href="/teams/team/${row.TeamId}/year/${row.Year}">${row.Team}</a>`;
+		let site = "";
+		let rank = "";
 
 		if(row.Site != '') {
 			site = row.Site + " ";
@@ -464,10 +464,10 @@ function setGamesTable(stats, divParent, divName) {
 			rank = row.OppRank + " ";
 		}
 
-		var oppTeamLink = `<a href="/teams/team/${row.OppId}/year/${row.Year}">${site}${rank}${row.Opponent}</a>`;
-		var dateLink = `<a href="/games/game/${row.GameId}/boxscore">${row.Date}</a>`;
+		let oppTeamLink = `<a href="/teams/team/${row.OppId}/year/${row.Year}">${site}${rank}${row.Opponent}</a>`;
+		let dateLink = `<a href="/games/game/${row.GameId}/boxscore">${row.Date}</a>`;
 
-		var linkColumns = {
+		const linkColumns = {
 			Date : dateLink,
 			Team : teamLink,
 			Opponent : oppTeamLink
@@ -482,13 +482,13 @@ function setGamesTable(stats, divParent, divName) {
 
 function tabClick(tabContentsId, tab) {
 
-	var tabs = tab.parentNode.children;
+	let tabs = tab.parentNode.children;
 
 	for(aTab of tabs) {
-		var isActive = (tab.id == aTab.id);
+		let isActive = (tab.id == aTab.id);
 		aTab.style.backgroundColor = isActive ? "#00274c" : "#999999";
 		// each tab's content id is its button id without the trailing "Tab"
-		var contentId = aTab.id.substr(0, aTab.id.length - 3);
+		let contentId = aTab.id.substr(0, aTab.id.length - 3);
 		document.getElementById(contentId).classList.toggle("is-active", isActive);
 	}
 }
