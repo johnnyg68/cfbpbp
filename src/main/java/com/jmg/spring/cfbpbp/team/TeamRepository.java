@@ -26,7 +26,7 @@ public class TeamRepository {
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	ColumnMapRowMapper mapper = new ColumnMapRowMapper();
-	List<Map<String, Object>> result;
+//	List<Map<String, Object>> result;
 //	ObjectMapper om = new ObjectMapper(); 
 //	om.registerModule(new JavaTimeModule()); 
 	
@@ -222,7 +222,7 @@ public class TeamRepository {
 	//generic map results
 	private String resultAsJson(String sqlFile) throws IOException {
 		String sql = SqlFileReader.getSqlFromFile(sqlFile);
-		result = jdbcTemplate.query(sql, mapper);
+		List<Map<String, Object>> result = jdbcTemplate.query(sql, mapper);
 		return om.writeValueAsString(result);
 	}
 	
@@ -231,7 +231,7 @@ public class TeamRepository {
 		String sql = SqlFileReader.getSqlFromFile(sqlFile);
 		Map<String, String> paramMap = new HashMap<>();
 		paramMap.put("teamid", teamId);
-		result = jdbcTemplate.query(sql, paramMap, mapper);
+		List<Map<String, Object>> result = jdbcTemplate.query(sql, paramMap, mapper);
 		return om.writeValueAsString(result);
 	}
 	
@@ -240,7 +240,7 @@ public class TeamRepository {
 		SqlParameterSource params = new MapSqlParameterSource().
 				addValue("teamid", teamId).
 				addValue("year", year);
-		result = jdbcTemplate.queryForList(sql, params);  	
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, params);  	
 		return om.writeValueAsString(result); 
 	}
 

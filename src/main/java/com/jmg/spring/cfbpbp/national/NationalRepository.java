@@ -21,7 +21,7 @@ public class NationalRepository {
 
 	ColumnMapRowMapper mapper = new ColumnMapRowMapper();
     ObjectMapper om = new ObjectMapper(); 
-	List<Map<String, Object>> result;
+	//List<Map<String, Object>> result;
 
 	public String get3rdDownDefense(String year) throws IOException {
 		String sqlFile = "national/national_3rd_down_defense.sql";
@@ -263,7 +263,7 @@ public class NationalRepository {
 		Map<String,String> paramMap = new HashMap<>();
 		paramMap.put("winner", winner);
 		paramMap.put("loser", loser);
-		result = jdbcTemplate.queryForList(sql, paramMap);                
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, paramMap);                
 		String json = om.writeValueAsString(result);
 		
 		return json;
@@ -273,7 +273,7 @@ public class NationalRepository {
 		String sql = SqlFileReader.getSqlFromFile(sqlFile);
 		Map<String,String> paramMap = new HashMap<>();
 		paramMap.put("year", year);
-		result = jdbcTemplate.queryForList(sql, paramMap);       
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, paramMap);       
 		String json = om.writeValueAsString(result);
 		
 		return json;
@@ -283,7 +283,7 @@ public class NationalRepository {
 		String sql = SqlFileReader.getSqlFromFile(sqlFile);
 		Map<String,String> paramMap = new HashMap<>();
 		paramMap.put("year", "");
-		result = jdbcTemplate.queryForList(sql, paramMap);       
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, paramMap);       
 		String json = om.writeValueAsString(result);
 		
 		return json;
