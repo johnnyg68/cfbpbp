@@ -397,7 +397,7 @@ function setYearsTable(stats, divParent, divName, totalRow) {
 		playerName = json[0].Name;
 	}
 
-	let html = "<br/>";
+	let html = "";
 	html += "<table class='bordered'>";
 	const columnsToExclude = ["TeamId", "Name"];
 	html += getTableHeader(json[0], columnsToExclude);
@@ -427,7 +427,7 @@ function setYearsTable(stats, divParent, divName, totalRow) {
 // 	var row = JSON.parse(totalRow);
 // 	html += getTableRow(row[0], columnsToExclude, '');
 
-	html += "</table><br/>";
+	html += "</table>";
 	document.getElementById(divName).innerHTML = html;
 }
 
@@ -444,7 +444,7 @@ function setGamesTable(stats, divParent, divName) {
 		playerName = json[0].Name;
 	}
 
-	let html = "<br/>";
+	let html = "";
 	html += "<table class='bordered'>";
 	const columnsToExclude = ["TeamId", "Name", "Year", "GameId", "OppId", "Site", "OppRank"];
 	html += getTableHeader(json[0], columnsToExclude);
@@ -476,7 +476,7 @@ function setGamesTable(stats, divParent, divName) {
 
 		html += getTableRow(row, columnsToExclude, linkColumns);
 	}
-	html += "</table><br/>";
+	html += "</table>";
 	document.getElementById(divName).innerHTML = html;
 }
 
