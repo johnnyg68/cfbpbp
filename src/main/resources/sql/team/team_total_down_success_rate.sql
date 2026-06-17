@@ -141,8 +141,6 @@ defense_ranked as (
     join conference on conference.conferenceid = team.conferenceid
     where conference.division = 'FBS'
 )
-/*select count(*)
-from defense_ranked;*/
 select *
 from offense_ranked
 where teamid = :teamid
@@ -150,5 +148,3 @@ union all
 select *
 from defense_ranked
 where teamid = :teamid
-
-

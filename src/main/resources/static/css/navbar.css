@@ -32,22 +32,25 @@
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Brand link (first link) -- Michigan navy bg, maize text, block-style font */
 /* ">" so it targets ONLY the top-level brand link, not the first <a> inside
    the Year dropdown menu */
 .navbar > a:first-child {
   font-family: "Graduate", "Trebuchet MS", Arial, sans-serif;
   font-size: 18px;
-  font-weight: 400; /* Graduate is already a heavy block face */
-  letter-spacing: 1px;
-  background-color: #00274c; /* navy blue */
-  color: #ffcb05;            /* maize */
+  font-weight: bold; 
+  letter-spacing: 0px;
+/*   background-color: #00274c; navy blue
+  color: #ffcb05;            maize */
+  background-color: #ffcb05; 
+  color:  #00274c;
 }
 
 /* Keep the brand navy/maize on hover (overrides the generic grey hover) */
 .navbar > a:first-child:hover {
-  background-color: #003a70; /* lighter navy */
-  color: #ffd633;            /* brighter maize */
+/*   background-color: #003a70; lighter navy
+  color: #ffd633;            brighter maize */
+  background-color: #ffd633;
+  color: #003a70;
 }
 
 /* The dropdown container */
