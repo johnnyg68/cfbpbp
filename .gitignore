@@ -71,3 +71,6 @@ application-local.yml
 # Temporary files
 *.tmp
 *.swp
+
+# SQL scratch / tuning files
+explain_scratch.sql
