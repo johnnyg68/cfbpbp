@@ -1,0 +1,19 @@
+# ----------------------------------------------------------------------------
+# TEMPLATE — copy to application.properties (which is gitignored) for local use,
+# OR rely on the env vars below being set in your runtime environment.
+# Do NOT put real credentials in this file; it IS committed to git.
+#
+# The real application.properties reads the database credentials from these
+# environment variables:
+#   DB_URL       e.g. jdbc:mysql://<host>:3306/cfb_pbp?autoReconnect=true&useSSL=true
+#   DB_USER      database username
+#   DB_PASSWORD  database password
+#
+# How to provide them:
+#   Local dev   -> VS Code launch.json "env" block, or `export` in your shell
+#   EC2/prod    -> systemd EnvironmentFile (chmod 600), or exported in the launch script
+# ----------------------------------------------------------------------------
+spring.jpa.hibernate.ddl-auto=none
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD}
