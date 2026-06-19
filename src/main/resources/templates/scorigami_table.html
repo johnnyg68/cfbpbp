@@ -174,7 +174,7 @@ label {
 </style>
 </head>
 
-<body onload="setStats(); setMostCommonTable(); setLeastCommonTable();">
+<body onload="year = getMaxYear(); setStats();">
 	
 	<!-- 
 	<p th:text="'year= ' + ${year} "/>
@@ -264,7 +264,7 @@ const maxLoserScore = /*[[${maxLoserScore}]]*/ null;
 let rows = JSON.parse(maxLoserScore)[0].max_loser_score;
 let cols = JSON.parse(maxWinnerScore)[0].max_winner_score;
 let json = JSON.parse(stats); 
-let year = (year == null) ? getMaxYear() : year;
+let year = null; // assigned in body onload, after yearChoices.js (getMaxYear) loads
 
 function setStats() {
 	let html = "<table id='statTable'>";
@@ -289,7 +289,7 @@ function setStats() {
 			if( y === 0 ) {
 				html += "<td><b>" + x + "</b></td>";	
 			} else {
-				var xy = "x" + (y-1) + "y" + x;
+				let xy = "x" + (y-1) + "y" + x;
 				html += "<td id=" + xy + "></td>"
 			}
 		}
@@ -343,7 +343,8 @@ function paintImpossibleScores() {
 	}
 }
 
-function setMostCommonTable() {
+<!--
+ function setMostCommonTable() {
 	const scores = /*[[${mostCommonScores}]]*/ null;
 	scores = JSON.parse(scores);
 	let html = "";
@@ -358,8 +359,10 @@ function setMostCommonTable() {
 	
 	document.getElementById("mostCommon").innerHTML = html;
 	
-}
+} 
+-->
 
+<!--
 function setLeastCommonTable() {
 	const scores = /*[[${leastCommonScores}]]*/ null;
 	scores = JSON.parse(scores);
@@ -378,9 +381,10 @@ function setLeastCommonTable() {
 		
 		html += getTableRow(score, columnsToExclude, columnLinks, null);
 	}
-	
 	document.getElementById("leastCommon").innerHTML = html;
-}
+} 
+-->
+
 
 </script>
 
