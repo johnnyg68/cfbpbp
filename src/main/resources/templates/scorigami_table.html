@@ -343,47 +343,42 @@ function paintImpossibleScores() {
 	}
 }
 
-<!--
- function setMostCommonTable() {
-	const scores = /*[[${mostCommonScores}]]*/ null;
-	scores = JSON.parse(scores);
-	let html = "";
-	
-	//function getTableHeader(row, columnsToExclude, sortColumns)
-	html += getTableHeader(scores[0], "", "")
-	
-	//function getTableRow(row, columnsToExclude, linkColumns, rowNum)
-	for (score of scores) {
-		html += getTableRow(score, "", "", null);
-	}
-	
-	document.getElementById("mostCommon").innerHTML = html;
-	
-} 
--->
+// function setMostCommonTable() {
+// 	const scores = /*[[${mostCommonScores}]]*/ null;
+// 	scores = JSON.parse(scores);
+// 	let html = "";
+//
+// 	//function getTableHeader(row, columnsToExclude, sortColumns)
+// 	html += getTableHeader(scores[0], "", "")
+//
+// 	//function getTableRow(row, columnsToExclude, linkColumns, rowNum)
+// 	for (score of scores) {
+// 		html += getTableRow(score, "", "", null);
+// 	}
+//
+// 	document.getElementById("mostCommon").innerHTML = html;
+// }
 
-<!--
-function setLeastCommonTable() {
-	const scores = /*[[${leastCommonScores}]]*/ null;
-	scores = JSON.parse(scores);
-	let html = "";
-	
-	//function getTableHeader(row, columnsToExclude, sortColumns)
-	const columnsToExclude = ["gameid", "Games"];
-	html += getTableHeader(scores[0], columnsToExclude, "");
-	
-	//function getTableRow(row, columnsToExclude, linkColumns, rowNum)
-	for (score of scores) {
-		let gameLink = `<a href='/games/game/${score.gameid}/boxscore'>${score.Date}</a>`;
-		let columnLinks = {
-			Date : gameLink
-		};
-		
-		html += getTableRow(score, columnsToExclude, columnLinks, null);
-	}
-	document.getElementById("leastCommon").innerHTML = html;
-} 
--->
+// function setLeastCommonTable() {
+// 	const scores = /*[[${leastCommonScores}]]*/ null;
+// 	scores = JSON.parse(scores);
+// 	let html = "";
+//
+// 	//function getTableHeader(row, columnsToExclude, sortColumns)
+// 	const columnsToExclude = ["gameid", "Games"];
+// 	html += getTableHeader(scores[0], columnsToExclude, "");
+//
+// 	//function getTableRow(row, columnsToExclude, linkColumns, rowNum)
+// 	for (score of scores) {
+// 		let gameLink = `<a href='/games/game/${score.gameid}/boxscore'>${score.Date}</a>`;
+// 		let columnLinks = {
+// 			Date : gameLink
+// 		};
+//
+// 		html += getTableRow(score, columnsToExclude, columnLinks, null);
+// 	}
+// 	document.getElementById("leastCommon").innerHTML = html;
+// }
 
 
 </script>
