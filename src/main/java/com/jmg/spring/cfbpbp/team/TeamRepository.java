@@ -47,7 +47,7 @@ public class TeamRepository {
 	public String getTeamMetaData(String teamId) throws IOException {
 		String sqlFile = "team/team_metadata.sql";
 		return resultAsJson(sqlFile, teamId);
-	}
+	} 
 
 	// PLAYER STATS
 
@@ -96,7 +96,7 @@ public class TeamRepository {
 		return resultAsJson(sqlFile, teamId, year);
 	}
 
-	// TEAM stats
+	// TEAM STATS
 
 	public String getTeamGameResults(String teamId, String year) throws IOException {
 		String sqlFile = "team/team_game_results.sql";
@@ -158,7 +158,7 @@ public class TeamRepository {
 		return resultAsJson(sqlFile, teamId, year);
 	}
 
-	// Team History
+	// TEAM HISTORY
 
 	public String getTeamRankings(String teamId) throws IOException {
 		String sqlFile = "team/team_history_rankings.sql";
