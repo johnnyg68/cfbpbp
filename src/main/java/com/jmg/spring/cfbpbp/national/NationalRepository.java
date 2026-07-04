@@ -144,7 +144,8 @@ public class NationalRepository {
 	}
 
 	public String getOffensePlaySuccess(String year) throws IOException {
-		String sqlFile = "national/national_offense_play_efficiency.sql";
+		// String sqlFile = "national/national_offense_play_efficiency.sql";
+		String sqlFile = "national/national_offense_play_efficiency_aggregate.sql";
 		return resultAsJson(year, sqlFile);
 	}
 	
@@ -169,7 +170,8 @@ public class NationalRepository {
 	}
 	
 	public String getDefensePlaySuccess(String year) throws IOException {
-		String sqlFile = "national/national_defense_play_efficiency.sql";
+		//String sqlFile = "national/national_defense_play_efficiency.sql";
+		String sqlFile = "national/national_defense_play_efficiency_aggregate.sql";
 		return resultAsJson(year, sqlFile);
 	}	
 	

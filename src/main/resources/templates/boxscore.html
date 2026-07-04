@@ -69,7 +69,7 @@ h1 {
 
 h3 {
 	font-size: 14px;
-	margin: 0 0 8px;
+	/* margin: 0 0 8px; */
 	color: var(--brand-navy);
 }
 
@@ -506,11 +506,12 @@ function setAllPlaysTable() {
 function setDrivesAndPlaysTable(selectedTeam) {
 
 	const drivesAndPlays = /*[[${drivesAndPlays}]]*/ null;
+	const plus = '<a href="#"><img src="/images/plus.png" height="10" width="10"/></a>';
+	const minus = '<a href="#"><img src="/images/minus.png" height="10" width="10"/></a>';
 	let json = JSON.parse(drivesAndPlays);
 	let drivePlayMap = new Map();
 	let html = "<table id='drivesAndPlaysTable'>";
-	let plus = '<a href="#"><img src="/images/plus.png" height="10" width="10"/></a>';
-	let minus = '<a href="#"><img src="/images/minus.png" height="10" width="10"/></a>';
+
 	let team;
 
 	for(let i=0; i<json.length; i++) {
