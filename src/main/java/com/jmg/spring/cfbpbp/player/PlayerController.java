@@ -17,7 +17,7 @@ public class PlayerController {
     	this.players = players;
     }
     
-    // Career stats for a given player
+    // Game & Career stats for a given player
     @GetMapping(value = "") 
     public String showCareerStats(@PathVariable("playerid") String playerId, Model model) throws IOException {
     	
@@ -84,7 +84,7 @@ public class PlayerController {
 
     }
     
-    // Year stats relative to all other players in FBS
+    // National Year stats relative to all other players in FBS
     
     @GetMapping(value = "/allpurposeoffense")
     public String showAllPurposeOffense(@PathVariable String year, Model model) throws IOException {
