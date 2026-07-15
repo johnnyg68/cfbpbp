@@ -1,6 +1,6 @@
 
 function gotoYearRankings(year) {
-	var url;
+	let url;
 	if(year == undefined || year == "") {
 		url = "/stats/rankings";
 	} else {
@@ -10,7 +10,7 @@ function gotoYearRankings(year) {
 }
 
 function gotoYearStats(year) {
-	var url;
+	let url;
 	if(year == undefined || year == "") {
 		url = "/stats/index";   
 	} else {
@@ -21,7 +21,7 @@ function gotoYearStats(year) {
 
 // http://localhost:8080/games/year/2016/week/bowl or /schedule
 function gotoYearSchedule(year) {
-	var url;
+	let url;
 	if(year == undefined || year == "") {
 		url = "/schedule";     
 	} else {
@@ -31,9 +31,9 @@ function gotoYearSchedule(year) {
 }
 
 function gotoYearRecruiting(year) {
-	var url;
+	let url;
 	if(year == undefined || year == "") {
-		url = "/recruiting/year/2024";     
+		url = "/recruiting/year/2025";     
 	} else {
 		url = "/recruiting/year/" + year ;
 	}
