@@ -281,7 +281,6 @@ function setTeamDetails() {
 	teamName = json[0].Name;
 	let mascot = json[0].Mascot;
 	let record = json[0].Record;
-	//let rank = json[0].Rank == null ? "" : "#" + json[0].Rank;
 	let rank = json[0].ranking == null ? "" : "#" + json[0].ranking;
 	teamColor = json[0].Color != "" ? "#" + json[0].Color : "";
 
@@ -328,7 +327,6 @@ function setScheduleResultsTable() {
 function setStatTables() {
 
 	//TEAM
-
 	let stat =  /*[[${teamScoring}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Scoring", "teamScoringDiv");
 
@@ -354,7 +352,6 @@ function setStatTables() {
 	setTeamPlayerStatTable(stat, "", "Team Strength of Schedule", "teamSos");
 
 	// PLAYERS
-
 	stat =  /*[[${playerPassing}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Passing", "playerPassingDiv");
 
