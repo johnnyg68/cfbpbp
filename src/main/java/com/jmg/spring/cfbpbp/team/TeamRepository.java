@@ -32,7 +32,7 @@ public class TeamRepository {
 	ObjectMapper om = JsonMapper.builder().addModule(new JavaTimeModule()).build();
 	MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 
-	boolean debug = false;
+	private boolean debug = false;
 
 	// ALL TEAMS BY CONFERENCE
 
