@@ -108,6 +108,26 @@ public class TeamRepository {
 		return resultAsJson(sqlFile, teamId, year);
 	}
 
+	// Single execution of team_year_record.sql that returns both the browser JSON
+	// payload and the scalar values (name, mascot, year) for the page metadata.
+	public TeamYearMetadata getTeamYearMetadata(String teamId, String year) throws IOException {
+		String sql = SqlFileReader.getSqlFromFile("team/team_year_record.sql");
+		SqlParameterSource params = new MapSqlParameterSource().addValue("teamid", teamId).addValue("year", year);
+
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, params);
+		String json = om.writeValueAsString(rows);
+
+		String name = "";
+		String mascot = "";
+		if (!rows.isEmpty()) {
+			Map<String, Object> row = rows.get(0);
+			name = String.valueOf(row.get("Name"));
+			mascot = String.valueOf(row.get("Mascot"));
+		}
+
+		return new TeamYearMetadata(json, name, mascot, year);
+	}
+
 	public String getTeamYearRank(String teamId, String year) throws IOException {
 		String sqlFile = "team/team_year_ap_rank.sql";
 		return resultAsJson(sqlFile, teamId, year);

@@ -3,9 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CFB Geek college football team data</title>
-<meta name="description" content="College Football Data Team History">
+<title th:text="${year + ' ' + teamName + ' ' + teamMascot + ' Football — Record, Schedule and Stats | CFB Geek'}">CFB Geek college football team data</title>
+<meta name="description" content="College Football Data Team History"
+	th:attr="content=${year + ' ' + teamName + ' ' + teamMascot + ' college football season: schedule, game results, and team stats on CFB Geek.'}">
 <meta name="author" content="John Gilliam">
+<link rel="canonical" th:href="@{/teams/team/{id}/year/{yr}(id=${teamId},yr=${year})}">
+
+<script type="application/ld+json" th:inline="javascript">
+{
+	"@context": "https://schema.org",
+	"@type": "SportsTeam",
+	"name": /*[[${teamName + ' ' + teamMascot}]]*/ "Team",
+	"sport": "American Football",
+	"logo": /*[[${'https://a.espncdn.com/i/teamlogos/ncaa/500/' + teamId + '.png'}]]*/ ""
+}
+</script>
 
 <link href="/css/navbar.css" rel="stylesheet">
 <style type="text/css">

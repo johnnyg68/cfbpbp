@@ -36,8 +36,11 @@ public class TeamController {
 		// *************************
 		// TEAM data
 		// *************************
-		String teamYearRecord = teams.getTeamYearRecord(teamId, year);
-		model.addAttribute("teamYearRecord", teamYearRecord);
+		TeamYearMetadata teamYearMetadata = teams.getTeamYearMetadata(teamId, year);
+		model.addAttribute("teamYearRecord", teamYearMetadata.getJson());
+		model.addAttribute("teamName", teamYearMetadata.getName());
+		model.addAttribute("teamMascot", teamYearMetadata.getMascot());
+		model.addAttribute("year", teamYearMetadata.getYear());
 
 		String scheduleResults = teams.getTeamGameResults(teamId, year);
 		model.addAttribute("scheduleResults", scheduleResults);
