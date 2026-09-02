@@ -255,7 +255,6 @@ a:hover {
 
 <script th:inline="javascript">
 
-const year = /*[[${year}]]*/ null;
 const title = /*[[${title}]]*/ null;
 const teams = /*[[${teams}]]*/ null;
 const json = JSON.parse(teams);
@@ -263,9 +262,11 @@ const json = JSON.parse(teams);
 function setLogosTable() {
 	let html = "";
 	for (let i = 0; i < json.length; i++) {
+		let year = json[i].year;
 		let teamId = json[i].teamid;
 		let name = json[i].name;
 		let mascot = json[i].mascot;
+		
 		html += `<a class="logo-card" href="teams/team/${teamId}/year/${year}" title="#${i+1} ${name} ${mascot}">
 			<span class="logo-rank">${i+1}</span>
 			<img src="https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png" alt="${name} ${mascot}" loading="lazy">
