@@ -22,18 +22,7 @@ public class IndexRepository {
 
 	String getTeamsBySpRanking() throws IOException {
 		String sqlFile = "national/national_ranking_sp_lite.sql";
-		// return resultAsJson(year, sqlFile);
 		return resultAsJson(sqlFile);
-	}
-	
-	private String resultAsJson(String year, String sqlFile) throws IOException {
-		String sql = SqlFileReader.getSqlFromFile(sqlFile);
-		Map<String,String> paramMap = new HashMap<>();
-		paramMap.put("year", year);
-		List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, paramMap);       
-		String json = om.writeValueAsString(result);
-		
-		return json;
 	}
 	
 	// use updated national/national_ranking_sp_lite.sql 

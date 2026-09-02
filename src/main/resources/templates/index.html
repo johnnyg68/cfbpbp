@@ -255,6 +255,7 @@ a:hover {
 
 <script th:inline="javascript">
 
+let year = null;
 const title = /*[[${title}]]*/ null;
 const teams = /*[[${teams}]]*/ null;
 const json = JSON.parse(teams);
@@ -262,7 +263,7 @@ const json = JSON.parse(teams);
 function setLogosTable() {
 	let html = "";
 	for (let i = 0; i < json.length; i++) {
-		let year = json[i].year;
+		year = json[i].year;
 		let teamId = json[i].teamid;
 		let name = json[i].name;
 		let mascot = json[i].mascot;
