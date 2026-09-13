@@ -479,10 +479,25 @@ function setPlaySummary() {
 	let json = JSON.parse(playSummary);
 	let html = "<table>";
 
+	//debug
+	console.log("playSummary=" + playSummary);
+	
 	html += getTableHeader(json[0]);
-	for(let i=0; i<json.length; i++) {
-		html += getTableRow(json[i]);
-	}
+	 for (let i = 0; i < json.length; i++) {
+
+		//console.log("json[" + i + "]=", json[i]);
+
+		for (let key in json[i]) {
+            if (typeof json[i][key] === "string" && json[i][key].includes("/")) {
+                const [numerator, denominator] =
+                json[i][key].split('/').map(Number);
+	            const percentage = ((numerator / denominator) * 100).toFixed(1);
+                json[i][key] += ` (${percentage}%)`;
+	            }
+	        }
+
+	        html += getTableRow(json[i]);
+	    }
 	html += "</table>";
 	document.getElementById("playSummary").innerHTML = html;
 }
