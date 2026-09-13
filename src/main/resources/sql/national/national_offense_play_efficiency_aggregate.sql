@@ -1,6 +1,7 @@
 -- national/national_offense_play_efficiency_aggregate.sql
 -- use teamdownsuccesstable which aggregates play<type>, and success 
 select 
+	row_number() over (order by allrank asc) as '#',
 	team.name as Team,
 	tds.teamid as TeamId,
 	concat(stdsuccessfulplays, "/",  stdplays) as "Success/Std Downs",
