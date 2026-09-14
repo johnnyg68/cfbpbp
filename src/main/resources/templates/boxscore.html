@@ -475,24 +475,26 @@ function setScoringPlaysTable() {
 }
 
 function setPlaySummary() {
-	const playSummary = /*[[${playSummary}]]*/ null;
-	let json = JSON.parse(playSummary);
-	let html = "<table>";
-	
-	html += getTableHeader(json[0]);
-	 for (let i = 0; i < json.length; i++) {
-		for (let key in json[i]) {
+    const playSummary = /*[[${playSummary}]]*/ null;
+    let json = JSON.parse(playSummary);
+    let html = "<table>";
+
+    html += getTableHeader(json[0]);
+
+    for (let i = 0; i < json.length; i++) {
+        for (let key in json[i]) {
             if (typeof json[i][key] === "string" && json[i][key].includes("/")) {
-                const [numerator, denominator] =
-                json[i][key].split('/').map(Number);
-	            const percentage = ((numerator / denominator) * 100).toFixed(1);
+                const [numerator, denominator] = json[i][key].split('/').map(Number);
+                const percentage = ((numerator / denominator) * 100).toFixed(1);
+                
                 json[i][key] += ` (${percentage}%)`;
-	            }
-	        }
-	        html += getTableRow(json[i]);
-	    }
-	html += "</table>";
-	document.getElementById("playSummary").innerHTML = html;
+            }
+        }
+        html += getTableRow(json[i]);
+    }
+
+    html += "</table>";
+    document.getElementById("playSummary").innerHTML = html;
 }
 
 function setAllPlaysTable() {
