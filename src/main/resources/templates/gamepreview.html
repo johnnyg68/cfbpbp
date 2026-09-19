@@ -443,12 +443,19 @@ function setGameHistory() {
 	let json = JSON.parse(gameHistory);
 
 	if(json[0] == undefined) {
+		let html = "<h3>Game History</h3>";
+		html += "<p>No previous games</p>";
+		document.getElementById("gameHistoryDiv").innerHTML = html;
 		return;
 	}
 
 	const columnsToExclude = ["GameId", "Year", "WinnerTeamId", "HomeTeamId", "AwayTeamId"];
 
 	let html = "<h3>Game History</h3>"
+	
+	let summary = summarizeGameHistory(json);
+	html += "<p>" + summary + "</p>";
+	
 	html += "<table>";
 
 	html += getTableHeader(json[0], columnsToExclude);
@@ -473,6 +480,35 @@ function setGameHistory() {
 	}
 	html += "</table>";
 	document.getElementById("gameHistoryDiv").innerHTML = html;
+}
+
+function summarizeGameHistory(json) {
+
+    let wins = {};
+
+    json.forEach(game => {
+        wins[game.Winner] = (wins[game.Winner] || 0) + 1;
+    });
+
+    const teams = Object.keys(wins);
+
+    let summary;
+
+    // Only one team has won, so the other team has zero wins
+    if (teams.length === 1) {
+        summary = `${teams[0]} leads series (W - L): ${wins[teams[0]]} - 0`;
+    }
+    else if (wins[teams[0]] > wins[teams[1]]) {
+        summary = `${teams[0]} leads series (W - L): ${wins[teams[0]]} - ${wins[teams[1]]}`;
+    }
+    else if (wins[teams[1]] > wins[teams[0]]) {
+        summary = `${teams[1]} leads series (W - L): ${wins[teams[1]]} - ${wins[teams[0]]}`;
+    }
+    else {
+        summary = `Series is tied (W - L): ${wins[teams[0]]} - ${wins[teams[1]]}`;
+    }
+
+    return summary;
 }
 
 </script>
