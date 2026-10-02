@@ -25,7 +25,7 @@ function gotoYearSchedule(year) {
 	if(year == undefined || year == "") {
 		url = "/schedule";     
 	} else {
-		url = "/games/year/" + year + "/week/1";
+		url = "/games/year/" + year;
 	}
 	window.location = url;
 }
