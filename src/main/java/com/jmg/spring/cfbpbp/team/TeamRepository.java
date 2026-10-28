@@ -172,6 +172,12 @@ public class TeamRepository {
 		String sqlFile = "team/team_total_turnover_margin.sql";
 		return resultAsJson(sqlFile, teamId, year);
 	}
+	
+
+	public String getSpTeamRankings(String teamId, String year) throws IOException {
+		String sqlFile = "team/team_sp_rankings.sql";
+		return resultAsJson(sqlFile, teamId, year);
+	}
 
 	public String getTeamSos(String teamId, String year) throws IOException {
 		String sqlFile = "team/team_year_sos.sql";
@@ -300,5 +306,6 @@ public class TeamRepository {
 
 		return om.writeValueAsString(result);
 	}
+
 
 }

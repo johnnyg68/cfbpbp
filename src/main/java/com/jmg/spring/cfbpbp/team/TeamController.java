@@ -72,6 +72,9 @@ public class TeamController {
 
 		// String teamOpponentRecord = teams.getTeamOpponentRecord(teamId, year);
 		// model.addAttribute("teamOpponentRecord", teamOpponentRecord);
+		
+		String spTeamRankings = teams.getSpTeamRankings(teamId, year);
+		model.addAttribute("spTeamRankings", spTeamRankings);
 
 		String teamSos = teams.getTeamSos(teamId, year);
 		model.addAttribute("teamSos", teamSos);

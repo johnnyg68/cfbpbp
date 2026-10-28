@@ -263,6 +263,7 @@ table tr:hover {
 			<div id="teamRushingDiv"></div>
 			<div id="team3rdDownsDiv"></div>
 			<div id="teamTurnoverMarginDiv"></div>
+			<div id="teamSpRankings"></div>
 			<div id="teamSos"></div>
 		</div>
 
@@ -359,6 +360,9 @@ function setStatTables() {
 
 	stat =  /*[[${teamTurnoverMargin}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Turnover Margin", "teamTurnoverMarginDiv");
+	
+	stat =  /*[[${spTeamRankings}]]*/ null;
+	setTeamPlayerStatTable(stat, "", "SP+ Team Rankings", "teamSpRankings");
 
 	stat =  /*[[${teamSos}]]*/ null;
 	setTeamPlayerStatTable(stat, "", "Team Strength of Schedule", "teamSos");
