@@ -34,7 +34,7 @@ public class TeamController {
 		// long startTime = System.nanoTime();
 
 		// *************************
-		// TEAM data
+		// TEAM YEAR data
 		// *************************
 		TeamYearMetadata teamYearMetadata = teams.getTeamYearMetadata(teamId, year);
 		model.addAttribute("teamYearRecord", teamYearMetadata.getJson());
@@ -80,7 +80,7 @@ public class TeamController {
 		model.addAttribute("teamSos", teamSos);
 
 		// *************************
-		// PLAYER data for a year
+		// PLAYER YEAR data
 		// *************************
 		String playerPassing = teams.getTeamPlayerPassing(teamId, year);
 		model.addAttribute("playerPassing", playerPassing);
